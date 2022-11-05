@@ -1,0 +1,8 @@
+.accordion {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  max-width: 900px;
+  border: 2px solid #f1efef;
+  border-radius: 7px;
+}

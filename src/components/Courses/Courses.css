@@ -1,0 +1,33 @@
+.courses {
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.courses__title {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.04em;
+  color: #000000;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 400px) {
+  .courses {
+    margin: 0 6.5%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .courses {
+    margin: 0 30px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .courses {
+    margin: 0 6.5%;
+  }
+}

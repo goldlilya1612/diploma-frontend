@@ -1,0 +1,39 @@
+.accordion_item {
+  border-bottom: 2px solid #f1efef;
+}
+.button {
+  color: black;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 17px;
+  cursor: pointer;
+  border: none;
+  background-color: white;
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  transition: all ease-out 0.3s;
+}
+.button:hover {
+  background-color: #f1efef;
+}
+
+.control {
+  font-size: 20px;
+}
+
+.answer {
+  background-color: #f7f7f7;
+  padding: 20px;
+}
+
+.answer_wrapper {
+  height: 0;
+  overflow: hidden;
+  transition: height ease 0.2s;
+}
