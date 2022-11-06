@@ -4,8 +4,12 @@ import { useState } from 'react';
 import SideBar from '../SideBar/SideBar';
 
 const NavigationAuthorized = () => {
-  const isMobile = window.matchMedia('max-width: 768px');
+  window.addEventListener('resize', () => {
+    setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+  });
+
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const showSideBar = () => setIsOpen(!isOpen);
 
   return (

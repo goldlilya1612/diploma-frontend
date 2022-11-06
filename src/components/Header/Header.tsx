@@ -1,11 +1,22 @@
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import './Header.css';
 import NavigationUnauthorized from '../NavigationUnauthorized/NavigationUnauthorized';
 import NavigationAuthorized from '../NavigationAuthorized/NavigationAuthorized';
 import Logo from '../Logo/Logo';
 
 const Header = () => {
-  // const mainPage = window.location.pathname === '/';
-  const notMainPage: boolean = true;
+  const [windowPathname, setWindowPathname] = useState(
+    window.location.pathname
+  );
+  const notMainPage: boolean = !(windowPathname === '/');
+  const history = useHistory();
+
+  useEffect(() => {
+    return history.listen((location: any) => {
+      setWindowPathname(location.pathname);
+    });
+  }, [history]);
 
   return (
     <>
