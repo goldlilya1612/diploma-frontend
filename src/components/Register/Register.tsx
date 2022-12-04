@@ -242,8 +242,6 @@ function Register({
                             <GroupRegister
                                 key={dataGroup.key}
                                 group={dataGroup}
-                                data={data}
-                                setData={setData}
                                 dataGroups={dataGroups}
                                 setDataGroups={setDataGroups}
                             />

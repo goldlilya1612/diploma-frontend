@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "lib": ["es5", "es6", "dom", "dom.iterable", "esnext"],
-        "files": ["custom.d.ts"],
         "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,

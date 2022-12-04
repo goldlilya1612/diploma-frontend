@@ -3,20 +3,16 @@ import "./GroupRegister.css";
 import { ReactComponent as AddIcon } from "../../images/add-icon.svg";
 import { ReactComponent as DeleteIcon } from "../../images/delete-icon.svg";
 import { v4 as uuidv4 } from "uuid";
-import { IGroupRegister, IDataRegister } from "../../interfaces";
+import { IGroupRegister } from "../../interfaces";
 import { last } from "lodash";
 function GroupRegister({
     dataGroups,
     setDataGroups,
     group,
-    data,
-    setData,
 }: {
     dataGroups: Array<IGroupRegister>;
     setDataGroups: any;
     group: IGroupRegister;
-    data: IDataRegister;
-    setData: any;
 }) {
     const isLast = dataGroups.length > 0 && group.key === last(dataGroups)?.key;
 
