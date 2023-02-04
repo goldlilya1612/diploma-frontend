@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 import "./App.css";
 import * as auth from "../../utils/auth";
 import Header from "../Header/Header";
@@ -89,7 +89,7 @@ const App = () => {
                                 email: res.email,
                             });
                             localStorage.setItem("loggedIn", "true");
-                            history.push("/acc");
+                            history.push("/profile");
                         })
                         .catch((err) => {
                             console.log(`Ошибка: ${err}`);
@@ -112,6 +112,11 @@ const App = () => {
             });
     };
 
+    const handleLogout = () => {
+        localStorage.clear();
+        history.push('/');
+    }
+
     return (
         <div className="page">
             <Route exact path="/">
@@ -128,7 +133,7 @@ const App = () => {
                 <Header />
                 <Courses />
             </Route>
-            <Route path="/profile">{<h1>acc</h1>}</Route>
+            <Route path="/profile">{<button onClick={handleLogout}>Выйти</button>}</Route>
             <Footer />
             <Popup
                 isOpen={isPopupOpen}

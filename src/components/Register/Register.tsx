@@ -1,17 +1,13 @@
-import { useCallback } from "react";
-import { v4 as uuidv4 } from "uuid";
+import {useCallback, useState} from "react";
+import {v4 as uuidv4} from "uuid";
 import ButtonBlock from "../ButtonBlock/ButtonBlock";
 import GroupRegister from "../GroupRegister/GroupRegister";
 import Logo from "../Logo/Logo";
-import { REGISTER } from "../../utils/constants";
-import { useState } from "react";
+import {REGISTER} from "../../utils/constants";
 import "./Register.css";
-import {
-    IErrorsRegister,
-    IDataRegister,
-    IGroupRegister,
-} from "../../interfaces";
-import { EUserStatus } from "../../enums/user-statuses.enum";
+import {IDataRegister, IErrorsRegister,} from "../../interfaces";
+import {EUserStatus} from "../../enums/user-statuses.enum";
+import {isEmpty} from "lodash";
 
 function Register({
     onRegister,
@@ -21,10 +17,6 @@ function Register({
     isDisabled: any;
 }) {
     const [errors, setErrors] = useState({} as IErrorsRegister);
-    const [isValid, setIsValid] = useState(false);
-    const [dataGroups, setDataGroups] = useState<Array<IGroupRegister> | null>([
-        { name: "", key: uuidv4() },
-    ]);
     const [value, setValue] = useState(EUserStatus.STUDENT);
     const [data, setData] = useState({
         name: "",
@@ -35,33 +27,44 @@ function Register({
         status: EUserStatus.STUDENT,
         groups: null,
     } as IDataRegister);
+    const checkGroupsValidation = () => {
+        if (data.status === EUserStatus.LECTOR) {
+            return !data.groups?.find(group => group.name === '')
+        } else return true
+    };
+
+    const isFormCompleted = () => !!(data.name && data.surname && data.fathername && data.email && data.password && data.status)
+    const isErrorsInForm = () =>  !!Object.entries(errors).find(([_key, value]) => value !== '');
+    const checkInputsValidation = () => {
+        if (isEmpty(errors)) return false //инициализация формы
+
+        return isFormCompleted() && !isErrorsInForm();
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
         const { name, value } = target;
-        setData({ ...data, [name]: value });
         if (name === "status") {
-            setValue(value as EUserStatus);
-            if (value === EUserStatus.STUDENT) {
-                setDataGroups(null);
-            } else if (value === EUserStatus.LECTOR) {
-                setDataGroups([{ name: "", key: uuidv4() }]);
-            }
+            handleGroupsChange(name, value as EUserStatus);
         } else {
+            setData({ ...data, [name]: value });
             setErrors({ ...errors, [name]: target.validationMessage });
         }
-
-        setIsValid((target.closest("form") as HTMLFormElement).checkValidity());
     };
+    const handleGroupsChange = (name: string, value: EUserStatus) => {
+        setValue(value as EUserStatus);
+        if (value === EUserStatus.STUDENT) {
+            setData({ ...data, [name]: value, groups: null});
+        } else if (value === EUserStatus.LECTOR) {
+            setData({ ...data, [name]: value, groups: [{ name: "", key: uuidv4() }]});
+        }
+    }
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        setData({ ...data, groups: dataGroups });
         resetForm();
         onRegister(
-            { ...data, groups: dataGroups },
             setData,
-            setIsValid,
             setErrors,
             resetForm
         );
@@ -79,13 +82,11 @@ function Register({
                 groups: null,
             },
             newErrors = {},
-            newIsValid = false
         ) => {
             setData(newData);
             setErrors(newErrors as IErrorsRegister);
-            setIsValid(newIsValid);
         },
-        [setData, setErrors, setIsValid]
+        [setData, setErrors]
     );
 
     return (
@@ -94,7 +95,7 @@ function Register({
                 <Logo />
                 <h1 className="section-with-form__title">Добро пожаловать!</h1>
             </div>
-            <form onSubmit={handleSubmit} className="section-with-form__form">
+            <form autoComplete={'off'} onSubmit={handleSubmit} className="section-with-form__form">
                 <label
                     className="section-with-form__label"
                     htmlFor="name-register"
@@ -213,7 +214,7 @@ function Register({
                                     name="status"
                                     id="status-student-register"
                                     value={EUserStatus.STUDENT}
-                                    checked={value === "student" ? true : false}
+                                    checked={value === "student"}
                                     onChange={handleChange}
                                 />
                                 Студент
@@ -226,7 +227,7 @@ function Register({
                                     name="status"
                                     id="status-lector-register"
                                     value={EUserStatus.LECTOR}
-                                    checked={value === "lector" ? true : false}
+                                    checked={value === "lector"}
                                     onChange={handleChange}
                                 />
                                 Преподаватель
@@ -234,16 +235,15 @@ function Register({
                         </div>
                     </div>
                 </label>
-
                 {data.status === EUserStatus.LECTOR ? (
                     <section className="groups-block">
                         <p className="groups-block__title">Группы:</p>
-                        {dataGroups?.map((dataGroup) => (
+                        {data.groups?.map((dataGroup) => (
                             <GroupRegister
                                 key={dataGroup.key}
                                 group={dataGroup}
-                                dataGroups={dataGroups}
-                                setDataGroups={setDataGroups}
+                                data={data}
+                                setData={setData}
                             />
                         ))}
                     </section>
@@ -269,6 +269,7 @@ function Register({
                         ></input>
                     ) : (
                         <input
+                            autoComplete={'off'}
                             required
                             onChange={handleChange}
                             value={data.email}
@@ -300,6 +301,7 @@ function Register({
                         ></input>
                     ) : (
                         <input
+                            autoComplete={'off'}
                             required
                             onChange={handleChange}
                             value={data.password}
@@ -317,7 +319,7 @@ function Register({
                 <ButtonBlock
                     content={REGISTER}
                     name="register"
-                    isValid={isValid}
+                    isValid={checkInputsValidation() && checkGroupsValidation()}
                     isDisabled={isDisabled}
                 />
             </form>
