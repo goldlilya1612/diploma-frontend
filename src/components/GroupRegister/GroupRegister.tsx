@@ -3,73 +3,78 @@ import "./GroupRegister.css";
 import { ReactComponent as AddIcon } from "../../images/add-icon.svg";
 import { ReactComponent as DeleteIcon } from "../../images/delete-icon.svg";
 import { v4 as uuidv4 } from "uuid";
-import { IDataRegister, IGroupRegister } from "../../interfaces";
+import { IGroupRegister } from "../../interfaces";
 import { last } from "lodash";
+import { Reorder, useDragControls, useMotionValue } from "framer-motion";
+import { ReorderIcon } from "../../images/reorder-icon";
 
 function GroupRegister({
-  data,
-  setData,
+  dataGroups,
+  setDataGroups,
   group,
 }: {
-  data: IDataRegister;
-  setData: (value: IDataRegister) => void;
+  dataGroups: IGroupRegister[];
+  setDataGroups: (value: IGroupRegister[]) => void;
   group: IGroupRegister;
 }) {
-  const isLast =
-    data.groups &&
-    data.groups.length > 0 &&
-    group.key === last(data.groups)?.key;
+  const isLast = dataGroups.length > 0 && group.key === last(dataGroups)?.key;
+  const dragControls = useDragControls();
+  const y = useMotionValue(0);
 
   const handleDeleteGroup = () => {
-    const newDataGroups =
-      data.groups && data.groups.filter((item) => item.key !== group.key);
-    setData({ ...data, groups: newDataGroups });
+    const newDataGroups = dataGroups.filter((item) => item.key !== group.key);
+    setDataGroups(newDataGroups);
   };
   const handleAddGroup = () => {
-    setData({
-      ...data,
-      groups: [
-        ...(data.groups as IGroupRegister[]),
-        { name: "", key: uuidv4() },
-      ],
-    });
+    setDataGroups([...dataGroups, { name: "", key: uuidv4() }]);
   };
   const handleChangeGroups = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const { value } = target;
 
-    const newDataGroups =
-      data.groups &&
-      data.groups.map((item) => {
-        if (item.key === group?.key) {
-          return { ...item, name: value };
-        }
-        return item;
-      });
-    setData({ ...data, groups: newDataGroups });
+    const newDataGroups = dataGroups.map((item) => {
+      if (item.key === group?.key) {
+        return { ...item, name: value };
+      }
+      return item;
+    });
+    setDataGroups(newDataGroups);
   };
 
   return (
-    <div className="groups-block__wrapper">
-      <input
-        required
-        placeholder="Введите название группы"
-        onChange={handleChangeGroups}
-        value={group.name}
-        type="text"
-        name="groups"
-        id="groups-1"
-        className="section-with-form__input section-with-form__input_groups"
-      ></input>
-      {isLast ? (
-        <AddIcon className="groups-block__button" onClick={handleAddGroup} />
-      ) : (
-        <DeleteIcon
-          onClick={handleDeleteGroup}
-          className="groups-block__button"
-        />
-      )}
-    </div>
+    <Reorder.Item
+      value={group}
+      dragListener={false}
+      style={{ y }}
+      dragControls={dragControls}
+    >
+      <div className="groups-block__main-wrapper">
+        <div className="groups-block__wrapper">
+          <input
+            required
+            placeholder="Введите название группы"
+            onChange={handleChangeGroups}
+            value={group.name}
+            type="text"
+            name="groups"
+            id={group.key}
+            className="section-with-form__input section-with-form__input_groups"
+          ></input>
+          {isLast ? (
+            <AddIcon
+              className="groups-block__button"
+              onClick={handleAddGroup}
+            />
+          ) : (
+            <DeleteIcon
+              onClick={handleDeleteGroup}
+              className="groups-block__button"
+            />
+          )}
+        </div>
+        <ReorderIcon dragControls={dragControls} />
+      </div>
+    </Reorder.Item>
   );
 }
 

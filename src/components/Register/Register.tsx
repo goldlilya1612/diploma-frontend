@@ -1,13 +1,18 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ButtonBlock from "../ButtonBlock/ButtonBlock";
-import GroupRegister from "../GroupRegister/GroupRegister";
 import Logo from "../Logo/Logo";
 import { REGISTER } from "../../utils/constants";
 import "./Register.css";
-import { IDataRegister, IErrorsRegister } from "../../interfaces";
+import {
+  IDataRegister,
+  IErrorsRegister,
+  IGroupRegister,
+} from "../../interfaces";
 import { EUserStatus } from "../../enums/user-statuses.enum";
 import { isEmpty } from "lodash";
+import { Reorder } from "framer-motion";
+import GroupRegister from "../GroupRegister/GroupRegister";
 
 function Register({
   onRegister,
@@ -18,6 +23,9 @@ function Register({
 }) {
   const [errors, setErrors] = useState({} as IErrorsRegister);
   const [value, setValue] = useState(EUserStatus.STUDENT);
+  const [dataGroups, setDataGroups] = useState<Array<IGroupRegister> | null>(
+    null
+  );
   const [data, setData] = useState({
     name: "",
     surname: "",
@@ -27,6 +35,11 @@ function Register({
     status: EUserStatus.STUDENT,
     groups: null,
   } as IDataRegister);
+
+  useEffect(() => {
+    setData({ ...data, groups: dataGroups });
+  }, [dataGroups]);
+
   const checkGroupsValidation = () => {
     if (data.status === EUserStatus.LECTOR) {
       return !data.groups?.find((group) => group.name === "");
@@ -62,14 +75,11 @@ function Register({
   };
   const handleGroupsChange = (name: string, value: EUserStatus) => {
     setValue(value as EUserStatus);
+    setData({ ...data, [name]: value });
     if (value === EUserStatus.STUDENT) {
-      setData({ ...data, [name]: value, groups: null });
-    } else if (value === EUserStatus.LECTOR) {
-      setData({
-        ...data,
-        [name]: value,
-        groups: [{ name: "", key: uuidv4() }],
-      });
+      setDataGroups(null);
+    } else {
+      setDataGroups([{ name: "", key: uuidv4() }]);
     }
   };
 
@@ -192,14 +202,28 @@ function Register({
         {data.status === EUserStatus.LECTOR ? (
           <section className="groups-block">
             <p className="groups-block__title">Группы:</p>
-            {data.groups?.map((dataGroup) => (
-              <GroupRegister
-                key={dataGroup.key}
-                group={dataGroup}
-                data={data}
-                setData={setData}
-              />
-            ))}
+            {dataGroups && (
+              <Reorder.Group
+                as="ol"
+                axis="y"
+                values={dataGroups}
+                onReorder={setDataGroups}
+                style={{
+                  listStyleType: "none",
+                  paddingLeft: "0px",
+                  margin: "0px",
+                }}
+              >
+                {dataGroups.map((group) => (
+                  <GroupRegister
+                    key={group.key}
+                    group={group}
+                    dataGroups={dataGroups}
+                    setDataGroups={setDataGroups}
+                  />
+                ))}
+              </Reorder.Group>
+            )}
           </section>
         ) : (
           ""

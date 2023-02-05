@@ -44,7 +44,7 @@
 
 .section-with-form__input {
     width: calc(100% - (15px + 15px));
-    height: calc (46px - 30px);
+    height: calc(46px - 30px);
     background-color: white;
     padding: 10px;
     border: none;
@@ -168,10 +168,14 @@ label:last-of-type {
     width: 100%;
     margin-bottom: 20px;
 }
+.groups-block__main-wrapper {
+    display: flex;
+}
 .groups-block__wrapper {
     display: flex;
     position: relative;
     align-items: center;
+    flex-grow: 1;
 }
 .groups-block__title {
     font-weight: normal;
