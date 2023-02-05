@@ -22,7 +22,6 @@ const App = () => {
   const handleRegister = (
     data: IDataRegister,
     setData: (value: IDataRegister) => void,
-    setIsValid: (value: boolean) => void,
     setErrors: (value: IErrorsRegister) => void,
     resetForm: any
   ) => {

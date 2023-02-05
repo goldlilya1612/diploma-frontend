@@ -86,7 +86,7 @@ function Register({
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     resetForm();
-    onRegister(setData, setErrors, resetForm);
+    onRegister(data, setData, setErrors, resetForm);
   };
 
   const resetForm = useCallback(
