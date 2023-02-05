@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Route, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import "./App.css";
 import * as auth from "../../utils/auth";
 import Header from "../Header/Header";
@@ -10,6 +10,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Popup from "../Popup/Popup";
 import { IDataRegister, IErrorsRegister } from "../../interfaces";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const App = () => {
   const history = useHistory();
@@ -123,24 +124,33 @@ const App = () => {
 
   return (
     <div className="page">
-      <Route exact path="/">
-        <Header />
-        <Main />
-      </Route>
-      <Route path="/signup">
-        <Register isDisabled={isDisabled} onRegister={handleRegister} />
-      </Route>
-      <Route path="/signin">
-        <Login isDisabled={isDisabled} onLogin={handleLogin} />
-      </Route>
-      <Route path="/courses">
-        <Header />
-        <Courses />
-      </Route>
-      <Route path="/profile">
-        {<button onClick={handleLogout}>Выйти</button>}
-      </Route>
-      <Footer />
+      <Switch>
+        <Route exact path="/">
+          <Header />
+          <Main />
+          <Footer />
+        </Route>
+        <Route path="/signup">
+          <Register isDisabled={isDisabled} onRegister={handleRegister} />
+          <Footer />
+        </Route>
+        <Route path="/signin">
+          <Login isDisabled={isDisabled} onLogin={handleLogin} />
+          <Footer />
+        </Route>
+        <Route path="/courses">
+          <Header />
+          <Courses />
+          <Footer />
+        </Route>
+        <Route path="/profile">
+          {<button onClick={handleLogout}>Выйти</button>}
+          <Footer />
+        </Route>
+        <Route path="*">
+          <ErrorPage />
+        </Route>
+      </Switch>
       <Popup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
