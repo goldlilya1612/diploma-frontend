@@ -25,11 +25,14 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  row-gap: 20px;
   background-color: #fff;
   border-radius: 5px;
   position: relative;
   width: 250px;
-  height: 30vh;
+  max-height: 400px;
+  box-sizing: border-box;
+  padding: 40px 30px;
 }
 
 .popup__close-button {
@@ -50,14 +53,19 @@
 }
 
 .popup__text {
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 29px;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 21px;
   text-align: center;
-  color: #000000;
+  color: #8b8b8b;
   display: block;
   max-width: 358px;
   margin: 0;
+}
+
+.popup__image {
+  width: 100%;
+  height: auto;
 }
 
 @media screen and (min-width: 400px) {
@@ -74,6 +82,8 @@
 
 @media screen and (min-width: 700px) {
   .popup__container {
-    width: 430px;
+    width: 350px;
+    min-height: 350px;
+    row-gap: 25px;
   }
 }

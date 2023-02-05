@@ -16,7 +16,10 @@ const App = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  const [errorMessagePopup, setErrorMessagePopup] = useState({
+    code: 0,
+    name: "",
+  });
   const [currentUser, setCurrentUser] = useState({ name: "", email: "" });
 
   const handleRegister = (
@@ -42,16 +45,17 @@ const App = () => {
       })
       .catch((err) => {
         if (err === "Ошибка: 409") {
-          setMessage("Пользователь с таким email уже зарегистрирован");
+          setErrorMessagePopup({
+            name: "Пользователь с таким email уже зарегистрирован",
+            code: 409,
+          });
           setIsPopupOpen(true);
         } else if (err === "Ошибка: 400") {
-          setMessage("Ошибка валидации");
+          setErrorMessagePopup({ name: "Ошибка валидации", code: 400 });
           setIsPopupOpen(true);
         }
       });
   };
-
-  // data, setData, setIsValid, setErrors, resetForm
   const handleLogin = (
     { email, password }: { email: string; password: string },
     setData: (value: IDataRegister) => void,
@@ -96,7 +100,17 @@ const App = () => {
       })
       .catch((err) => {
         if (err === "Ошибка: 400") {
-          setMessage("Вы ввели неправильный логин или пароль.");
+          setErrorMessagePopup({
+            name: "Вы ввели неправильный логин или пароль.",
+            code: 400,
+          });
+          setIsPopupOpen(true);
+        }
+        if (err === "Ошибка: 401") {
+          setErrorMessagePopup({
+            name: "Вы ввели неправильный логин или пароль.",
+            code: 401,
+          });
           setIsPopupOpen(true);
         }
       });
@@ -130,7 +144,7 @@ const App = () => {
       <Popup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
-        message={message}
+        message={errorMessagePopup}
       />
     </div>
   );
