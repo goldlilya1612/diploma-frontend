@@ -75,9 +75,6 @@ li:last-of-type {
 
 @media screen and (min-width: 768px) {
   .footer {
-    grid-template-areas:
-      'text text'
-      'year links';
     margin: 0 30px 20px 30px;
   }
 
@@ -94,11 +91,8 @@ li:last-of-type {
   }
 
   .footer__year {
-    margin: 0;
     font-size: 13px;
     line-height: 16px;
-    text-align: left;
-    color: #ffffff;
   }
 }
 

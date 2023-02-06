@@ -1,27 +1,22 @@
-import './NavigationAuthorized.css';
-import NavLinks from '../NavLinks/NavLinks';
-import { useState } from 'react';
-import SideBar from '../SideBar/SideBar';
+import "./NavigationAuthorized.css";
+import NavLinks from "../NavLinks/NavLinks";
+import { useState } from "react";
+import SideBar from "../SideBar/SideBar";
+import useWindowViewport from "../../hooks/useWindowViewport";
+import { EViewportNames } from "../../enums/viewport-names.enum";
 
 const NavigationAuthorized = () => {
-  window.addEventListener('resize', () => {
-    setIsMobile(window.matchMedia('(max-width: 768px)').matches);
-  });
-
   const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const viewport = useWindowViewport();
+
   const showSideBar = () => setIsOpen(!isOpen);
 
   return (
     <>
-      {isMobile ? (
+      {viewport !== EViewportNames.DESKTOP ? (
         <>
           <button className="header__nav-button" onClick={showSideBar}></button>
-          <SideBar
-            isMobile={isMobile}
-            isOpen={isOpen}
-            showSideBar={showSideBar}
-          />
+          <SideBar isOpen={isOpen} showSideBar={showSideBar} />
         </>
       ) : (
         <nav className="navigation">

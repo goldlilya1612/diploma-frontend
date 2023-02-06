@@ -1,22 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import './Header.css';
-import NavigationUnauthorized from '../NavigationUnauthorized/NavigationUnauthorized';
-import NavigationAuthorized from '../NavigationAuthorized/NavigationAuthorized';
-import Logo from '../Logo/Logo';
+import { useEffect, useState } from "react";
+import "./Header.css";
+import NavigationUnauthorized from "../NavigationUnauthorized/NavigationUnauthorized";
+import NavigationAuthorized from "../NavigationAuthorized/NavigationAuthorized";
+import Logo from "../Logo/Logo";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
   const [windowPathname, setWindowPathname] = useState(
     window.location.pathname
   );
-  const notMainPage: boolean = !(windowPathname === '/');
-  const history = useHistory();
+  const location = useLocation();
+  const notMainPage: boolean = windowPathname !== "/";
 
   useEffect(() => {
-    return history.listen((location: any) => {
-      setWindowPathname(location.pathname);
-    });
-  }, [history]);
+    setWindowPathname(location.pathname);
+  }, [location]);
 
   return (
     <>
@@ -28,11 +26,11 @@ const Header = () => {
       ) : (
         <header
           className={`header ${
-            localStorage.getItem('loggedIn') ? 'header_authorized' : ''
+            localStorage.getItem("loggedIn") ? "header_authorized" : ""
           }`}
         >
           <Logo />
-          {localStorage.getItem('loggedIn') ? (
+          {localStorage.getItem("loggedIn") ? (
             <NavigationAuthorized />
           ) : (
             <NavigationUnauthorized />

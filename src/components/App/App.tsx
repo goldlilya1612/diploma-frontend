@@ -1,19 +1,20 @@
 import { useState } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import * as auth from "../../utils/auth";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
-import Courses from "../Courses/Courses";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Popup from "../Popup/Popup";
 import { IDataRegister, IErrorsRegister } from "../../interfaces";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import Courses from "../Courses/Courses";
 
 const App = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(false);
   const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -84,14 +85,14 @@ const App = () => {
                 email: res.email,
               });
               localStorage.setItem("loggedIn", "true");
-              history.push("/profile");
+              navigate("/profile");
             })
             .catch((err) => {
               console.log(`Ошибка: ${err}`);
             });
         } else {
           localStorage.removeItem("token");
-          history.push("/signin");
+          navigate("/signin");
         }
       })
       .finally(() => {
@@ -119,38 +120,62 @@ const App = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    history.push("/");
+    navigate("/");
   };
 
   return (
     <div className="page">
-      <Switch>
-        <Route exact path="/">
-          <Header />
-          <Main />
-          <Footer />
-        </Route>
-        <Route path="/signup">
-          <Register isDisabled={isDisabled} onRegister={handleRegister} />
-          <Footer />
-        </Route>
-        <Route path="/signin">
-          <Login isDisabled={isDisabled} onLogin={handleLogin} />
-          <Footer />
-        </Route>
-        <Route path="/courses">
-          <Header />
-          <Courses />
-          <Footer />
-        </Route>
-        <Route path="/profile">
-          {<button onClick={handleLogout}>Выйти</button>}
-          <Footer />
-        </Route>
-        <Route path="*">
-          <ErrorPage />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Header />
+              <Main />
+              <Footer />
+            </>
+          }
+        ></Route>
+        <Route
+          path="/signup"
+          element={
+            <>
+              <Register isDisabled={isDisabled} onRegister={handleRegister} />
+              <Footer />
+            </>
+          }
+        ></Route>
+        <Route
+          path="/signin"
+          element={
+            <>
+              <Login isDisabled={isDisabled} onLogin={handleLogin} />
+              <Footer />
+            </>
+          }
+        ></Route>
+        <Route
+          path="/courses"
+          element={
+            <ProtectedRoute>
+              <Header />
+              <Courses />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Header />
+              <button onClick={handleLogout}>Выйти</button>
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<ErrorPage />}></Route>
+      </Routes>
       <Popup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}

@@ -85,7 +85,7 @@ function Register({
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // resetForm();
+    resetForm();
     onRegister(data, setData, setErrors, resetForm);
   };
 
