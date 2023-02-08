@@ -23,6 +23,15 @@ input:-webkit-autofill:active  {
   pointer-events: none;
 }
 
+.page {
+  height: 100vh;
+}
+
+.empty-button {
+  border: none;
+  background: unset;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

@@ -21,11 +21,6 @@
 }
 
 .popup__container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  row-gap: 20px;
   background-color: #fff;
   border-radius: 5px;
   position: relative;
@@ -33,6 +28,14 @@
   max-height: 400px;
   box-sizing: border-box;
   padding: 40px 30px;
+}
+
+.popup__container_error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 20px;
 }
 
 .popup__close-button {

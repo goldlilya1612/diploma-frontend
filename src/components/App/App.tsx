@@ -12,6 +12,7 @@ import { IDataRegister, IErrorsRegister } from "../../interfaces";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Courses from "../Courses/Courses";
+import { EPopupType } from "../../enums/popup-type.enum";
 
 const App = () => {
   const navigate = useNavigate();
@@ -180,6 +181,7 @@ const App = () => {
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         message={errorMessagePopup}
+        popupType={"error" as EPopupType}
       />
     </div>
   );
