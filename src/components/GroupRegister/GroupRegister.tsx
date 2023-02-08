@@ -1,5 +1,5 @@
 import React from "react";
-import "./GroupRegister.css";
+import "./GroupRegister.scss";
 import { ReactComponent as AddIcon } from "../../images/add-icon.svg";
 import { ReactComponent as DeleteIcon } from "../../images/delete-icon.svg";
 import { v4 as uuidv4 } from "uuid";

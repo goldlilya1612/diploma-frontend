@@ -18,9 +18,10 @@
   font-size: 16px;
   line-height: 150%;
   transition: all ease-out 0.3s;
-}
-.button:hover {
-  background-color: #f1efef;
+
+  &:hover {
+    background-color: #f1efef;
+  }
 }
 
 .control {
@@ -30,10 +31,10 @@
 .answer {
   background-color: #f7f7f7;
   padding: 20px;
-}
 
-.answer_wrapper {
-  height: 0;
-  overflow: hidden;
-  transition: height ease 0.2s;
+  &_wrapper {
+    height: 0;
+    overflow: hidden;
+    transition: height ease 0.2s;
+  }
 }

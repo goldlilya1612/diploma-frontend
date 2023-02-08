@@ -6,10 +6,10 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-}
 
-.header_authorized {
-  background-color: white;
+  &_authorized {
+    background-color: white;
+  }
 }
 
 @media screen and (min-width: 400px) {

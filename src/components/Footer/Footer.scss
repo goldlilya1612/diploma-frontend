@@ -1,0 +1,98 @@
+.footer {
+  padding-top: 79px;
+  margin: 0 10px;
+  display: grid;
+  grid-template-areas:
+    'text'
+    'links'
+    'year';
+
+  &__text {
+    grid-area: text;
+    margin: 0;
+    padding-bottom: 21px;
+    border-bottom: 1px solid #424242;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+
+    color: #8b8b8b;
+  }
+  &__year {
+    grid-area: year;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    margin: 10px 0;
+    text-align: center;
+
+    color: #8b8b8b;
+  }
+  &__links {
+    grid-area: links;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+  }
+  &__link-item {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  &__link {
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    transition: color ease 0.5s;
+
+    color: #ffffff;
+
+    &:hover {
+      cursor: pointer;
+      color: #a6edc1;
+    }
+  }
+}
+
+@media screen and (min-width: 400px) {
+  .footer {
+    margin: 0 6.5%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .footer {
+    margin: 0 30px 20px 30px;
+
+    &__links {
+      flex-direction: row;
+      margin: 0;
+      justify-content: flex-end;
+    }
+    &__link {
+      margin: 0 0 0 20px;
+      font-size: 13px;
+      line-height: 16px;
+    }
+    &__year {
+      font-size: 13px;
+      line-height: 16px;
+    }
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .footer {
+    margin: 0 6.5%;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .footer {
+    margin: 0 70px 20px 70px;
+  }
+}

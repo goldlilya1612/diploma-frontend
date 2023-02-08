@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import "./ButtonBlock.css";
-import {IButtonBlockProps} from "../../interfaces/props/button-block-props.interface";
-
+import "./ButtonBlock.scss";
+import { IButtonBlockProps } from "../../interfaces/props/button-block-props.interface";
 
 const ButtonBlock: React.FunctionComponent<IButtonBlockProps> = ({
   content,

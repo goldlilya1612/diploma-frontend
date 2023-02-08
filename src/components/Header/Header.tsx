@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./Header.css";
+import "./Header.scss";
 import NavigationUnauthorized from "../NavigationUnauthorized/NavigationUnauthorized";
 import NavigationAuthorized from "../NavigationAuthorized/NavigationAuthorized";
 import Logo from "../Logo/Logo";

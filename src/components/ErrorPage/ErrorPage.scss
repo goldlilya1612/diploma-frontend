@@ -1,0 +1,100 @@
+.error {
+    background-color: white;
+    height: 100vh;
+    row-gap: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 50px 20px;
+    box-sizing: border-box;
+
+    &__code {
+        font-weight: normal;
+        font-size: 80px;
+        line-height: 97px;
+        text-align: center;
+        color: #8b8b8b;
+
+        margin: 0;
+    }
+    &__message {
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 15px;
+        text-align: center;
+        color: #8b8b8b;
+
+        margin: 0;
+    }
+    &__image {
+        max-width: 380px;
+        width: 100%;
+        height: auto;
+        max-height: 234px;
+    }
+    &__button {
+        text-decoration: none;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 15px;
+        text-align: center;
+        color: #4285f4;
+        position: absolute;
+        bottom: 30px;
+
+        border: none;
+        background-color: inherit;
+        transition: opacity ease 0.5s;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.7;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .errors {
+        min-height: 1024px;
+
+        &__image {
+            max-width: unset;
+        }
+        &__code {
+            font-size: 140px;
+            line-height: 169px;
+        }
+        &__message {
+            font-size: 16px;
+            line-height: 19px;
+        }
+        &__button {
+            font-size: 14px;
+            line-height: 17px;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1279px) and (min-height: 600px) {
+    .error__button {
+        bottom: 5%;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .error {
+        min-height: 700px;
+
+        &__message {
+            font-size: 16px;
+            line-height: 19px;
+        }
+        &__button {
+            font-size: 14px;
+            line-height: 17px;
+
+            bottom: 60px;
+        }
+    }
+}

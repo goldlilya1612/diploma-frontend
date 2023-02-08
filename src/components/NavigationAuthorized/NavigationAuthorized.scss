@@ -1,0 +1,16 @@
+.header {
+  &__nav-button {
+     border: none;
+     background-color: white;
+     background-image: url('../../images/burger-menu.svg');
+     width: 40px;
+     height: 43px;
+     padding: 0;
+     font-size: 14px;
+     line-height: 18px;
+   }
+
+  &:hover {
+    cursor: pointer;
+  }
+}

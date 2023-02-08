@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import "./App.css";
+import "./App.scss";
 import * as auth from "../../utils/auth";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";

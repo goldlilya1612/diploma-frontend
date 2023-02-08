@@ -1,0 +1,149 @@
+.navigation {
+  height: 43px;
+  display: flex;
+  align-items: center;
+
+  &__link {
+    text-decoration: none;
+    font-weight: 500;
+    color: black;
+    position: relative;
+
+    &_active {
+      border-bottom: 2px solid black;
+    }
+    &_authorized {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 22px;
+      text-align: center;
+      transition: color ease-out 0.3s;
+
+      &:hover {
+        color: #4a61dd;
+      }
+    }
+  }
+  &__link-item {
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__link-item {
+    &_authorized {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    &_account {
+      position: absolute;
+      bottom: 48px;
+      margin-top: 24px;
+    }
+  }
+  &__links {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    &_authorized {
+      flex-direction: column;
+      align-items: center;
+      margin: 144px 0 0 0;
+    }
+  }
+  &__profile-button:hover {
+    cursor: pointer;
+    color: #4a61dd;
+  }
+}
+
+.navigation__link-item .navigation__profile-button {
+  width: 100px;
+  height: 30px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: black;
+  background-color: white;
+  border: none;
+  padding: 0;
+  transition: color ease 0.5s;
+}
+
+.profile-button__icon {
+  width: 26px;
+  height: 30px;
+  border-radius: 4px;
+  background-color: #f6f6f6;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-image: url('../../images/account-icon.svg');
+  background-size: 11.5px 14px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media screen and (min-width: 650px) {
+  .navigation__links_authorized {
+    margin: 157px 0 0 0;
+  }
+
+  .navigation__link-item {
+    &_authorized {
+      margin-bottom: 28px;
+    }
+    &_account {
+      margin-top: 28px;
+      bottom: 92px;
+    }
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .navigation {
+    &__links {
+      flex-direction: row;
+      margin: 0;
+    }
+    &__link-item {
+      margin-bottom: 0;
+
+      &_account {
+        position: inherit;
+        margin-top: 0;
+      }
+    }
+    &__link {
+      &_authorized {
+        font-size: 14px;
+        line-height: 18px;
+        margin-right: 20px;
+      }
+      &_active {
+        border-bottom: none;
+      }
+    }
+    &__profile-button {
+      width: 100px;
+      height: 30px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: 500;
+      color: white;
+      background-color: #202020;
+      border: none;
+      padding: 0;
+      transition: opacity ease 0.5s;
+    }
+  }
+}

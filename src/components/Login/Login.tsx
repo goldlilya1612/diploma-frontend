@@ -2,7 +2,7 @@ import ButtonBlock from "../ButtonBlock/ButtonBlock";
 import Logo from "../Logo/Logo";
 import { LOGIN } from "../../utils/constants";
 import React, { useCallback, useState } from "react";
-import "./Login.css";
+import "./Login.scss";
 import { isEmpty } from "lodash";
 
 function Login({ onLogin, isDisabled }: { onLogin: any; isDisabled: boolean }) {

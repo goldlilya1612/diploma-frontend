@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import ButtonBlock from "../ButtonBlock/ButtonBlock";
 import Logo from "../Logo/Logo";
 import { REGISTER } from "../../utils/constants";
-import "./Register.css";
+import "./Register.scss";
 import {
   IDataRegister,
   IErrorsRegister,

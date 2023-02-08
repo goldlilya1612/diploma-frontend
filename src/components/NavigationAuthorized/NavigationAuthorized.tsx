@@ -1,4 +1,4 @@
-import "./NavigationAuthorized.css";
+import "./NavigationAuthorized.scss";
 import NavLinks from "../NavLinks/NavLinks";
 import { useState } from "react";
 import SideBar from "../SideBar/SideBar";

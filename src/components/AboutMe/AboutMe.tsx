@@ -1,4 +1,4 @@
-import "./AboutMe.css";
+import "./AboutMe.scss";
 import studentPhoto from "../../images/student-photo.jpg";
 
 function AboutMe() {

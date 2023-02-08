@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import './AccordionItem.css';
+import { useRef, useState } from "react";
+import "./AccordionItem.scss";
 
 const AccordionItem = ({ faq }: { faq: any }) => {
   const { question, answer } = faq;
@@ -49,7 +49,7 @@ const AccordionItem = ({ faq }: { faq: any }) => {
         style={
           clicked
             ? { height: contentEl.current?.scrollHeight }
-            : { height: '0px' }
+            : { height: "0px" }
         }
       >
         <div className="answer">{answer}</div>

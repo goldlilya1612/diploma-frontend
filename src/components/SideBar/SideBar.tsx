@@ -1,5 +1,5 @@
 import NavLinks from "../NavLinks/NavLinks";
-import "./SideBar.css";
+import "./SideBar.scss";
 import cross from "../../images/cross.svg";
 
 const SideBar = ({

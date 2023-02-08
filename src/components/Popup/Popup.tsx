@@ -1,5 +1,5 @@
 import React from "react";
-import "./Popup.css";
+import "./Popup.scss";
 import { ReactComponent as ConflictErrorIcon } from "../../images/409-error-icon.svg";
 import { ReactComponent as IncorrectErrorIcon } from "../../images/401-error-icon.svg";
 import { EErrorCode } from "../../enums/error-code.enum";

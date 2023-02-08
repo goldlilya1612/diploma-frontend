@@ -1,4 +1,4 @@
-import "./ErrorPage.css";
+import "./ErrorPage.scss";
 import { ReactComponent as NotFoundErrorIcon } from "../../images/404-error-icon.svg";
 
 function ErrorPage() {

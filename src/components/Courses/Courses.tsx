@@ -1,5 +1,5 @@
 import Accordion from "../Accordion/Accordion";
-import "./Courses.css";
+import "./Courses.scss";
 import { ReactComponent as EditIcon } from "../../images/edit-icon.svg";
 
 import { useState } from "react";

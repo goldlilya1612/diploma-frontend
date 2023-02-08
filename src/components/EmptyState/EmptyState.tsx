@@ -1,6 +1,6 @@
 import { ReactComponent as EmptyStateIcon } from "../../images/empty-state-icon.svg";
 import { IEmptyStateProps } from "../../interfaces/props/empty-state-props.interface";
-import "./EmptyState.css";
+import "./EmptyState.scss";
 
 const EmptyState: React.FunctionComponent<IEmptyStateProps> = ({
   text,
