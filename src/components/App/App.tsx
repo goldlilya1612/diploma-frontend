@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.scss";
 import * as auth from "../../utils/auth";
@@ -13,6 +13,8 @@ import ErrorPage from "../ErrorPage/ErrorPage";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Courses from "../Courses/Courses";
 import { EPopupType } from "../../enums/popup-type.enum";
+import {useAppDispatch} from "../../hooks/hooks";
+import {userSlice} from "../../store/reducers/UserSlice";
 
 const App = () => {
   const navigate = useNavigate();
@@ -23,7 +25,20 @@ const App = () => {
     code: 0,
     name: "",
   });
-  const [currentUser, setCurrentUser] = useState({ name: "", email: "" });
+  const dispatch = useAppDispatch();
+  const {getUser} = userSlice.actions;
+
+  // debugger;
+
+    useEffect(() => {
+        tokenCheck();
+    }, []);
+
+    useEffect(() => {
+        console.log('hhh');
+    }, []);
+
+
 
   const handleRegister = (
     data: IDataRegister,
@@ -59,6 +74,21 @@ const App = () => {
         }
       });
   };
+
+    function tokenCheck() {
+        if (localStorage.getItem('token')) {
+            auth.getUserInfo(localStorage.getItem('token'))
+                .then((res) => {
+                    dispatch(getUser(res))
+                    localStorage.setItem("loggedIn", "true");
+                })
+                .catch((err) => {
+                    console.log(`Ошибка: ${err}`);
+                    handleLogout();
+                })
+        }
+    }
+
   const handleLogin = (
     { email, password }: { email: string; password: string },
     setData: (value: IDataRegister) => void,
@@ -77,14 +107,11 @@ const App = () => {
 
         if (data.token) {
           localStorage.setItem("token", data.token);
-
           auth
             .getUserInfo(localStorage.getItem("token"))
             .then((res) => {
-              setCurrentUser({
-                name: res.name,
-                email: res.email,
-              });
+                dispatch(getUser(res))
+
               localStorage.setItem("loggedIn", "true");
               navigate("/profile");
             })

@@ -6,21 +6,23 @@ import { useState } from "react";
 import Popup from "../Popup/Popup";
 import { EPopupType } from "../../enums/popup-type.enum";
 import EmptyState from "../EmptyState/EmptyState";
+import {useAppSelector} from "../../hooks/hooks";
+import {EUserStatus} from "../../enums/user-statuses.enum";
 
 const Courses = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const {status} = useAppSelector(state => state.userReducer.user)
 
   //TODO: сделай динамическими
-  const isLector = true;
-  const content: any = null;
+  const content: any = [];
 
   return (
     <section className="courses">
-      {content !== null ? (
+      {content !== null && status !== EUserStatus.STUDENT ? (
         <>
           <div className="courses__wrapper">
             <p className="courses__title">Содержание</p>
-            {isLector ? (
+            {status === EUserStatus.LECTOR ? (
               <button
                 className="empty-button courses__edit-button"
                 onClick={() => setIsPopupOpen(!isPopupOpen)}

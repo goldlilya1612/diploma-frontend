@@ -35,6 +35,12 @@
       flex-direction: column;
       row-gap: 20px;
     }
+    &_content {
+      width: 70%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
   }
   &__close-button {
     background: transparent url(../../images/cross-popup.svg) center center/cover
@@ -71,12 +77,20 @@
 @media screen and (min-width: 400px) {
   .popup__container {
     width: 300px;
+
+    &_content {
+      width: 70%
+    }
   }
+
 }
 
 @media screen and (min-width: 500px) {
   .popup__container {
     width: 370px;
+    &_content {
+      width: 415px;
+    }
   }
 }
 
@@ -85,5 +99,9 @@
     width: 350px;
     min-height: 350px;
     row-gap: 25px;
+
+    &_content {
+      width: 500px;
+    }
   }
 }

@@ -1,9 +1,11 @@
-import React from "react";
+import { Reorder } from "framer-motion";
+import React, { useState } from "react";
 import "./Popup.scss";
 import { ReactComponent as ConflictErrorIcon } from "../../images/409-error-icon.svg";
 import { ReactComponent as IncorrectErrorIcon } from "../../images/401-error-icon.svg";
 import { EErrorCode } from "../../enums/error-code.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
+import CoursesChapter from "../CoursesChapter/CoursesChapter";
 
 function Popup({
   isOpen,
@@ -18,6 +20,8 @@ function Popup({
   title?: string;
   popupType: EPopupType;
 }) {
+  const [courseСhapters, setCourseСhapters] = useState([''] as any)
+
   const renderPopupContent = (popupType: EPopupType) => {
     switch (popupType) {
       case EPopupType.ERROR:
@@ -28,7 +32,30 @@ function Popup({
           </>
         );
       case EPopupType.CONTENT:
-        return <h2>Содержание</h2>;
+        return <>
+          <h2 className="popup__text">Содержание</h2>
+          <Reorder.Group
+              as="ol"
+              axis="y"
+              values={courseСhapters}
+              onReorder={setCourseСhapters}
+              style={{
+                listStyleType: "none",
+                paddingLeft: "0px",
+                margin: "0px",
+                width: '100%',
+                overflow: 'auto'
+              }}
+          >
+            {courseСhapters.map((chapter: any) => (
+                <CoursesChapter
+                    chapter={chapter}
+                    courseСhapters={courseСhapters}
+                    setCoursesСhapter={setCourseСhapters}
+                />
+            ))}
+          </Reorder.Group>
+        </>
     }
   };
 
@@ -47,7 +74,7 @@ function Popup({
     <div className={`popup ${isOpen ? "popup_opened" : ""}`}>
       <div
         className={`popup__container ${
-          popupType === EPopupType.ERROR ? "popup__container_error" : ""
+          popupType === EPopupType.ERROR ? "popup__container_error" : "popup__container_content"
         }`}
       >
         <button
