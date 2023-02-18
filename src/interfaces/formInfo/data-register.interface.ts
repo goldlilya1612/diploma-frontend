@@ -7,6 +7,7 @@ export interface IDataRegister {
     fathername: string;
     email: string;
     password: string;
+    passwordConfirm: string;
     status: EUserStatus;
     groups: Array<IGroupRegister> | null;
 }

@@ -4,22 +4,20 @@ export const BASE_URL = "http://localhost:8080";
 
 export const register = ({
   name,
-  surname,
-  fathername,
   email,
   password,
+  passwordConfirm,
   status,
-  groups,
+  // groups,
 }: {
   name: string;
-  surname: string;
-  fathername: string;
   email: string;
   password: string;
+  passwordConfirm: string;
   status: string;
-  groups: Array<IGroupRegister> | null;
+  // groups: Array<IGroupRegister> | null;
 }) => {
-  return fetch(`${BASE_URL}/signup`, {
+  return fetch(`${BASE_URL}/api/auth/signup`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -28,10 +26,9 @@ export const register = ({
     body: JSON.stringify({
       email,
       password,
+      passwordConfirm,
       name,
-      surname,
-      fathername,
-      groups,
+      // groups,
       status,
     }),
   }).then((res) => checkResponse(res));

@@ -4,4 +4,5 @@ export interface IErrorsRegister {
   fathername: string;
   email: string;
   password: string;
+  passwordConfirm: string,
 }

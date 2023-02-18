@@ -46,19 +46,22 @@ const App = () => {
     setErrors: (value: IErrorsRegister) => void,
     resetForm: any
   ) => {
-    const { name, surname, fathername, email, password, status, groups } = data;
+
+      console.log(data)
+    const { name, surname, fathername, email, password, status, groups, passwordConfirm } = data;
+    const userName = name + surname + fathername;
 
     return auth
       .register({
-        name,
-        surname,
-        fathername,
+        name: userName,
         email,
         password,
+        passwordConfirm,
         status,
-        groups,
+        // groups,
       })
       .then(() => {
+          console.log('ПОЛУЧИЛОСЬ')
         handleLogin({ email, password }, setData, setErrors, resetForm);
       })
       .catch((err) => {
@@ -73,6 +76,7 @@ const App = () => {
           setIsPopupOpen(true);
         }
       });
+      return 'hhh'
   };
 
     function tokenCheck() {

@@ -32,6 +32,7 @@ function Register({
     fathername: "",
     email: "",
     password: "",
+    passwordConfirm: "",
     status: EUserStatus.STUDENT,
     groups: null,
   } as IDataRegister);
@@ -53,11 +54,13 @@ function Register({
       data.fathername &&
       data.email &&
       data.password &&
-      data.status
+      data.status &&
+      data.passwordConfirm
     );
   const isErrorsInForm = () =>
     !!Object.entries(errors).find(([_key, value]) => value !== "");
   const checkInputsValidation = () => {
+    console.log(errors);
     if (isEmpty(errors)) return false; //инициализация формы
 
     return isFormCompleted() && !isErrorsInForm();
@@ -70,6 +73,10 @@ function Register({
       handleGroupsChange(name, value as EUserStatus);
     } else {
       setData({ ...data, [name]: value });
+      if ((name === 'passwordConfirm' && data.password !== value) || (name === 'password' && data.passwordConfirm !== value)) {
+        setErrors({ ...errors, [name]: "Пароли не совпадают" })
+        return;
+      }
       setErrors({ ...errors, [name]: target.validationMessage });
     }
   };
@@ -97,6 +104,7 @@ function Register({
         fathername: "",
         email: "",
         password: "",
+        passwordConfirm: "",
         status: EUserStatus.STUDENT,
         groups: null,
       },
@@ -243,6 +251,14 @@ function Register({
           "password",
           data.password,
           errors.password
+        )}
+        {renderFormInput(
+            "password",
+            isDisabled,
+            "Повторите пароль",
+            "passwordConfirm",
+            data.passwordConfirm,
+            errors.passwordConfirm
         )}
       </>
     );
