@@ -9,9 +9,15 @@
     color: black;
     position: relative;
 
+    &_wrapper {
+      display: flex;
+      column-gap: 20px;
+    }
+
     &_active {
       border-bottom: 2px solid black;
     }
+
     &_authorized {
       font-weight: 500;
       font-size: 18px;
@@ -24,6 +30,7 @@
       }
     }
   }
+
   &__link-item {
     display: flex;
     align-items: center;
@@ -32,6 +39,7 @@
       cursor: pointer;
     }
   }
+
   &__link-item {
     &_authorized {
       display: flex;
@@ -39,12 +47,14 @@
       justify-content: center;
       margin-bottom: 24px;
     }
+
     &_account {
       position: absolute;
       bottom: 48px;
       margin-top: 24px;
     }
   }
+
   &__links {
     display: flex;
     justify-content: center;
@@ -58,6 +68,7 @@
       margin: 144px 0 0 0;
     }
   }
+
   &__profile-button:hover {
     cursor: pointer;
     color: #4a61dd;
@@ -65,7 +76,7 @@
 }
 
 .navigation__link-item .navigation__profile-button {
-  width: 100px;
+  width: fit-content;
   height: 30px;
   text-align: left;
   font-weight: 500;
@@ -86,10 +97,6 @@
   position: absolute;
   top: 0;
   right: 0;
-  background-image: url('../../images/account-icon.svg');
-  background-size: 11.5px 14px;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 @media screen and (min-width: 650px) {
@@ -101,6 +108,7 @@
     &_authorized {
       margin-bottom: 28px;
     }
+
     &_account {
       margin-top: 28px;
       bottom: 92px;
@@ -114,6 +122,7 @@
       flex-direction: row;
       margin: 0;
     }
+
     &__link-item {
       margin-bottom: 0;
 
@@ -122,16 +131,19 @@
         margin-top: 0;
       }
     }
+
     &__link {
       &_authorized {
         font-size: 14px;
         line-height: 18px;
         margin-right: 20px;
       }
+
       &_active {
         border-bottom: none;
       }
     }
+
     &__profile-button {
       width: 100px;
       height: 30px;

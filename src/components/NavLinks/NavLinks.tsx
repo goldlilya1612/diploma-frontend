@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "./NavLinks.scss";
+import AccountIcon from "../../images/account-icon";
 
 function NavLinks() {
   return (
@@ -17,9 +18,12 @@ function NavLinks() {
         </NavLink>
       </li>
       <li className="navigation__link-item navigation__link-item_authorized navigation__link-item_account">
-        <NavLink to="/profile" className="navigation__link">
+        <NavLink
+          to="/profile"
+          className="navigation__link navigation__link_wrapper"
+        >
           <button className="navigation__profile-button">Аккаунт</button>
-          <div className="profile-button__icon"></div>
+          <AccountIcon />
         </NavLink>
       </li>
     </ul>

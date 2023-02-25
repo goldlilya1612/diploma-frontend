@@ -7,14 +7,14 @@ export const register = ({
   email,
   password,
   passwordConfirm,
-  status,
-  // groups,
-}: {
+  role,
+}: // groups,
+{
   name: string;
   email: string;
   password: string;
   passwordConfirm: string;
-  status: string;
+  role: string;
   // groups: Array<IGroupRegister> | null;
 }) => {
   return fetch(`${BASE_URL}/api/auth/signup`, {
@@ -29,7 +29,7 @@ export const register = ({
       passwordConfirm,
       name,
       // groups,
-      status,
+      role,
     }),
   }).then((res) => checkResponse(res));
 };
@@ -41,7 +41,7 @@ export const login = ({
   password: string;
   email: string;
 }) => {
-  return fetch(`${BASE_URL}/signin`, {
+  return fetch(`${BASE_URL}/api/auth/signin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -53,7 +53,7 @@ export const login = ({
 
 // проверка валидности токена и получение email для вставки в шапку сайта
 export const getUserInfo = (jwt: string | null) => {
-  return fetch(`${BASE_URL}/users/me`, {
+  return fetch(`${BASE_URL}/api/auth/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -63,5 +63,5 @@ export const getUserInfo = (jwt: string | null) => {
 };
 
 const checkResponse = (res: any) => {
-  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.role}`);
 };

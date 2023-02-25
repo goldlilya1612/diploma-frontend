@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 
 root {
-  font-family: 'Roboto';
+  font-family: "Roboto";
 }
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
 }
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active  {
+input:-webkit-autofill:active {
   box-shadow: 0 0 0 30px white inset !important;
 }
 

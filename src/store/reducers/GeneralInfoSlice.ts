@@ -1,18 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IGeneralInfo } from '../../interfaces/generalInfo/generalInfo';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IGeneralInfo } from "../../interfaces/generalInfo/generalInfo";
 
 const initialState: IGeneralInfo = {
-  pathname: '/'
+  pathname: "/",
 };
 
 export const generalInfoSlice = createSlice({
-  name: 'generalInfo',
+  name: "generalInfo",
   initialState,
   reducers: {
     getPathname(state, action: PayloadAction<string>) {
       state.pathname = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export default generalInfoSlice.reducer;

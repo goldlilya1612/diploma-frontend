@@ -1,4 +1,5 @@
 import "./NavigationAuthorized.scss";
+import BurgerMenuIcon from "../../images/burger-menu";
 import NavLinks from "../NavLinks/NavLinks";
 import { useState } from "react";
 import SideBar from "../SideBar/SideBar";
@@ -15,7 +16,9 @@ const NavigationAuthorized = () => {
     <>
       {viewport !== EViewportNames.DESKTOP ? (
         <>
-          <button className="header__nav-button" onClick={showSideBar}></button>
+          <button className="header__nav-button" onClick={showSideBar}>
+            <BurgerMenuIcon />
+          </button>
           <SideBar isOpen={isOpen} showSideBar={showSideBar} />
         </>
       ) : (

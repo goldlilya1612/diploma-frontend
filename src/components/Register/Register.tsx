@@ -9,7 +9,7 @@ import {
   IErrorsRegister,
   IGroupRegister,
 } from "../../interfaces";
-import { EUserStatus } from "../../enums/user-statuses.enum";
+import { EUserRole } from "../../enums/user-role.enum";
 import { isEmpty } from "lodash";
 import { Reorder } from "framer-motion";
 import GroupRegister from "../GroupRegister/GroupRegister";
@@ -22,7 +22,7 @@ function Register({
   isDisabled: any;
 }) {
   const [errors, setErrors] = useState({} as IErrorsRegister);
-  const [value, setValue] = useState(EUserStatus.STUDENT);
+  const [value, setValue] = useState(EUserRole.STUDENT);
   const [dataGroups, setDataGroups] = useState<Array<IGroupRegister> | null>(
     null
   );
@@ -33,7 +33,7 @@ function Register({
     email: "",
     password: "",
     passwordConfirm: "",
-    status: EUserStatus.STUDENT,
+    role: EUserRole.STUDENT,
     groups: null,
   } as IDataRegister);
 
@@ -42,7 +42,7 @@ function Register({
   }, [dataGroups]);
 
   const checkGroupsValidation = () => {
-    if (data.status === EUserStatus.LECTOR) {
+    if (data.role === EUserRole.LECTURER) {
       return !data.groups?.find((group) => group.name === "");
     } else return true;
   };
@@ -54,13 +54,12 @@ function Register({
       data.fathername &&
       data.email &&
       data.password &&
-      data.status &&
+      data.role &&
       data.passwordConfirm
     );
   const isErrorsInForm = () =>
     !!Object.entries(errors).find(([_key, value]) => value !== "");
   const checkInputsValidation = () => {
-    console.log(errors);
     if (isEmpty(errors)) return false; //инициализация формы
 
     return isFormCompleted() && !isErrorsInForm();
@@ -69,21 +68,21 @@ function Register({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const { name, value } = target;
-    if (name === "status") {
-      handleGroupsChange(name, value as EUserStatus);
+    if (name === "role") {
+      handleGroupsChange(name, value as EUserRole);
     } else {
       setData({ ...data, [name]: value });
-      if ((name === 'passwordConfirm' && data.password !== value) || (name === 'password' && data.passwordConfirm !== value)) {
-        setErrors({ ...errors, [name]: "Пароли не совпадают" })
+      if (name === "passwordConfirm" && data.password !== value) {
+        setErrors({ ...errors, [name]: "Пароли не совпадают" });
         return;
       }
       setErrors({ ...errors, [name]: target.validationMessage });
     }
   };
-  const handleGroupsChange = (name: string, value: EUserStatus) => {
-    setValue(value as EUserStatus);
+  const handleGroupsChange = (name: string, value: EUserRole) => {
+    setValue(value as EUserRole);
     setData({ ...data, [name]: value });
-    if (value === EUserStatus.STUDENT) {
+    if (value === EUserRole.STUDENT) {
       setDataGroups(null);
     } else {
       setDataGroups([{ name: "", key: uuidv4() }]);
@@ -105,7 +104,7 @@ function Register({
         email: "",
         password: "",
         passwordConfirm: "",
-        status: EUserStatus.STUDENT,
+        role: EUserRole.STUDENT,
         groups: null,
       },
       newErrors = {}
@@ -183,9 +182,9 @@ function Register({
               <label className="radio__label">
                 <input
                   type="radio"
-                  name="status"
-                  id="status-student-register"
-                  value={EUserStatus.STUDENT}
+                  name="role"
+                  id="role-student-register"
+                  value={EUserRole.STUDENT}
                   checked={value === "student"}
                   onChange={handleChange}
                 />
@@ -196,10 +195,10 @@ function Register({
               <label className="radio__label">
                 <input
                   type="radio"
-                  name="status"
-                  id="status-lector-register"
-                  value={EUserStatus.LECTOR}
-                  checked={value === "lector"}
+                  name="role"
+                  id="role-lecturer-register"
+                  value={EUserRole.LECTURER}
+                  checked={value === "lecturer"}
                   onChange={handleChange}
                 />
                 Преподаватель
@@ -207,7 +206,7 @@ function Register({
             </div>
           </div>
         </label>
-        {data.status === EUserStatus.LECTOR ? (
+        {data.role === EUserRole.LECTURER ? (
           <section className="groups-block">
             <p className="groups-block__title">Группы:</p>
             {dataGroups && (
@@ -253,12 +252,12 @@ function Register({
           errors.password
         )}
         {renderFormInput(
-            "password",
-            isDisabled,
-            "Повторите пароль",
-            "passwordConfirm",
-            data.passwordConfirm,
-            errors.passwordConfirm
+          "password",
+          isDisabled,
+          "Повторите пароль",
+          "passwordConfirm",
+          data.passwordConfirm,
+          errors.passwordConfirm
         )}
       </>
     );

@@ -1,6 +1,6 @@
 import NavLinks from "../NavLinks/NavLinks";
 import "./SideBar.scss";
-import cross from "../../images/cross.svg";
+import CrossIcon from "../../images/cross-icon";
 
 const SideBar = ({
   isOpen,
@@ -12,7 +12,7 @@ const SideBar = ({
   return (
     <>
       <nav className={`sidebar ${isOpen ? "" : "sidebar_invisible"}`}>
-        <img className="sidebar__button-image" src={cross} alt="крестик"></img>
+        <CrossIcon className="sidebar__button-image" />
         <button className="sidebar__button" onClick={showSideBar}></button>
         <NavLinks />
       </nav>

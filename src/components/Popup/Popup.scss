@@ -21,7 +21,6 @@
 
   &__container {
     background-color: #fff;
-    border-radius: 5px;
     position: relative;
     width: 250px;
     max-height: 400px;
@@ -35,6 +34,7 @@
       flex-direction: column;
       row-gap: 20px;
     }
+
     &_content {
       width: 70%;
       display: flex;
@@ -42,22 +42,22 @@
       flex-direction: column;
     }
   }
+
   &__close-button {
-    background: transparent url(../../images/cross-popup.svg) center center/cover
-    no-repeat;
     padding: 0;
     border: none;
     position: absolute;
-    top: -30px;
-    right: -30px;
+    top: -35px;
+    right: -35px;
     width: 30px;
     height: 30px;
-    transform: rotate(45deg);
+    background: unset;
 
     &:hover {
       cursor: pointer;
     }
   }
+
   &__text {
     font-weight: 300;
     font-size: 18px;
@@ -68,6 +68,7 @@
     max-width: 358px;
     margin: 0;
   }
+
   &__image {
     width: 100%;
     height: auto;
@@ -79,15 +80,15 @@
     width: 300px;
 
     &_content {
-      width: 70%
+      width: 70%;
     }
   }
-
 }
 
 @media screen and (min-width: 500px) {
   .popup__container {
     width: 370px;
+
     &_content {
       width: 415px;
     }

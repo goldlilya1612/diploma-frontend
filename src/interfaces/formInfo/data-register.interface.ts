@@ -1,13 +1,13 @@
-import { EUserStatus } from "../../enums/user-statuses.enum";
+import { EUserRole } from "../../enums/user-role.enum";
 import { IGroupRegister } from "./group-register.interface";
 
 export interface IDataRegister {
-    name: string;
-    surname: string;
-    fathername: string;
-    email: string;
-    password: string;
-    passwordConfirm: string;
-    status: EUserStatus;
-    groups: Array<IGroupRegister> | null;
+  name: string;
+  surname: string;
+  fathername: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  role: EUserRole;
+  groups: Array<IGroupRegister> | null;
 }

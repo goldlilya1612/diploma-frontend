@@ -13,8 +13,8 @@ import ErrorPage from "../ErrorPage/ErrorPage";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Courses from "../Courses/Courses";
 import { EPopupType } from "../../enums/popup-type.enum";
-import {useAppDispatch} from "../../hooks/hooks";
-import {userSlice} from "../../store/reducers/UserSlice";
+import { useAppDispatch } from "../../hooks/hooks";
+import { userSlice } from "../../store/reducers/UserSlice";
 
 const App = () => {
   const navigate = useNavigate();
@@ -26,19 +26,11 @@ const App = () => {
     name: "",
   });
   const dispatch = useAppDispatch();
-  const {getUser} = userSlice.actions;
+  const { getUser } = userSlice.actions;
 
-  // debugger;
-
-    useEffect(() => {
-        tokenCheck();
-    }, []);
-
-    useEffect(() => {
-        console.log('hhh');
-    }, []);
-
-
+  useEffect(() => {
+    tokenCheck();
+  }, []);
 
   const handleRegister = (
     data: IDataRegister,
@@ -46,10 +38,17 @@ const App = () => {
     setErrors: (value: IErrorsRegister) => void,
     resetForm: any
   ) => {
-
-      console.log(data)
-    const { name, surname, fathername, email, password, status, groups, passwordConfirm } = data;
-    const userName = name + surname + fathername;
+    const {
+      name,
+      surname,
+      fathername,
+      email,
+      password,
+      role,
+      groups,
+      passwordConfirm,
+    } = data;
+    const userName = name + " " + surname + " " + fathername;
 
     return auth
       .register({
@@ -57,11 +56,10 @@ const App = () => {
         email,
         password,
         passwordConfirm,
-        status,
+        role,
         // groups,
       })
       .then(() => {
-          console.log('ПОЛУЧИЛОСЬ')
         handleLogin({ email, password }, setData, setErrors, resetForm);
       })
       .catch((err) => {
@@ -76,22 +74,22 @@ const App = () => {
           setIsPopupOpen(true);
         }
       });
-      return 'hhh'
   };
 
-    function tokenCheck() {
-        if (localStorage.getItem('token')) {
-            auth.getUserInfo(localStorage.getItem('token'))
-                .then((res) => {
-                    dispatch(getUser(res))
-                    localStorage.setItem("loggedIn", "true");
-                })
-                .catch((err) => {
-                    console.log(`Ошибка: ${err}`);
-                    handleLogout();
-                })
-        }
+  function tokenCheck() {
+    if (localStorage.getItem("token")) {
+      auth
+        .getUserInfo(localStorage.getItem("token"))
+        .then((res) => {
+          dispatch(getUser(res));
+          localStorage.setItem("loggedIn", "true");
+        })
+        .catch((err) => {
+          console.log(`Ошибка: ${err}`);
+          handleLogout();
+        });
     }
+  }
 
   const handleLogin = (
     { email, password }: { email: string; password: string },
@@ -114,8 +112,7 @@ const App = () => {
           auth
             .getUserInfo(localStorage.getItem("token"))
             .then((res) => {
-                dispatch(getUser(res))
-
+              dispatch(getUser(res));
               localStorage.setItem("loggedIn", "true");
               navigate("/profile");
             })

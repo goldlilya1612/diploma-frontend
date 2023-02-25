@@ -34,12 +34,13 @@
   &__wrapper {
     height: 144px;
   }
+
   &__button {
     position: absolute;
     top: 18px;
     right: 18px;
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
     border: none;
     opacity: 0;
     padding: 0;
@@ -48,12 +49,13 @@
       cursor: pointer;
     }
   }
+
   &__button-image {
     position: absolute;
     top: 18px;
     right: 18px;
-    width: 22px;
-    height: 22px;
+    width: 32px;
+    height: 32px;
   }
 }
 

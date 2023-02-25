@@ -3,9 +3,9 @@
   margin: 0 10px;
   display: grid;
   grid-template-areas:
-    'text'
-    'links'
-    'year';
+    "text"
+    "links"
+    "year";
 
   &__text {
     grid-area: text;

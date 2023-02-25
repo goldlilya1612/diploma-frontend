@@ -1,5 +1,5 @@
 import "./ErrorPage.scss";
-import { ReactComponent as NotFoundErrorIcon } from "../../images/404-error-icon.svg";
+import NotFoundErrorIcon from "../../images/404-error-icon";
 
 function ErrorPage() {
   const handleButtonClick = () => {

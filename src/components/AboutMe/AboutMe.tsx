@@ -1,3 +1,4 @@
+import React from "react";
 import "./AboutMe.scss";
 import studentPhoto from "../../images/student-photo.jpg";
 

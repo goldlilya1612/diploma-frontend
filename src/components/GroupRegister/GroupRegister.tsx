@@ -1,7 +1,7 @@
 import React from "react";
 import "./GroupRegister.scss";
-import { ReactComponent as AddIcon } from "../../images/add-icon.svg";
-import { ReactComponent as DeleteIcon } from "../../images/delete-icon.svg";
+import AddIcon from "../../images/add-icon";
+import DeleteIcon from "../../images/delete-icon";
 import { v4 as uuidv4 } from "uuid";
 import { IGroupRegister } from "../../interfaces";
 import { last } from "lodash";
