@@ -5,11 +5,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface IUserState {
   email: string;
   name: string;
-  surname: string;
-  fathername: string;
   role: EUserRole;
-  groups: Array<IGroupRegister> | null;
+  groups: Array<string> | null;
 }
+
 interface IInitialUserState {
   user: IUserState;
 }
@@ -18,8 +17,6 @@ const initialUserState: IInitialUserState = {
   user: {
     email: "",
     name: "",
-    surname: "",
-    fathername: "",
     role: EUserRole.STUDENT,
     groups: null,
   },

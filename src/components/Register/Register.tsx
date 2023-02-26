@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { renderFormInput } from "../../hooks/helpers";
 import ButtonBlock from "../ButtonBlock/ButtonBlock";
 import Logo from "../Logo/Logo";
 import { REGISTER } from "../../utils/constants";
@@ -116,56 +117,25 @@ function Register({
   );
 
   const renderFormInputs = (isDisabled: boolean) => {
-    const renderFormInput = (
-      type: string,
-      isDisabled: boolean,
-      inputName: string,
-      inputNameEng: string,
-      value: any,
-      errors: any
-    ) => {
-      return (
-        <label
-          className="section-with-form__label"
-          htmlFor={`${inputNameEng}-register`}
-        >
-          {inputName}
-          <input
-            disabled={isDisabled}
-            required
-            onChange={handleChange}
-            value={value}
-            type={type}
-            name={inputNameEng}
-            id={`${inputNameEng}-register`}
-            className="section-with-form__input"
-            minLength={
-              type === "text" ? 2 : type === "password" ? 8 : undefined
-            }
-            maxLength={type === "text" ? 30 : undefined}
-          />
-          <span className="section-with-form__error">{errors}</span>
-        </label>
-      );
-    };
-
     return (
       <>
-        {renderFormInput(
-          "text",
-          isDisabled,
-          "Имя",
-          "name",
-          data.name,
-          errors.name
-        )}
         {renderFormInput(
           "text",
           isDisabled,
           "Фамилия",
           "surname",
           data.surname,
-          errors.surname
+          errors.surname,
+          handleChange
+        )}
+        {renderFormInput(
+          "text",
+          isDisabled,
+          "Имя",
+          "name",
+          data.name,
+          errors.name,
+          handleChange
         )}
         {renderFormInput(
           "text",
@@ -173,7 +143,8 @@ function Register({
           "Отчество",
           "fathername",
           data.fathername,
-          errors.fathername
+          errors.fathername,
+          handleChange
         )}
         <label className="section-with-form__label" htmlFor="role-register">
           Статус
@@ -241,7 +212,8 @@ function Register({
           "E-mail",
           "email",
           data.email,
-          errors.email
+          errors.email,
+          handleChange
         )}
         {renderFormInput(
           "password",
@@ -249,7 +221,8 @@ function Register({
           "Пароль",
           "password",
           data.password,
-          errors.password
+          errors.password,
+          handleChange
         )}
         {renderFormInput(
           "password",
@@ -257,7 +230,8 @@ function Register({
           "Повторите пароль",
           "passwordConfirm",
           data.passwordConfirm,
-          errors.passwordConfirm
+          errors.passwordConfirm,
+          handleChange
         )}
       </>
     );

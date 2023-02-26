@@ -48,7 +48,8 @@ const App = () => {
       groups,
       passwordConfirm,
     } = data;
-    const userName = name + " " + surname + " " + fathername;
+    const userName = surname + " " + name + " " + fathername;
+    const groupsNames = groups?.map((item) => item.name);
 
     return auth
       .register({
@@ -57,7 +58,7 @@ const App = () => {
         password,
         passwordConfirm,
         role,
-        // groups,
+        groups: groupsNames || null,
       })
       .then(() => {
         handleLogin({ email, password }, setData, setErrors, resetForm);
@@ -112,7 +113,8 @@ const App = () => {
           auth
             .getUserInfo(localStorage.getItem("token"))
             .then((res) => {
-              dispatch(getUser(res));
+              const user = res.data.user;
+              dispatch(getUser(user));
               localStorage.setItem("loggedIn", "true");
               navigate("/profile");
             })

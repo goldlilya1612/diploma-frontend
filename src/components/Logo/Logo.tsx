@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import LogoIcon from "../../images/logo-icon";
-import logo from "../../images/logo-icon";
 import "./Logo.scss";
 
 function Logo() {

@@ -8,14 +8,14 @@ export const register = ({
   password,
   passwordConfirm,
   role,
-}: // groups,
-{
+  groups,
+}: {
   name: string;
   email: string;
   password: string;
   passwordConfirm: string;
   role: string;
-  // groups: Array<IGroupRegister> | null;
+  groups: Array<string> | null;
 }) => {
   return fetch(`${BASE_URL}/api/auth/signup`, {
     method: "POST",
@@ -28,7 +28,7 @@ export const register = ({
       password,
       passwordConfirm,
       name,
-      // groups,
+      groups,
       role,
     }),
   }).then((res) => checkResponse(res));
@@ -53,7 +53,7 @@ export const login = ({
 
 // проверка валидности токена и получение email для вставки в шапку сайта
 export const getUserInfo = (jwt: string | null) => {
-  return fetch(`${BASE_URL}/api/auth/me`, {
+  return fetch(`${BASE_URL}/api/user/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

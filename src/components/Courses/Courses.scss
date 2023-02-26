@@ -3,10 +3,12 @@
   display: grid;
   flex-direction: column;
   align-items: center;
-  min-height: 300px;
+  min-height: 400px;
 
   &_grid {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 30px;
   }
 
   //&__wrapper {
@@ -36,6 +38,12 @@
 @media screen and (min-width: 400px) {
   .courses {
     margin: 30px 6.5% 0 6.5%;
+  }
+}
+
+@media screen and (max-width: 654px) {
+  .courses_grid {
+    grid-template-columns: repeat(1, minmax(270px, 1fr));
   }
 }
 

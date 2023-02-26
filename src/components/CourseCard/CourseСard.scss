@@ -1,0 +1,71 @@
+.course-card-link {
+  text-decoration: none;
+}
+
+.course-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+  align-self: baseline;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &__image {
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 387px;
+  }
+
+  &__category {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #999999;
+    margin: 0 0 14px 0;
+  }
+
+  &__name {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    text-transform: uppercase;
+
+    color: #000000;
+    margin: 0;
+  }
+
+  &__description {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 14px 0;
+    text-align: left;
+    color: #282c34;
+    word-break: break-word;
+  }
+
+  &__creator {
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 12px;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: #000000;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 654px) {
+  .course-card {
+    margin: 0 auto;
+  }
+}
