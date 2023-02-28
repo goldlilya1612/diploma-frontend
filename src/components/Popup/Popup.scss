@@ -1,3 +1,7 @@
+input[type = "file"] {
+  display: none;
+}
+
 .popup {
   position: fixed;
   left: 0;
@@ -13,6 +17,93 @@
   opacity: 0;
   transition: visibility 0.5s, opacity 0.5s linear;
 
+  &__dropdown-wrapper {
+    width: 100%;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  &__dropdown {
+    border: none;
+    padding: 10px;
+    height: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);;
+    border-radius: 5px;
+    width: calc(100% - 30px);
+    position: relative;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: white;
+    transition: background-color .2s ease-out;
+
+    &:hover {
+      background-color: #F5F4FB;
+
+      .popup__dropdown-placeholder {
+        color: #5533FF;
+      }
+    }
+  }
+
+  &__dropdown-placeholder {
+    font-size: 13px;
+    line-height: 16px;
+    color: black;
+
+  }
+
+  &__dropdown-menu {
+    box-sizing: border-box;
+    background-color: white;
+    box-sizing: border-box;
+    margin-top: -1px;
+    max-height: 123px;
+    overflow-y: auto;
+    position: absolute;
+    top: 113%;
+    width: calc(100% - 8px);
+    z-index: 1000;
+
+    background: #FFFFFF;
+
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+    font-size: 13px;
+    line-height: 16px;
+    color: black;
+  }
+
+  &__dropdown-option {
+    font-size: 13px;
+    line-height: 16px;
+    color: black;
+    margin-bottom: 5px;
+    transition: all .2s ease-out;
+    padding: 10px 10px;
+
+    &:first-of-type {
+      padding-top: 10px;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    &:hover {
+      background-color: #F5F4FB;
+      color: #5533FF;
+    }
+  }
+
+  &__dropdown-arrow {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+  }
+
   &_opened {
     display: flex;
     visibility: visible;
@@ -26,6 +117,7 @@
     max-height: 400px;
     box-sizing: border-box;
     padding: 40px 30px;
+    min-height: 468px;
 
     &_error {
       display: flex;
@@ -70,12 +162,69 @@
   }
 
   &__content {
+    margin-top: 20px;
     width: 100%;
+    overflow: auto;
   }
 
   &__image {
     width: 100%;
     height: auto;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__button {
+    border-radius: 5px;
+    height: 35px;
+    width: 100%;
+    margin-top: 15px;
+
+    background-color: #F5F4FB;
+    color: #5533FF;
+    border: none;
+    transition: all .4s ease-out;
+    text-align: center;
+    font-size: 13px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &_disabled {
+      background-color: #f8f8f8;
+      color: #c2c2c2;
+
+      &:hover {
+        cursor: default;
+      }
+    }
+
+    &_file {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      flex-grow: 1;
+      font-size: 13px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &_file-text {
+      font-size: 10px;
+      line-height: 12px;
+      color: #8b8b8b;
+      margin: 5px 0 0 0;
+    }
   }
 }
 
@@ -90,6 +239,22 @@
 }
 
 @media screen and (min-width: 500px) {
+  .popup {
+    &__buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    &__button {
+      width: 150px;
+    }
+
+    &__container {
+      min-height: 425px;
+    }
+  }
+
   .popup__container {
     width: 370px;
 
@@ -100,12 +265,18 @@
 }
 
 @media screen and (min-width: 700px) {
+  .popup {
+    &__button {
+      width: 188px;
+    }
+  }
   .popup__container {
     width: 350px;
-    min-height: 350px;
-    row-gap: 25px;
+    min-height: 435px;
+    row-gap: 15px;
 
     &_content {
+      margin-top: 0;
       width: 500px;
     }
   }

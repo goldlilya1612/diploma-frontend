@@ -4,14 +4,14 @@ class MainApi {
     this._headers = options.headers;
   }
 
-  getUserInfo(jwt) {
-    return fetch(`${this._baseUrl}/users/me`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt}`,
-      },
-    }).then(this._checkResponse);
-  }
+  // getUserInfo(jwt) {
+  //   return fetch(`${this._baseUrl}/users/me`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${jwt}`,
+  //     },
+  //   }).then(this._checkResponse);
+  // }
 
   // updateUser({ name, email }, jwt) {
   //     return fetch(`${this._baseUrl}/users/me`, {

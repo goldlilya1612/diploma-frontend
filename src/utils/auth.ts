@@ -62,6 +62,18 @@ export const getUserInfo = (jwt: string | null) => {
   }).then((res) => checkResponse(res));
 };
 
+export const createCourse = (formData: any, jwt: string | null) => {
+  return fetch(`${BASE_URL}/api/courses/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${jwt}`,
+    },
+    body: JSON.stringify(formData) /*formData*/,
+  }).then((res) => checkResponse(res));
+};
+
 const checkResponse = (res: any) => {
-  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.role}`);
+  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };

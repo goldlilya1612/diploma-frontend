@@ -56,7 +56,8 @@ function Register({
       data.email &&
       data.password &&
       data.role &&
-      data.passwordConfirm
+      data.passwordConfirm &&
+      data.groups
     );
   const isErrorsInForm = () =>
     !!Object.entries(errors).find(([_key, value]) => value !== "");
@@ -69,8 +70,11 @@ function Register({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const { name, value } = target;
+
     if (name === "role") {
-      handleGroupsChange(name, value as EUserRole);
+      handleRolesToggle(name, value as EUserRole);
+    } else if (name === "groups") {
+      setData({ ...data, [name]: [{ name: value, key: uuidv4() }] });
     } else {
       setData({ ...data, [name]: value });
       if (name === "passwordConfirm" && data.password !== value) {
@@ -80,7 +84,7 @@ function Register({
       setErrors({ ...errors, [name]: target.validationMessage });
     }
   };
-  const handleGroupsChange = (name: string, value: EUserRole) => {
+  const handleRolesToggle = (name: string, value: EUserRole) => {
     setValue(value as EUserRole);
     setData({ ...data, [name]: value });
     if (value === EUserRole.STUDENT) {
@@ -115,7 +119,6 @@ function Register({
     },
     [setData, setErrors]
   );
-
   const renderFormInputs = (isDisabled: boolean) => {
     return (
       <>
@@ -204,7 +207,15 @@ function Register({
             )}
           </section>
         ) : (
-          ""
+          renderFormInput(
+            "text",
+            isDisabled,
+            "Группа",
+            "groups",
+            (data?.groups && data?.groups[0].name) || "",
+            [],
+            handleChange
+          )
         )}
         {renderFormInput(
           "email",

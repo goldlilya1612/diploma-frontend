@@ -7,6 +7,7 @@ export interface IUserState {
   name: string;
   role: EUserRole;
   groups: Array<string> | null;
+  id: string;
 }
 
 interface IInitialUserState {
@@ -19,6 +20,7 @@ const initialUserState: IInitialUserState = {
     name: "",
     role: EUserRole.STUDENT,
     groups: null,
+    id: "",
   },
 };
 

@@ -15,7 +15,7 @@ import { useAppSelector } from "../../hooks/hooks";
 
 const Courses = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { role } = useAppSelector((state) => state.userReducer.user);
+  const user = useAppSelector((state) => state.userReducer.user);
 
   //TODO: сделай динамическими
   const content: any = null;
@@ -30,12 +30,8 @@ const Courses = () => {
   //     description:
   //       "et odio luctus. Mauris quis magna tortor. fjifdjkdjkdjf flkglfkl gfklfklf g;lf;fl ghjkl;';lkjhgfghjkl testtesttesttesttesttesttesttestvtesttesttesttesttesttesttesttesttesttesttest",
   //     route: "dkldkld",
-  {
-    /*    createAt: "jhjlkjh",*/
-  }
-  {
-    /*    updateAt: "ghjklkjh",*/
-  }
+  //     createAt: "jhjlkjh",
+  //     updateAt: "ghjklkjh",
   //   },
   //   {
   //     id: 2,
@@ -54,9 +50,7 @@ const Courses = () => {
   //     id: 3,
   //     name: "Frontend",
   //     creatorId: "ddjkdjk",
-  {
-    /*    creatorName: "Смирнов Владимир Юрьевич",*/
-  }
+  //     creatorName: "Смирнов Владимир Юрьевич",
   //     image: "",
   //     category: "Разработка",
   //     description:
@@ -69,7 +63,7 @@ const Courses = () => {
 
   return (
     <section className={`courses ${content ? "courses_grid" : ""}`}>
-      {content !== null && role !== EUserRole.STUDENT ? (
+      {content !== null && user.role !== EUserRole.STUDENT ? (
         content?.map((course: ICourseCardProps) => (
           <CourseCard key={course.id} course={course} />
         ))

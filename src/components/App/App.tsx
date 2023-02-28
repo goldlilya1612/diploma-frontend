@@ -82,7 +82,8 @@ const App = () => {
       auth
         .getUserInfo(localStorage.getItem("token"))
         .then((res) => {
-          dispatch(getUser(res));
+          const user = res.data.user;
+          dispatch(getUser(user));
           localStorage.setItem("loggedIn", "true");
         })
         .catch((err) => {
