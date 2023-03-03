@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.scss";
 import * as auth from "../../utils/auth";
+import { getUserInfo } from "../../utils/mainApi";
+import CourseContent from "../CourseContent/CourseContent";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
@@ -13,13 +15,14 @@ import ErrorPage from "../ErrorPage/ErrorPage";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Courses from "../Courses/Courses";
 import { EPopupType } from "../../enums/popup-type.enum";
-import { useAppDispatch } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { userSlice } from "../../store/reducers/UserSlice";
+import { appSlice } from "../../store/reducers/AppSlice";
+import BounceLoader from "react-spinners/BounceLoader";
 
 const App = () => {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(false);
-  const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [errorMessagePopup, setErrorMessagePopup] = useState({
     code: 0,
@@ -27,6 +30,8 @@ const App = () => {
   });
   const dispatch = useAppDispatch();
   const { getUser } = userSlice.actions;
+  const { setIsLoading } = appSlice.actions;
+  const { isLoading } = useAppSelector((state) => state.appReducer.app);
 
   useEffect(() => {
     tokenCheck();
@@ -61,6 +66,7 @@ const App = () => {
         groups: groupsNames || null,
       })
       .then(() => {
+        dispatch(setIsLoading(true));
         handleLogin({ email, password }, setData, setErrors, resetForm);
       })
       .catch((err) => {
@@ -79,17 +85,18 @@ const App = () => {
 
   function tokenCheck() {
     if (localStorage.getItem("token")) {
-      auth
-        .getUserInfo(localStorage.getItem("token"))
-        .then((res) => {
+      dispatch(setIsLoading(true));
+      getUserInfo(localStorage.getItem("token"))
+        .then((res: any) => {
           const user = res.data.user;
           dispatch(getUser(user));
           localStorage.setItem("loggedIn", "true");
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.log(`Ошибка: ${err}`);
           handleLogout();
-        });
+        })
+        .finally(() => dispatch(setIsLoading(false)));
     }
   }
 
@@ -99,38 +106,34 @@ const App = () => {
     setErrors: (value: IErrorsRegister) => void,
     resetForm: any
   ) => {
+    dispatch(setIsLoading(true));
     return auth
       .login({ email, password })
       .then((data) => {
         setIsDisabled(true);
-        setIsPreloaderVisible(true);
+
         if (!data)
           throw new Error(
             "При авторизации произошла ошибка. Токен не передан или передан не в том формате."
           );
 
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-          auth
-            .getUserInfo(localStorage.getItem("token"))
-            .then((res) => {
+        if (data.data.token) {
+          localStorage.setItem("token", data.data.token);
+          dispatch(setIsLoading(true));
+          getUserInfo(localStorage.getItem("token"))
+            .then((res: any) => {
               const user = res.data.user;
               dispatch(getUser(user));
               localStorage.setItem("loggedIn", "true");
               navigate("/profile");
             })
-            .catch((err) => {
+            .catch((err: any) => {
               console.log(`Ошибка: ${err}`);
             });
         } else {
           localStorage.removeItem("token");
           navigate("/signin");
         }
-      })
-      .finally(() => {
-        resetForm();
-        setIsDisabled(false);
-        setIsPreloaderVisible(false);
       })
       .catch((err) => {
         if (err === "Ошибка: 400") {
@@ -147,6 +150,11 @@ const App = () => {
           });
           setIsPopupOpen(true);
         }
+      })
+      .finally(() => {
+        resetForm();
+        setIsDisabled(false);
+        dispatch(setIsLoading(false));
       });
   };
 
@@ -158,6 +166,7 @@ const App = () => {
   return (
     <div className="page">
       <Routes>
+        {" "}
         <Route
           path="/"
           element={
@@ -206,6 +215,16 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/courses/:courseName"
+          element={
+            <ProtectedRoute>
+              <Header />
+              <CourseContent />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<ErrorPage />}></Route>
       </Routes>
       <Popup
@@ -214,6 +233,17 @@ const App = () => {
         message={errorMessagePopup}
         popupType={"error" as EPopupType}
       />
+      {isLoading ? (
+        <div className="loader-wrapper">
+          <BounceLoader
+            color={"#4a61dd"}
+            loading={isLoading}
+            cssOverride={{ position: "absolute", bottom: "50%", left: "50%" }}
+          />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

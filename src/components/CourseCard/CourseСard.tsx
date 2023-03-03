@@ -1,7 +1,6 @@
 import "./CourseСard.scss";
 import { Link } from "react-router-dom";
 import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
-import coursePictire from "../../images/IMAGE.jpg";
 
 const CourseCard = ({ course }: { course: ICourseCardProps }) => {
   return (
@@ -9,7 +8,7 @@ const CourseCard = ({ course }: { course: ICourseCardProps }) => {
       <Link className="course-card-link" to={course.route}>
         <img
           className="course-card__image"
-          src={coursePictire}
+          src={course.imageURL}
           alt={"course-picture"}
         />
         <div className="course-card__info">

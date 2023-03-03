@@ -1,12 +1,10 @@
 export interface ICourseCardProps {
-  id: number;
-  name: string;
-  creatorId: string;
-  creatorName: string;
-  image: string;
   category: string;
+  creatorName: string;
   description: string;
+  id: number;
+  imageURL: string;
+  name: string;
   route: string;
-  createAt: string;
-  updateAt: string;
+  updatedAt: string;
 }

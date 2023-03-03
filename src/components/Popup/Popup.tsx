@@ -4,7 +4,7 @@ import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
 import { EUserRole } from "../../enums/user-role.enum";
 import { renderFormInput } from "../../hooks/helpers";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import IncorrectErrorIcon from "../../images/401-error-icon";
 import ConflictErrorIcon from "../../images/409-error-icon";
 import AccordionIcon from "../../images/accordion-icon";
@@ -13,7 +13,8 @@ import "./Popup.scss";
 import { IGroupRegister } from "../../interfaces";
 import { ICreateCourseData } from "../../interfaces/formInfo/create-course-data.interface";
 import Dropdown, { Option } from "react-dropdown";
-import { createCourse } from "../../utils/auth";
+import { appSlice } from "../../store/reducers/AppSlice";
+import { createCourse } from "../../utils/mainApi";
 import { OPTIONS } from "../../utils/constants";
 
 function Popup({
@@ -38,40 +39,34 @@ function Popup({
     data.description &&
     data.image
   );
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.userReducer.user);
+  const { setIsLoading } = appSlice.actions;
   const formData = new FormData();
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    formData.append("creatorId", user.id as string);
+    formData.append("creatorID", user.id as string);
     formData.append("creatorName", user.name as string);
     formData.append("description", data.description);
     formData.append("category", data.category);
     formData.append("name", data.name);
     formData.append("image", data.image);
 
-    console.log(data);
-
-    createCourse(
-      /*formData*/ {
-        ...data,
-        creatorId: user.id,
-        creatorName: user.name,
-      },
-      localStorage.getItem("token")
-    )
-      .then((res) => {
+    createCourse(formData, localStorage.getItem("token"))
+      .then(() => {
         onClose();
         setData({
           name: "",
           category: "",
           description: "",
         } as ICreateCourseData);
-        console.log(res);
+        dispatch(setIsLoading(true));
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.log(`Ошибка: ${err}`);
-      });
+      })
+      .finally(() => dispatch(setIsLoading(false)));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +79,7 @@ function Popup({
     if (!e.target.files) {
       return;
     }
-    setData({ ...data, image: /*e.target.files[0]*/ e.target.files[0].name });
+    setData({ ...data, image: e.target.files[0] });
   };
   const renderCourseContent = () => {
     return (
@@ -129,7 +124,7 @@ function Popup({
           handleChange
         )}
         <div className="popup__buttons">
-          <div>
+          <div className={"popup__file-wrapper"}>
             <input
               type="file"
               id="file"
@@ -142,6 +137,7 @@ function Popup({
                 Загрузить картинку
               </label>
             </div>
+
             <p className="popup__button_file-text">
               {data.image ? `Файл: ${data.image.name}` : "Файл не выбран"}
             </p>
@@ -151,7 +147,7 @@ function Popup({
             className={`popup__button ${
               isFormCompleted ? "" : "popup__button_disabled"
             }`}
-            type="submit"
+            onClick={handleSubmit}
           >
             Создать
           </button>

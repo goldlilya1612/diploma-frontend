@@ -1,0 +1,25 @@
+.course-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+
+  min-height: 450px;
+
+  &__wrapper {
+    display: flex;
+    column-gap: 10px;
+  }
+}
+
+@media screen and (min-width: 400px) {
+  .course-content {
+    padding: 0 6.5%;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .course-content {
+    padding: 0 70px;
+  }
+}

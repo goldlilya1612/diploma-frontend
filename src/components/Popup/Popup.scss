@@ -178,6 +178,10 @@ input[type = "file"] {
     width: 100%;
   }
 
+  &__file-wrapper {
+    max-width: 50%;
+  }
+
   &__button {
     border-radius: 5px;
     height: 35px;
