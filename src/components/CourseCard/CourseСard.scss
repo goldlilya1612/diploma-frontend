@@ -14,9 +14,15 @@
 
   &__image {
     margin-bottom: 24px;
+    min-width: 300px;
+    height: 173px;
+
     width: 100%;
-    max-width: 387px;
-    min-width: 150px
+  }
+
+  &__category-wrapper {
+    display: flex;
+    justify-content: space-between;
   }
 
   &__category {
@@ -27,6 +33,16 @@
     text-transform: uppercase;
     color: #999999;
     margin: 0 0 14px 0;
+    max-width: 70%;
+  }
+
+  &__buttons {
+    display: flex;
+    column-gap: 5px;
+  }
+
+  &__button {
+    width: 17px;
   }
 
   &__name {
@@ -68,5 +84,10 @@
 @media screen and (max-width: 654px) {
   .course-card {
     margin: 0 auto;
+
+    &__image {
+      min-width: unset;
+      height: unset;
+    }
   }
 }

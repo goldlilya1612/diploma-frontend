@@ -5,7 +5,7 @@ export const renderFormInput = (
   inputNameEng: string,
   value: any,
   errors: any = [],
-  handleChange: any
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 ) => {
   return (
     <label

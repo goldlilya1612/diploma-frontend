@@ -1,3 +1,4 @@
+import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
 import { EUserRole } from "../../enums/user-role.enum";
 import { useAppSelector } from "../../hooks/hooks";
 import EmptyStateIcon from "../../images/empty-state-icon";
@@ -7,6 +8,7 @@ import "./EmptyState.scss";
 const EmptyState: React.FunctionComponent<IEmptyStateProps> = ({
   text,
   setIsPopupOpen,
+  setPopupRequestType,
 }) => {
   const user = useAppSelector((state) => state.userReducer.user);
   const isLector = user.role === EUserRole.LECTURER;
@@ -22,7 +24,10 @@ const EmptyState: React.FunctionComponent<IEmptyStateProps> = ({
               {" "}
               Для редактирования нажмите
               <button
-                onClick={() => setIsPopupOpen(true)}
+                onClick={() => {
+                  setPopupRequestType(EPopupRequestType.CREATE_COURSE);
+                  setIsPopupOpen(true);
+                }}
                 className="empty-button empty-state__link"
               >
                 здесь

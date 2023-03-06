@@ -41,7 +41,7 @@ const App = () => {
     data: IDataRegister,
     setData: (value: IDataRegister) => void,
     setErrors: (value: IErrorsRegister) => void,
-    resetForm: any
+    resetForm: (e: React.ChangeEvent<HTMLInputElement>) => void
   ) => {
     const {
       name,
@@ -125,7 +125,7 @@ const App = () => {
               const user = res.data.user;
               dispatch(getUser(user));
               localStorage.setItem("loggedIn", "true");
-              navigate("/profile");
+              navigate("/");
             })
             .catch((err: any) => {
               console.log(`Ошибка: ${err}`);

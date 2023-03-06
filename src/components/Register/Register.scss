@@ -42,20 +42,18 @@
     height: calc(46px - 30px);
     background-color: white;
     padding: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.1);;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     margin-top: 10px;
     font-weight: 500;
     font-size: 13px;
     line-height: 16px;
     color: black;
-
-    background-color: white;
-    transition: all .3s ease-out;
+    transition: all 0.3s ease-out;
 
     &:hover {
-      background-color: #F5F4FB;
-      color: #5533FF;
+      background-color: #f5f4fb;
+      color: #5533ff;
     }
 
     &_groups {
@@ -192,10 +190,14 @@ label:last-of-type {
 
   &__button {
     position: absolute;
-    top: 6px;
-    right: 10px;
-    width: 26px;
-    height: 26px;
+    top: 12px;
+    right: 16px;
+    width: 13px;
+    height: 13px;
+
+    & path {
+      stroke: #8b8b8b;
+    }
 
     &:hover {
       cursor: pointer;

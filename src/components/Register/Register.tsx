@@ -20,7 +20,7 @@ function Register({
   isDisabled,
 }: {
   onRegister: any;
-  isDisabled: any;
+  isDisabled: boolean;
 }) {
   const [errors, setErrors] = useState({} as IErrorsRegister);
   const [value, setValue] = useState(EUserRole.STUDENT);

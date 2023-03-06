@@ -1,9 +1,9 @@
-const DeleteIcon: React.FC<any> = ({
+const DeleteIcon = ({
   className,
   onClick,
 }: {
   className: string;
-  onClick: any;
+  onClick: () => void;
 }) => (
   <svg
     width="24"
@@ -15,10 +15,11 @@ const DeleteIcon: React.FC<any> = ({
     onClick={onClick}
   >
     <path
-      d="M8 12H16"
-      stroke="#8b8b8b"
+      d="M6 12H18"
+      stroke="#3A3A3A"
       strokeWidth="1.5"
       strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

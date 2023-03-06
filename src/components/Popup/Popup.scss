@@ -1,4 +1,4 @@
-input[type = "file"] {
+input[type="file"] {
   display: none;
 }
 
@@ -24,25 +24,23 @@ input[type = "file"] {
   }
 
   &__dropdown {
-    border: none;
     padding: 10px;
     height: 16px;
-    border: 1px solid rgba(0, 0, 0, 0.1);;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     width: calc(100% - 30px);
-    position: relative;
     margin-top: 10px;
     position: relative;
     overflow: hidden;
     cursor: pointer;
     background-color: white;
-    transition: background-color .2s ease-out;
+    transition: background-color 0.2s ease-out;
 
     &:hover {
-      background-color: #F5F4FB;
+      background-color: #f5f4fb;
 
       .popup__dropdown-placeholder {
-        color: #5533FF;
+        color: #5533ff;
       }
     }
   }
@@ -51,12 +49,9 @@ input[type = "file"] {
     font-size: 13px;
     line-height: 16px;
     color: black;
-
   }
 
   &__dropdown-menu {
-    box-sizing: border-box;
-    background-color: white;
     box-sizing: border-box;
     margin-top: -1px;
     max-height: 123px;
@@ -65,9 +60,7 @@ input[type = "file"] {
     top: 113%;
     width: calc(100% - 8px);
     z-index: 1000;
-
-    background: #FFFFFF;
-
+    background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 
@@ -81,7 +74,7 @@ input[type = "file"] {
     line-height: 16px;
     color: black;
     margin-bottom: 5px;
-    transition: all .2s ease-out;
+    transition: all 0.2s ease-out;
     padding: 10px 10px;
 
     &:first-of-type {
@@ -93,8 +86,8 @@ input[type = "file"] {
     }
 
     &:hover {
-      background-color: #F5F4FB;
-      color: #5533FF;
+      background-color: #f5f4fb;
+      color: #5533ff;
     }
   }
 
@@ -188,10 +181,10 @@ input[type = "file"] {
     width: 100%;
     margin-top: 15px;
 
-    background-color: #F5F4FB;
-    color: #5533FF;
+    background-color: #f5f4fb;
+    color: #5533ff;
     border: none;
-    transition: all .4s ease-out;
+    transition: all 0.4s ease-out;
     text-align: center;
     font-size: 13px;
 

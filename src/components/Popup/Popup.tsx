@@ -1,37 +1,36 @@
 import React, { ChangeEvent, useState } from "react";
+import Dropdown from "react-dropdown";
+import { useNavigate } from "react-router-dom";
 import { EErrorCode } from "../../enums/error-code.enum";
+import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
-import { EUserRole } from "../../enums/user-role.enum";
 import { renderFormInput } from "../../hooks/helpers";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import IncorrectErrorIcon from "../../images/401-error-icon";
 import ConflictErrorIcon from "../../images/409-error-icon";
 import AccordionIcon from "../../images/accordion-icon";
 import CrossPopupIcon from "../../images/cross-popup-icon";
-import "./Popup.scss";
-import { IGroupRegister } from "../../interfaces";
 import { ICreateCourseData } from "../../interfaces/formInfo/create-course-data.interface";
-import Dropdown, { Option } from "react-dropdown";
+import { IPopupProps } from "../../interfaces/props/popup-props.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
-import { createCourse } from "../../utils/mainApi";
 import { OPTIONS } from "../../utils/constants";
+import { createCourse } from "../../utils/mainApi";
+import "./Popup.scss";
 
-function Popup({
+const Popup: React.FunctionComponent<IPopupProps> = ({
   isOpen,
   onClose,
   message,
   title,
   popupType,
   contentType,
-}: {
-  isOpen: boolean;
-  onClose: any;
-  message?: { name: string; code: number };
-  title?: string;
-  popupType: EPopupType;
-  contentType?: EPopupContentType;
-}) {
+  isUpdatedData,
+  setIsUpdatedData,
+  popupInfoData,
+  popupRequestType,
+}) => {
+  const navigate = useNavigate();
   const [data, setData] = useState<ICreateCourseData>({} as ICreateCourseData);
   const isFormCompleted = !!(
     data.name &&
@@ -54,19 +53,23 @@ function Popup({
     formData.append("image", data.image);
 
     createCourse(formData, localStorage.getItem("token"))
-      .then(() => {
+      .then((res) => {
+        navigate(`/courses/${res.data.course.route}`);
+        dispatch(setIsLoading(true));
         onClose();
         setData({
           name: "",
           category: "",
           description: "",
         } as ICreateCourseData);
-        dispatch(setIsLoading(true));
+        setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
       })
       .catch((err: any) => {
         console.log(`Ошибка: ${err}`);
       })
-      .finally(() => dispatch(setIsLoading(false)));
+      .finally(() => {
+        dispatch(setIsLoading(false));
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +92,9 @@ function Popup({
           false,
           "Название курса",
           "name",
-          data.name,
+          popupRequestType === EPopupRequestType.CREATE_COURSE
+            ? data.name
+            : popupInfoData.name,
           [],
           handleChange
         )}
@@ -108,7 +113,11 @@ function Popup({
               onChange={(option) => {
                 setData({ ...data, category: option.value });
               }}
-              value={data.category}
+              value={
+                popupRequestType === EPopupRequestType.CREATE_COURSE
+                  ? data.category
+                  : popupInfoData.category
+              }
               options={OPTIONS}
             />
             <AccordionIcon className="popup__dropdown-arrow" />
@@ -119,7 +128,9 @@ function Popup({
           false,
           "Описание",
           "description",
-          data.description,
+          popupRequestType === EPopupRequestType.CREATE_COURSE
+            ? data.description
+            : popupInfoData.description,
           [],
           handleChange
         )}
@@ -137,9 +148,14 @@ function Popup({
                 Загрузить картинку
               </label>
             </div>
-
             <p className="popup__button_file-text">
-              {data.image ? `Файл: ${data.image.name}` : "Файл не выбран"}
+              {data.image
+                ? `Файл: ${
+                    popupRequestType === EPopupRequestType.CREATE_COURSE
+                      ? data.image.name
+                      : popupInfoData.image
+                  }`
+                : "Файл не выбран"}
             </p>
           </div>
           <button
@@ -241,6 +257,6 @@ function Popup({
       </div>
     </div>
   );
-}
+};
 
 export default Popup;

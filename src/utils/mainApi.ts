@@ -11,7 +11,7 @@ export const getUserInfo = (jwt: string | null) => {
   }).then((res) => checkResponse(res));
 };
 
-export const createCourse = (formData: any, jwt: string | null) => {
+export const createCourse = (formData: FormData, jwt: string | null) => {
   return fetch(`${BASE_URL}/api/courses/create`, {
     method: "POST",
     headers: {
@@ -31,6 +31,17 @@ export const getCourses = (jwt: string | null) => {
   }).then((res) => checkResponse(res));
 };
 
+export const deleteCourse = (id: number, jwt: string | null) => {
+  return fetch(`${BASE_URL}/api/courses/delete?id=${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  }).then((res) => checkResponse(res));
+};
+
 const checkResponse = (res: any) => {
+  console.log(typeof res);
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };
