@@ -52,14 +52,14 @@ const Courses = () => {
         <div className={"courses__title-wrapper"}>
           <h1 className={"courses__title"}>Курсы</h1>
           {user.role === EUserRole.LECTURER ? (
-            <button
-              className={"courses__add-button"}
-              onClick={() => {
-                setPopupRequestType(EPopupRequestType.CREATE_COURSE);
-                setIsPopupOpen(!isPopupOpen);
-              }}
-            >
-              <AddIcon className={"courses__title-icon"} />
+            <button className={"courses__add-button"}>
+              <AddIcon
+                onClick={() => {
+                  setPopupRequestType(EPopupRequestType.CREATE_COURSE);
+                  setIsPopupOpen(!isPopupOpen);
+                }}
+                className={"courses__title-icon"}
+              />
             </button>
           ) : null}
         </div>

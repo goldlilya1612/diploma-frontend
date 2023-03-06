@@ -1,4 +1,4 @@
-export const EmptyStateIcon = ({ className }: { className: string }) => (
+const EmptyStateIcon = ({ className }: { className: string }) => (
   <svg
     width="412"
     height="419"
