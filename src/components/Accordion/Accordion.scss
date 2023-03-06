@@ -1,8 +1,24 @@
 .accordion {
   list-style: none;
   padding: 0;
-  width: 100%;
-  max-width: 900px;
-  border: 2px solid #f1efef;
-  border-radius: 7px;
+
+  &__wrapper {
+    margin-top: 45px;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  &__button {
+    border-radius: 5px;
+    height: 35px;
+    width: fit-content;
+    padding: 0 40px;
+    border: none;
+    text-align: center;
+    font-size: 13px;
+
+    cursor: pointer;
+    background-color: #4a61dd;
+    color: white;
+  }
 }

@@ -13,4 +13,24 @@ export const faqs = [
     answer:
       "Blanditiis aliquid adipisci quisquam reiciendis voluptates itaque.",
   },
+  {
+    question: "Voluptas praesentium facere?",
+    answer:
+      "Blanditiis aliquid adipisci quisquam reiciendis voluptates itaque.",
+  },
+  {
+    question: "Voluptas praesentium facere?",
+    answer:
+      "Blanditiis aliquid adipisci quisquam reiciendis voluptates itaque.",
+  },
+  {
+    question: "Voluptas praesentium facere?",
+    answer:
+      "Blanditiis aliquid adipisci quisquam reiciendis voluptates itaque.",
+  },
+  {
+    question: "Voluptas praesentium facere?",
+    answer:
+      "Blanditiis aliquid adipisci quisquam reiciendis voluptates itaque.",
+  },
 ];

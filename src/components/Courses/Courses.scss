@@ -10,6 +10,11 @@
     margin: 0 auto;
   }
 
+  &__title-wrapper {
+    display: flex;
+    column-gap: 10px;
+  }
+
   &__title {
     margin: 0;
     font-weight: 400;

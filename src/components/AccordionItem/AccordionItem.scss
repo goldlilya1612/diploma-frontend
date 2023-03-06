@@ -1,26 +1,69 @@
-.accordion_item {
-  border-bottom: 2px solid #f1efef;
+
+.accordion-item {
+  border-bottom: 2px solid #f5f4fb;
+  margin-bottom: 10px;
+
+  &__title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  &__button {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    box-shadow: 0px 5px 16px rgba(8, 15, 52, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &_clicked {
+      background-color: #4A3AFF;
+    }
+  }
+
+  &__button-icon path {
+    stroke: white;
+  }
 }
+
 .button {
   color: black;
   text-align: left;
   display: flex;
+  flex-direction: column;
+
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-between;
-  align-items: center;
-  padding: 18px 17px;
+  padding: 15px 15px;
   cursor: pointer;
   border: none;
   background-color: white;
 
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
+  border-radius: 14px;
+  box-shadow: 0px 5px 16px rgba(8, 15, 52, 0.06);
+
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
   transition: all ease-out 0.3s;
 
+  &_clicked {
+    outline: 2px solid #4A3AFF;
+    box-shadow: 0px 6px 16px rgba(74, 58, 255, 0.19);
+  }
+
   &:hover {
-    background-color: #f1efef;
+    cursor: pointer;
   }
 }
 
@@ -29,8 +72,13 @@
 }
 
 .answer {
-  background-color: #f7f7f7;
-  padding: 20px;
+  background-color: unset;
+  padding: 20px 20px 0 20px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30px;
+
+  color: #6F6C90;
 
   &_wrapper {
     height: 0;

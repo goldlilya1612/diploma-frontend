@@ -12,6 +12,7 @@ const EmptyState: React.FunctionComponent<IEmptyStateProps> = ({
 }) => {
   const user = useAppSelector((state) => state.userReducer.user);
   const isLector = user.role === EUserRole.LECTURER;
+  console.log(text);
 
   return (
     <div className="empty-state">
@@ -21,11 +22,11 @@ const EmptyState: React.FunctionComponent<IEmptyStateProps> = ({
           <p className="empty-state__text">{text}</p>
           {isLector ? (
             <p className="empty-state__text">
-              {" "}
               Для редактирования нажмите
               <button
                 onClick={() => {
-                  setPopupRequestType(EPopupRequestType.CREATE_COURSE);
+                  setPopupRequestType &&
+                    setPopupRequestType(EPopupRequestType.CREATE_COURSE);
                   setIsPopupOpen(true);
                 }}
                 className="empty-button empty-state__link"
