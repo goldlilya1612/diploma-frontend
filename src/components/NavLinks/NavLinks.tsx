@@ -14,7 +14,7 @@ function NavLinks() {
               : "navigation__link navigation__link_authorized navigation__link_active"
           }
         >
-          Главная
+          Курсы
         </NavLink>
       </li>
       <li className="navigation__link-item navigation__link-item_authorized navigation__link-item_account">

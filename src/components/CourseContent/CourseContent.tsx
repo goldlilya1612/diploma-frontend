@@ -35,7 +35,10 @@ const CourseContent = () => {
               {/*  </button>*/}
               {/*) : null}*/}
             </div>
-            <Accordion setIsPopupOpen={setIsPopupOpen} />
+            <Accordion
+              setIsPopupOpen={setIsPopupOpen}
+              setPopupRequestType={setPopupRequestType}
+            />
           </>
         )}
         {(content === null || content.length === 0) && (
@@ -48,8 +51,8 @@ const CourseContent = () => {
       <Popup
         isOpen={isPopupOpen}
         title={
-          popupRequestType === EPopupRequestType.CREATE_CHAPTER
-            ? "Форма создания раздела"
+          popupRequestType === EPopupRequestType.ADD_CHAPTER
+            ? "Форма добавления раздела"
             : "Форма редактирования раздела"
         }
         onClose={() => setIsPopupOpen(false)}

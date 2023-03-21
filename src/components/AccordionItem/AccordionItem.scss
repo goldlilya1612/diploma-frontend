@@ -1,6 +1,4 @@
-
 .accordion-item {
-  border-bottom: 2px solid #f5f4fb;
   margin-bottom: 10px;
 
   &__title-wrapper {
@@ -26,7 +24,7 @@
     justify-content: center;
 
     &_clicked {
-      background-color: #4A3AFF;
+      background-color: #4a3aff;
     }
   }
 
@@ -58,7 +56,7 @@
   transition: all ease-out 0.3s;
 
   &_clicked {
-    outline: 2px solid #4A3AFF;
+    outline: 2px solid #4a3aff;
     box-shadow: 0px 6px 16px rgba(74, 58, 255, 0.19);
   }
 
@@ -78,7 +76,7 @@
   font-size: 18px;
   line-height: 30px;
 
-  color: #6F6C90;
+  color: #6f6c90;
 
   &_wrapper {
     height: 0;
