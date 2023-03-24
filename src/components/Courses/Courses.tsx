@@ -19,6 +19,7 @@ const Courses = () => {
   const dispatch = useAppDispatch();
   const { setIsLoading } = appSlice.actions;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupTitle, setPopupTitle] = useState<string>("");
   const [popupRequestType, setPopupRequestType] = useState<EPopupRequestType>(
     "" as EPopupRequestType
   );
@@ -55,6 +56,7 @@ const Courses = () => {
             <button className={"courses__add-button"}>
               <AddIcon
                 onClick={() => {
+                  setPopupTitle("Форма добавления курса");
                   setPopupRequestType(EPopupRequestType.CREATE_COURSE);
                   setIsPopupOpen(!isPopupOpen);
                 }}
@@ -81,6 +83,7 @@ const Courses = () => {
                 setIsUpdatedCourseArray={setIsUpdatedCourseArray}
                 setPopupRequestType={setPopupRequestType}
                 setCurrentOpenCourse={setCurrentOpenPopupCourse}
+                setPopupTitle={setPopupTitle}
               />
             ))}
 

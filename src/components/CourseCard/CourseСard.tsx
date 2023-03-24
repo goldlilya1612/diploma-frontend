@@ -17,6 +17,7 @@ const CourseCard = ({
   setIsUpdatedCourseArray,
   setPopupRequestType,
   setCurrentOpenCourse,
+  setPopupTitle,
 }: {
   course: ICourseCardProps;
   setIsPopupOpen: Dispatch<boolean>;
@@ -24,6 +25,7 @@ const CourseCard = ({
   setIsUpdatedCourseArray?: Dispatch<boolean>;
   setPopupRequestType: Dispatch<EPopupRequestType>;
   setCurrentOpenCourse: Dispatch<any>;
+  setPopupTitle: Dispatch<string>;
 }) => {
   const user = useAppSelector((state) => state.userReducer.user);
   const dispatch = useAppDispatch();
@@ -45,6 +47,7 @@ const CourseCard = ({
                 <EditIcon
                   onClick={(e: React.SyntheticEvent) => {
                     e.preventDefault();
+                    setPopupTitle("Форма редактирования курса");
                     setCurrentOpenCourse(course);
                     setIsPopupOpen(true);
                     setPopupRequestType(EPopupRequestType.UPDATE_COURSE);

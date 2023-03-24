@@ -6,12 +6,32 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    column-gap: 10px;
+  }
+
+  &__title-buttons-wrapper {
+    display: inline-block;
+    column-gap: 10px;
+  }
+
+  &__buttons {
+    display: inline-flex;
+    margin-left: 10px;
+    column-gap: 5px;
+    position: relative;
+    top: 3px;
+  }
+
+  &__icons {
+    width: 20px;
+    height: 20px;
   }
 
   &__title {
     margin: 0;
     font-size: 18px;
     font-weight: 500;
+    display: inline;
   }
 
   &__button {
@@ -26,6 +46,20 @@
     &_clicked {
       background-color: #4a3aff;
     }
+  }
+
+  &__add-button {
+    border-radius: 5px;
+    height: 35px;
+    width: fit-content;
+    background-color: #f5f4fb;
+    color: #5533ff;
+    border: none;
+    transition: all 0.4s ease-out;
+    text-align: center;
+    font-size: 13px;
+    padding: 7px 15px;
+    cursor: pointer;
   }
 
   &__button-icon path {
@@ -58,6 +92,7 @@
   &_clicked {
     outline: 2px solid #4a3aff;
     box-shadow: 0px 6px 16px rgba(74, 58, 255, 0.19);
+    row-gap: 4px;
   }
 
   &:hover {
@@ -71,10 +106,12 @@
 
 .answer {
   background-color: unset;
-  padding: 20px 20px 0 20px;
+  padding: 20px 10px 0 20px;
   font-weight: 400;
   font-size: 18px;
   line-height: 30px;
+  text-decoration: none;
+  text-align: justify;
 
   color: #6f6c90;
 
@@ -82,5 +119,8 @@
     height: 0;
     overflow: hidden;
     transition: height ease 0.2s;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
   }
 }

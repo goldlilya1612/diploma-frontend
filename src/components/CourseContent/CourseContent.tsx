@@ -16,6 +16,7 @@ const CourseContent = () => {
   const [popupRequestType, setPopupRequestType] = useState<EPopupRequestType>(
     "" as EPopupRequestType
   );
+  const [popupTitle, setPopupTitle] = useState<string>("");
   const content = [""] as any;
   return (
     <section className={"course-content"}>
@@ -38,6 +39,7 @@ const CourseContent = () => {
             <Accordion
               setIsPopupOpen={setIsPopupOpen}
               setPopupRequestType={setPopupRequestType}
+              setPopupTitle={setPopupTitle}
             />
           </>
         )}
@@ -50,18 +52,14 @@ const CourseContent = () => {
       </div>
       <Popup
         isOpen={isPopupOpen}
-        title={
-          popupRequestType === EPopupRequestType.ADD_CHAPTER
-            ? "Форма добавления раздела"
-            : "Форма редактирования раздела"
-        }
+        title={popupTitle}
         onClose={() => setIsPopupOpen(false)}
         popupType={"content" as EPopupType}
-        contentType={"chapter" as EPopupContentType}
+        contentType={"article" as EPopupContentType}
         // isUpdatedData={isUpdatedCourseArray}
         // setIsUpdatedData={setIsUpdatedCourseArray}
         // popupInfoData={currentOpenPopupCourse}
-        // popupRequestType={popupRequestType}
+        popupRequestType={popupRequestType}
       />
     </section>
   );

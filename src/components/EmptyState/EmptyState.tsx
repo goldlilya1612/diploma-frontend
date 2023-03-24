@@ -12,7 +12,6 @@ const EmptyState: React.FunctionComponent<IEmptyStateProps> = ({
 }) => {
   const user = useAppSelector((state) => state.userReducer.user);
   const isLector = user.role === EUserRole.LECTURER;
-  console.log(text);
 
   return (
     <div className="empty-state">

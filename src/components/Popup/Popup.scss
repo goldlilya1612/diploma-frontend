@@ -107,10 +107,10 @@ input[type="file"] {
     background-color: #fff;
     position: relative;
     width: 250px;
-    max-height: 400px;
+    //max-height: 400px;
     box-sizing: border-box;
     padding: 40px 30px;
-    min-height: 468px;
+    //min-height: 468px;
 
     &_error {
       display: flex;
@@ -248,7 +248,7 @@ input[type="file"] {
     }
 
     &__container {
-      min-height: 425px;
+      //min-height: 425px;
     }
   }
 
@@ -266,15 +266,16 @@ input[type="file"] {
     &__button {
       width: 188px;
     }
-  }
-  .popup__container {
-    width: 350px;
-    min-height: 435px;
-    row-gap: 15px;
 
-    &_content {
-      margin-top: 0;
-      width: 500px;
+    &__container {
+      width: 350px;
+      //min-height: 435px;
+      row-gap: 15px;
+
+      &_content {
+        margin-top: 0;
+        width: 500px;
+      }
     }
   }
 }

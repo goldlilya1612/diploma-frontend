@@ -11,6 +11,7 @@ import IncorrectErrorIcon from "../../images/401-error-icon";
 import ConflictErrorIcon from "../../images/409-error-icon";
 import AccordionIcon from "../../images/accordion-icon";
 import CrossPopupIcon from "../../images/cross-popup-icon";
+import { ICreateChapterData } from "../../interfaces/formInfo/create-chapter-data.interface";
 import { ICreateCourseData } from "../../interfaces/formInfo/create-course-data.interface";
 import { IPopupProps } from "../../interfaces/props/popup-props.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
@@ -32,21 +33,26 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
 }) => {
   const navigate = useNavigate();
   const [data, setData] = useState<ICreateCourseData>({} as ICreateCourseData);
-  const isFormCompleted = !!(
+  const [chapterData, setChapterData] = useState<ICreateChapterData>(
+    {} as ICreateChapterData
+  );
+  const [artcileData, setArticleData] = useState<{ name: string }>(
+    {} as { name: string }
+  );
+  const isCourseFormCompleted = !!(
     data.name &&
     data.category &&
     data.description &&
     data.image
   );
+  const isChapterFormCompleted = !!chapterData.name;
+
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.userReducer.user);
   const { setIsLoading } = appSlice.actions;
   const formData = new FormData();
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleCourseFormSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    formData.append("creatorID", user.id as string);
-    formData.append("creatorName", user.name as string);
     formData.append("description", data.description);
     formData.append("category", data.category);
     formData.append("name", data.name);
@@ -54,7 +60,8 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
 
     createCourse(formData, localStorage.getItem("token"))
       .then((res) => {
-        navigate(`/courses/${res.data.course.route}`);
+        console.log("hh");
+        navigate(`/courses/${res.data.createdCourse.route}`);
         dispatch(setIsLoading(true));
         onClose();
         setData({
@@ -72,10 +79,25 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
       });
   };
 
+  const handleChapterFormSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    onClose();
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const { name, value } = target;
-    setData({ ...data, [name]: value });
+    switch (contentType) {
+      case EPopupContentType.COURSE:
+        setData({ ...data, [name]: value });
+        break;
+      case EPopupContentType.CHAPTER:
+        setChapterData({ ...chapterData, [name]: value });
+        break;
+      case EPopupContentType.ARTICLE:
+        setArticleData({ ...artcileData, [name]: value });
+        break;
+    }
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +108,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
   };
   const renderCourseContent = () => {
     return (
-      <form id="createCourseForm" onSubmit={handleSubmit}>
+      <form id="createCourseForm" onSubmit={handleCourseFormSubmit}>
         {renderFormInput(
           "text",
           false,
@@ -159,15 +181,70 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
             </p>
           </div>
           <button
-            disabled={!isFormCompleted}
+            disabled={!isCourseFormCompleted}
             className={`popup__button ${
-              isFormCompleted ? "" : "popup__button_disabled"
+              isCourseFormCompleted ? "" : "popup__button_disabled"
             }`}
-            onClick={handleSubmit}
+            onClick={handleCourseFormSubmit}
           >
             Создать
           </button>
         </div>
+      </form>
+    );
+  };
+  const renderChapterContent = () => {
+    return (
+      <form id="createChapterForm" onSubmit={handleChapterFormSubmit}>
+        {renderFormInput(
+          "text",
+          false,
+          "Название раздела",
+          "name",
+          popupRequestType === EPopupRequestType.ADD_CHAPTER
+            ? chapterData.name
+            : //TODO: popupInfoData.name
+              "",
+          [],
+          handleChange
+        )}
+        <button
+          disabled={!isChapterFormCompleted}
+          className={`popup__button ${
+            isChapterFormCompleted ? "" : "popup__button_disabled"
+          }`}
+          onClick={handleChapterFormSubmit}
+        >
+          Создать
+        </button>
+      </form>
+    );
+  };
+
+  const renderArticleContent = () => {
+    return (
+      <form id="createChapterForm" onSubmit={handleChapterFormSubmit}>
+        {renderFormInput(
+          "text",
+          false,
+          "Название статьи",
+          "name",
+          popupRequestType === EPopupRequestType.ADD_CHAPTER
+            ? chapterData.name
+            : //TODO: popupInfoData.name
+              "",
+          [],
+          handleChange
+        )}
+        <button
+          disabled={!isChapterFormCompleted}
+          className={`popup__button ${
+            isChapterFormCompleted ? "" : "popup__button_disabled"
+          }`}
+          onClick={handleChapterFormSubmit}
+        >
+          Создать
+        </button>
       </form>
     );
   };
@@ -185,35 +262,13 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           <>
             <h2 className="popup__text">{title}</h2>
             <div className="popup__content">
-              {contentType === EPopupContentType.COURSE ? (
-                renderCourseContent()
-              ) : (
-                <h1>chapter</h1>
-              )}
+              {contentType === EPopupContentType.COURSE &&
+                renderCourseContent()}
+              {contentType === EPopupContentType.CHAPTER &&
+                renderChapterContent()}
+              {contentType === EPopupContentType.ARTICLE &&
+                renderArticleContent()}
             </div>
-
-            {/*<Reorder.Group*/}
-            {/*  as="ol"*/}
-            {/*  axis="y"*/}
-            {/*  values={courseСhapters}*/}
-            {/*  onReorder={setCourseСhapters}*/}
-            {/*  style={{*/}
-            {/*    listStyleType: "none",*/}
-            {/*    paddingLeft: "0px",*/}
-            {/*    margin: "0px",*/}
-            {/*    width: "100%",*/}
-            {/*    overflow: "auto",*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  {courseСhapters.map((chapter: any) => (*/}
-            {/*    <CoursesChapter*/}
-            {/*      key={chapter.key}*/}
-            {/*      chapter={chapter}*/}
-            {/*      courseСhapters={courseСhapters}*/}
-            {/*      setCoursesСhapter={setCourseСhapters}*/}
-            {/*    />*/}
-            {/*  ))}*/}
-            {/*</Reorder.Group>*/}
           </>
         );
     }
