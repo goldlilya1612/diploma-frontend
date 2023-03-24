@@ -1,28 +1,29 @@
 import React, { Dispatch, useRef, useState } from "react";
-import "./AccordionItem.scss";
 import { Link } from "react-router-dom";
 import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
+import { EPopupContentType } from "../../enums/popup-content-type.enum";
+import { EPopupType } from "../../enums/popup-type.enum";
 import { EUserRole } from "../../enums/user-role.enum";
+import { useAppDispatch } from "../../hooks/hooks";
 import AccordionButtonIcon from "../../images/accordion-button-icon";
-import DeleteIcon from "../../images/delete-icon";
 import EditIcon from "../../images/edit-icon";
 import RemoveItemIcon from "../../images/remove-item-icon";
+import { EPopupTitle } from "../../interfaces/popup-info.interface";
+import { appSlice } from "../../store/reducers/AppSlice";
+import "./AccordionItem.scss";
 
 const AccordionItem = ({
   faq,
   setIsPopupOpen,
-  setPopupTitle,
-  setPopupRequestType,
 }: {
   faq: any;
   setIsPopupOpen: Dispatch<boolean>;
-  setPopupTitle: Dispatch<string>;
-  setPopupRequestType: Dispatch<EPopupRequestType>;
 }) => {
   const { question, answer } = faq;
-
   const [clicked, setClicked] = useState(false);
   const contentEl = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const dispatch = useAppDispatch();
+  const { setPopupInfo } = appSlice.actions;
 
   const handleToggle = () => {
     setClicked((prev) => !prev);
@@ -43,7 +44,13 @@ const AccordionItem = ({
                   className="accordion-item__icons"
                   onClick={(e: React.SyntheticEvent) => {
                     e.stopPropagation();
-                    setPopupTitle("Форма редактирования раздела");
+                    dispatch(
+                      setPopupInfo({
+                        type: EPopupType.CONTENT,
+                        title: EPopupTitle.UPDATE_CHAPTER,
+                        content: EPopupContentType.CHAPTER,
+                      })
+                    );
                     setIsPopupOpen(true);
                   }}
                 />
@@ -79,8 +86,13 @@ const AccordionItem = ({
               className="accordion-item__add-button"
               onClick={(e: React.SyntheticEvent) => {
                 e.stopPropagation();
-                setPopupRequestType(EPopupRequestType.ADD_CHAPTER);
-                setPopupTitle("Форма добавления статьи");
+                dispatch(
+                  setPopupInfo({
+                    type: EPopupType.CONTENT,
+                    title: EPopupTitle.CREATE_ARTICLE,
+                    content: EPopupContentType.ARTICLE,
+                  })
+                );
                 setIsPopupOpen(true);
               }}
             >
@@ -97,7 +109,14 @@ const AccordionItem = ({
                   className="accordion-item__icons"
                   onClick={(e: React.SyntheticEvent) => {
                     e.stopPropagation();
-                    setPopupTitle("Форма редактирования раздела");
+                    dispatch(
+                      setPopupInfo({
+                        type: EPopupType.CONTENT,
+                        title: EPopupTitle.UPDATE_ARTICLE,
+                        requestType: EPopupRequestType.UPDATE_ARTICLE,
+                        content: EPopupContentType.ARTICLE,
+                      })
+                    );
                     setIsPopupOpen(true);
                   }}
                 />

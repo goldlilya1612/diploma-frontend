@@ -42,6 +42,5 @@ export const deleteCourse = (id: number, jwt: string | null) => {
 };
 
 const checkResponse = (res: any) => {
-  console.log(typeof res);
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };

@@ -1,27 +1,34 @@
 import { Dispatch } from "react";
-import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
+import { EPopupContentType } from "../../enums/popup-content-type.enum";
+import { EPopupType } from "../../enums/popup-type.enum";
 import { EUserRole } from "../../enums/user-role.enum";
+import { useAppDispatch } from "../../hooks/hooks";
+import { EPopupTitle } from "../../interfaces/popup-info.interface";
+import { appSlice } from "../../store/reducers/AppSlice";
 import AccordionItem from "../AccordionItem/AccordionItem";
 import "./Accordion.scss";
 import { faqs } from "./data";
 
 const Accordion = ({
   setIsPopupOpen,
-  setPopupRequestType,
-  setPopupTitle,
 }: {
   setIsPopupOpen: Dispatch<boolean>;
-  setPopupRequestType: Dispatch<EPopupRequestType>;
-  setPopupTitle: Dispatch<string>;
 }) => {
+  const dispatch = useAppDispatch();
+  const { setPopupInfo } = appSlice.actions;
   return (
     <div className="accordion__wrapper">
       {EUserRole.LECTURER ? (
         <button
           className="accordion__button"
           onClick={() => {
-            setPopupRequestType(EPopupRequestType.ADD_CHAPTER);
-            setPopupTitle("Форма добавления раздела");
+            dispatch(
+              setPopupInfo({
+                type: EPopupType.CONTENT,
+                title: EPopupTitle.CREATE_CHAPTER,
+                content: EPopupContentType.CHAPTER,
+              })
+            );
             setIsPopupOpen(true);
           }}
         >
@@ -34,8 +41,6 @@ const Accordion = ({
             key={index}
             faq={faq}
             setIsPopupOpen={setIsPopupOpen}
-            setPopupTitle={setPopupTitle}
-            setPopupRequestType={setPopupRequestType}
           />
         ))}
       </ul>

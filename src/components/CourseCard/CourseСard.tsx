@@ -1,10 +1,13 @@
 import React, { Dispatch } from "react";
 import { Link } from "react-router-dom";
 import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
+import { EPopupContentType } from "../../enums/popup-content-type.enum";
+import { EPopupType } from "../../enums/popup-type.enum";
 import { EUserRole } from "../../enums/user-role.enum";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import EditIcon from "../../images/edit-icon";
 import RemoveItemIcon from "../../images/remove-item-icon";
+import { EPopupTitle } from "../../interfaces/popup-info.interface";
 import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
 import { deleteCourse } from "../../utils/mainApi";
@@ -15,21 +18,17 @@ const CourseCard = ({
   setIsPopupOpen,
   isUpdatedCourseArray,
   setIsUpdatedCourseArray,
-  setPopupRequestType,
   setCurrentOpenCourse,
-  setPopupTitle,
 }: {
   course: ICourseCardProps;
   setIsPopupOpen: Dispatch<boolean>;
   isUpdatedCourseArray?: boolean;
   setIsUpdatedCourseArray?: Dispatch<boolean>;
-  setPopupRequestType: Dispatch<EPopupRequestType>;
   setCurrentOpenCourse: Dispatch<any>;
-  setPopupTitle: Dispatch<string>;
 }) => {
   const user = useAppSelector((state) => state.userReducer.user);
   const dispatch = useAppDispatch();
-  const { setIsLoading } = appSlice.actions;
+  const { setIsLoading, setPopupInfo } = appSlice.actions;
 
   return (
     <article className="course-card">
@@ -47,10 +46,16 @@ const CourseCard = ({
                 <EditIcon
                   onClick={(e: React.SyntheticEvent) => {
                     e.preventDefault();
-                    setPopupTitle("Форма редактирования курса");
+                    dispatch(
+                      setPopupInfo({
+                        type: EPopupType.CONTENT,
+                        title: EPopupTitle.UPDATE_COURSE,
+                        requestType: EPopupRequestType.UPDATE_COURSE,
+                        content: EPopupContentType.COURSE,
+                      })
+                    );
                     setCurrentOpenCourse(course);
                     setIsPopupOpen(true);
-                    setPopupRequestType(EPopupRequestType.UPDATE_COURSE);
                   }}
                   className="course-card__button"
                 />

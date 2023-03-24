@@ -231,7 +231,6 @@ const App = () => {
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         message={errorMessagePopup}
-        popupType={"error" as EPopupType}
       />
       {isLoading ? (
         <div className="loader-wrapper">

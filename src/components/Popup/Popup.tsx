@@ -23,14 +23,12 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
   isOpen,
   onClose,
   message,
-  title,
-  popupType,
-  contentType,
   isUpdatedData,
   setIsUpdatedData,
   popupInfoData,
-  popupRequestType,
 }) => {
+  const popupInfo = useAppSelector((state) => state.appReducer.app.popupInfo);
+
   const navigate = useNavigate();
   const [data, setData] = useState<ICreateCourseData>({} as ICreateCourseData);
   const [chapterData, setChapterData] = useState<ICreateChapterData>(
@@ -60,7 +58,6 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
 
     createCourse(formData, localStorage.getItem("token"))
       .then((res) => {
-        console.log("hh");
         navigate(`/courses/${res.data.createdCourse.route}`);
         dispatch(setIsLoading(true));
         onClose();
@@ -87,7 +84,8 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const { name, value } = target;
-    switch (contentType) {
+    console.log(popupInfo.content);
+    switch (popupInfo.content) {
       case EPopupContentType.COURSE:
         setData({ ...data, [name]: value });
         break;
@@ -114,9 +112,9 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Название курса",
           "name",
-          popupRequestType === EPopupRequestType.CREATE_COURSE
+          popupInfo.requestType === EPopupRequestType.CREATE_COURSE
             ? data.name
-            : popupInfoData.name,
+            : popupInfoData?.name,
           [],
           handleChange
         )}
@@ -136,9 +134,9 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
                 setData({ ...data, category: option.value });
               }}
               value={
-                popupRequestType === EPopupRequestType.CREATE_COURSE
+                popupInfo.requestType === EPopupRequestType.CREATE_COURSE
                   ? data.category
-                  : popupInfoData.category
+                  : popupInfoData?.category
               }
               options={OPTIONS}
             />
@@ -150,9 +148,9 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Описание",
           "description",
-          popupRequestType === EPopupRequestType.CREATE_COURSE
+          popupInfo.requestType === EPopupRequestType.CREATE_COURSE
             ? data.description
-            : popupInfoData.description,
+            : popupInfoData?.description,
           [],
           handleChange
         )}
@@ -173,9 +171,9 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
             <p className="popup__button_file-text">
               {data.image
                 ? `Файл: ${
-                    popupRequestType === EPopupRequestType.CREATE_COURSE
+                    popupInfo.requestType === EPopupRequestType.CREATE_COURSE
                       ? data.image.name
-                      : popupInfoData.image
+                      : popupInfoData?.image
                   }`
                 : "Файл не выбран"}
             </p>
@@ -201,7 +199,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Название раздела",
           "name",
-          popupRequestType === EPopupRequestType.ADD_CHAPTER
+          popupInfo.requestType === EPopupRequestType.CREATE_CHAPTER
             ? chapterData.name
             : //TODO: popupInfoData.name
               "",
@@ -229,7 +227,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Название статьи",
           "name",
-          popupRequestType === EPopupRequestType.ADD_CHAPTER
+          popupInfo.requestType === EPopupRequestType.CREATE_CHAPTER
             ? chapterData.name
             : //TODO: popupInfoData.name
               "",
@@ -248,6 +246,17 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
       </form>
     );
   };
+
+  const renderPopupImage = ({ code }: { code: number }) => {
+    switch (code) {
+      case EErrorCode.ERROR_409: {
+        return <ConflictErrorIcon className={`popup__image`} />;
+      }
+      case EErrorCode.ERROR_401 || EErrorCode.ERROR_400: {
+        return <IncorrectErrorIcon className={`popup__image`} />;
+      }
+    }
+  };
   const renderPopupContent = (popupType: EPopupType) => {
     switch (popupType) {
       case EPopupType.ERROR:
@@ -260,13 +269,13 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
       case EPopupType.CONTENT:
         return (
           <>
-            <h2 className="popup__text">{title}</h2>
+            <h2 className="popup__text">{popupInfo.title}</h2>
             <div className="popup__content">
-              {contentType === EPopupContentType.COURSE &&
+              {popupInfo.content === EPopupContentType.COURSE &&
                 renderCourseContent()}
-              {contentType === EPopupContentType.CHAPTER &&
+              {popupInfo.content === EPopupContentType.CHAPTER &&
                 renderChapterContent()}
-              {contentType === EPopupContentType.ARTICLE &&
+              {popupInfo.content === EPopupContentType.ARTICLE &&
                 renderArticleContent()}
             </div>
           </>
@@ -274,22 +283,11 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
     }
   };
 
-  const renderPopupImage = ({ code }: { code: number }) => {
-    switch (code) {
-      case EErrorCode.ERROR_409: {
-        return <ConflictErrorIcon className={`popup__image`} />;
-      }
-      case EErrorCode.ERROR_401 || EErrorCode.ERROR_400: {
-        return <IncorrectErrorIcon className={`popup__image`} />;
-      }
-    }
-  };
-
   return (
     <div className={`popup ${isOpen ? "popup_opened" : ""}`}>
       <div
         className={`popup__container ${
-          popupType === EPopupType.ERROR
+          popupInfo.type === EPopupType.ERROR
             ? "popup__container_error"
             : "popup__container_content"
         }`}
@@ -308,7 +306,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
         >
           <CrossPopupIcon />
         </button>
-        {renderPopupContent(popupType)}
+        {renderPopupContent(popupInfo.type)}
       </div>
     </div>
   );

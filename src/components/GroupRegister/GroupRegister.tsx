@@ -26,7 +26,6 @@ function GroupRegister({
     setDataGroups(newDataGroups);
   };
   const handleAddGroup = () => {
-    console.log("hhh");
     setDataGroups([...dataGroups, { name: "", key: uuidv4() }]);
   };
   const handleChangeGroups = (e: React.ChangeEvent<HTMLInputElement>) => {
