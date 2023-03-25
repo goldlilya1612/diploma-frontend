@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IPopupInfo } from "../../interfaces/popup-info.interface";
+import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 
 export interface IAppState {
   isLoading: boolean;
   popupInfo: IPopupInfo;
+  courses: Array<ICourseCardProps> | null;
 }
 
 interface IInitialAppState {
@@ -14,6 +16,7 @@ const initialAppState: IInitialAppState = {
   app: {
     isLoading: false,
     popupInfo: {} as IPopupInfo,
+    courses: null,
   },
 };
 
@@ -26,6 +29,9 @@ export const appSlice = createSlice({
     },
     setPopupInfo(state, action: PayloadAction<IPopupInfo>) {
       state.app.popupInfo = action.payload;
+    },
+    setCourses(state, action: PayloadAction<Array<any>>) {
+      state.app.courses = action.payload;
     },
   },
 });

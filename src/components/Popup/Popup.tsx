@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useState } from "react";
 import Dropdown from "react-dropdown";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import { EErrorCode } from "../../enums/error-code.enum";
-import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
 import { renderFormInput } from "../../hooks/helpers";
@@ -15,6 +15,7 @@ import { ICreateChapterData } from "../../interfaces/formInfo/create-chapter-dat
 import { ICreateCourseData } from "../../interfaces/formInfo/create-course-data.interface";
 import { IPopupProps } from "../../interfaces/props/popup-props.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
+import { courseContentSlice } from "../../store/reducers/CourseContentSlice";
 import { OPTIONS } from "../../utils/constants";
 import { createCourse } from "../../utils/mainApi";
 import "./Popup.scss";
@@ -26,9 +27,9 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
   isUpdatedData,
   setIsUpdatedData,
   popupInfoData,
+  currentOpenCourse,
 }) => {
-  const popupInfo = useAppSelector((state) => state.appReducer.app.popupInfo);
-
+  const { popupInfo } = useAppSelector((state) => state.appReducer.app);
   const navigate = useNavigate();
   const [data, setData] = useState<ICreateCourseData>({} as ICreateCourseData);
   const [chapterData, setChapterData] = useState<ICreateChapterData>(
@@ -47,6 +48,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
 
   const dispatch = useAppDispatch();
   const { setIsLoading } = appSlice.actions;
+  const { addChapter } = courseContentSlice.actions;
   const formData = new FormData();
 
   const handleCourseFormSubmit = (e: React.SyntheticEvent) => {
@@ -78,13 +80,32 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
 
   const handleChapterFormSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    dispatch(addChapter({ ...chapterData, id: uuidv4() })); // setChapterData({ name: "" });\
+    // createChapter(formData, localStorage.getItem("token"))
+    //     .then((res) => {
+    //       dispatch(setIsLoading(true));
+    //       onClose();
+    //       setData({
+    //         name: "",
+    //         category: "",
+    //         description: "",
+    //       } as ICreateCourseData);
+    //       setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
+    //     })
+    //     .catch((err: any) => {
+    //       console.log(`Ошибка: ${err}`);
+    //     })
+    //     .finally(() => {
+    //       dispatch(setIsLoading(false));
+    //     });
     onClose();
+    setChapterData({ name: "" });
   };
 
+  console.log(chapterData);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const { name, value } = target;
-    console.log(popupInfo.content);
     switch (popupInfo.content) {
       case EPopupContentType.COURSE:
         setData({ ...data, [name]: value });
@@ -112,7 +133,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Название курса",
           "name",
-          popupInfo.requestType === EPopupRequestType.CREATE_COURSE
+          popupInfo.requestType?.includes("create")
             ? data.name
             : popupInfoData?.name,
           [],
@@ -134,7 +155,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
                 setData({ ...data, category: option.value });
               }}
               value={
-                popupInfo.requestType === EPopupRequestType.CREATE_COURSE
+                popupInfo.requestType?.includes("create")
                   ? data.category
                   : popupInfoData?.category
               }
@@ -148,7 +169,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Описание",
           "description",
-          popupInfo.requestType === EPopupRequestType.CREATE_COURSE
+          popupInfo.requestType?.includes("create")
             ? data.description
             : popupInfoData?.description,
           [],
@@ -171,7 +192,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
             <p className="popup__button_file-text">
               {data.image
                 ? `Файл: ${
-                    popupInfo.requestType === EPopupRequestType.CREATE_COURSE
+                    popupInfo.requestType?.includes("create")
                       ? data.image.name
                       : popupInfoData?.image
                   }`
@@ -192,6 +213,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
     );
   };
   const renderChapterContent = () => {
+    console.log("chapterData ", popupInfo.requestType, chapterData);
     return (
       <form id="createChapterForm" onSubmit={handleChapterFormSubmit}>
         {renderFormInput(
@@ -199,8 +221,8 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Название раздела",
           "name",
-          popupInfo.requestType === EPopupRequestType.CREATE_CHAPTER
-            ? chapterData.name
+          popupInfo.requestType?.includes("create")
+            ? chapterData?.name
             : //TODO: popupInfoData.name
               "",
           [],
@@ -227,7 +249,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Название статьи",
           "name",
-          popupInfo.requestType === EPopupRequestType.CREATE_CHAPTER
+          popupInfo.requestType?.includes("create")
             ? chapterData.name
             : //TODO: popupInfoData.name
               "",
@@ -302,6 +324,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
               category: "",
               description: "",
             } as ICreateCourseData);
+            setChapterData({ name: "" });
           }}
         >
           <CrossPopupIcon />

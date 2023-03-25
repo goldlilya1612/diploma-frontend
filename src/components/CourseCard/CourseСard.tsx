@@ -10,6 +10,7 @@ import RemoveItemIcon from "../../images/remove-item-icon";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
 import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
+import { courseContentSlice } from "../../store/reducers/CourseContentSlice";
 import { deleteCourse } from "../../utils/mainApi";
 import "./CourseСard.scss";
 

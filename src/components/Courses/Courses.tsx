@@ -18,14 +18,13 @@ import "./Courses.scss";
 
 const Courses = () => {
   const dispatch = useAppDispatch();
-  const { setIsLoading, setPopupInfo } = appSlice.actions;
+  const { setIsLoading, setPopupInfo, setCourses } = appSlice.actions;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [currentOpenPopupCourse, setCurrentOpenPopupCourse] = useState({});
-  const [coursesArray, setCoursesArray] =
-    useState<Array<ICourseCardProps> | null>(null);
   const [isUpdatedCourseArray, setIsUpdatedCourseArray] =
     useState<boolean>(false);
   const user = useAppSelector((state) => state.userReducer.user);
+  const { courses } = useAppSelector((state) => state.appReducer.app);
 
   useEffect(() => {
     dispatch(setIsLoading(true));
@@ -35,8 +34,8 @@ const Courses = () => {
           const newCoursesArray = res.data.courses.map((course: any) =>
             omit(course, ["creatorID", "createdAt"])
           );
-          setCoursesArray(newCoursesArray);
-        } else setCoursesArray(res.data.courses);
+          dispatch(setCourses(newCoursesArray));
+        } else dispatch(setCourses(res.data.courses));
       })
       .catch((err: any) => {
         console.log(`Ошибка: ${err}`);
@@ -46,7 +45,7 @@ const Courses = () => {
 
   return (
     <section className={`courses`}>
-      {Array.isArray(coursesArray) ? (
+      {Array.isArray(courses) ? (
         <div className={"courses__title-wrapper"}>
           <h1 className={"courses__title"}>Курсы</h1>
           {user.role === EUserRole.LECTURER ? (
@@ -72,12 +71,12 @@ const Courses = () => {
       <div className={"courses__main-wrapper"}>
         <div
           className={`courses__wrapper ${
-            coursesArray ? "courses__wrapper_grid" : ""
+            courses ? "courses__wrapper_grid" : ""
           }`}
         >
-          {Array.isArray(coursesArray) &&
-            coursesArray?.length &&
-            coursesArray?.map((course) => (
+          {Array.isArray(courses) &&
+            courses?.length &&
+            courses?.map((course) => (
               <CourseCard
                 key={course.id}
                 course={course}
@@ -88,7 +87,7 @@ const Courses = () => {
               />
             ))}
 
-          {(coursesArray === null || !coursesArray.length) && (
+          {(courses === null || !courses.length) && (
             <EmptyState
               text={EMPTY_STATE.courses}
               setIsPopupOpen={setIsPopupOpen}

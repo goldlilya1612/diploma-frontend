@@ -11,19 +11,21 @@ import RemoveItemIcon from "../../images/remove-item-icon";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
 import "./AccordionItem.scss";
+import { courseContentSlice } from "../../store/reducers/CourseContentSlice";
 
 const AccordionItem = ({
-  faq,
+  accordionItem,
   setIsPopupOpen,
 }: {
-  faq: any;
+  accordionItem: any;
   setIsPopupOpen: Dispatch<boolean>;
 }) => {
-  const { question, answer } = faq;
+  // const { name, answer } = accordionItem;
   const [clicked, setClicked] = useState(false);
   const contentEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const dispatch = useAppDispatch();
   const { setPopupInfo } = appSlice.actions;
+  const { removeChapter } = courseContentSlice.actions;
 
   const handleToggle = () => {
     setClicked((prev) => !prev);
@@ -37,7 +39,7 @@ const AccordionItem = ({
       >
         <div className="accordion-item__title-wrapper">
           <div className="accordion-item__title-buttons-wrapper">
-            <p className="accordion-item__title">{question}</p>
+            <p className="accordion-item__title">{accordionItem.name}</p>
             {EUserRole.LECTURER ? (
               <div className={"accordion-item__buttons"}>
                 <EditIcon
@@ -58,7 +60,7 @@ const AccordionItem = ({
                   className="accordion-item__icons"
                   onClick={(e: React.SyntheticEvent) => {
                     e.stopPropagation();
-                    console.log("remove");
+                    dispatch(removeChapter(accordionItem.id));
                   }}
                 />
               </div>
@@ -101,7 +103,7 @@ const AccordionItem = ({
           ) : null}
           <div>
             <Link to="#" className="answer">
-              {answer}
+              {"kkk"}
             </Link>
             {EUserRole.LECTURER ? (
               <div className={"accordion-item__buttons"}>

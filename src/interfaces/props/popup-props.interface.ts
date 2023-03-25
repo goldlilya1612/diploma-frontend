@@ -1,8 +1,5 @@
 import { Dispatch } from "react";
-import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
-import { EPopupContentType } from "../../enums/popup-content-type.enum";
-import { EPopupType } from "../../enums/popup-type.enum";
-import { IPopupInfo } from "../popup-info.interface";
+import { ICourseCardProps } from "./course-card.interface";
 
 export interface IPopupProps {
   isOpen: boolean;
@@ -11,4 +8,5 @@ export interface IPopupProps {
   isUpdatedData?: boolean;
   setIsUpdatedData?: Dispatch<boolean>;
   popupInfoData?: any;
+  currentOpenCourse?: ICourseCardProps;
 }
