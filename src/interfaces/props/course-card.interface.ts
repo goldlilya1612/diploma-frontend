@@ -3,7 +3,12 @@ export interface ICourseCardProps {
   creatorName: string;
   description: string;
   id: number;
-  imageURL: string;
+  image: {
+    ID: number;
+    Name: string;
+    Path: string;
+    url: string;
+  };
   name: string;
   route: string;
   updatedAt: string;

@@ -10,8 +10,8 @@ import EditIcon from "../../images/edit-icon";
 import RemoveItemIcon from "../../images/remove-item-icon";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
-import "./AccordionItem.scss";
 import { courseContentSlice } from "../../store/reducers/CourseContentSlice";
+import "./AccordionItem.scss";
 
 const AccordionItem = ({
   accordionItem,
@@ -20,12 +20,12 @@ const AccordionItem = ({
   accordionItem: any;
   setIsPopupOpen: Dispatch<boolean>;
 }) => {
-  // const { name, answer } = accordionItem;
   const [clicked, setClicked] = useState(false);
   const contentEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const dispatch = useAppDispatch();
   const { setPopupInfo } = appSlice.actions;
   const { removeChapter } = courseContentSlice.actions;
+  const articles = accordionItem.articles;
 
   const handleToggle = () => {
     setClicked((prev) => !prev);
@@ -51,6 +51,7 @@ const AccordionItem = ({
                         type: EPopupType.CONTENT,
                         title: EPopupTitle.UPDATE_CHAPTER,
                         content: EPopupContentType.CHAPTER,
+                        info: accordionItem,
                       })
                     );
                     setIsPopupOpen(true);
@@ -93,6 +94,8 @@ const AccordionItem = ({
                     type: EPopupType.CONTENT,
                     title: EPopupTitle.CREATE_ARTICLE,
                     content: EPopupContentType.ARTICLE,
+                    info: accordionItem,
+                    requestType: EPopupRequestType.CREATE_ARTICLE,
                   })
                 );
                 setIsPopupOpen(true);
@@ -102,35 +105,41 @@ const AccordionItem = ({
             </button>
           ) : null}
           <div>
-            <Link to="#" className="answer">
-              {"kkk"}
-            </Link>
-            {EUserRole.LECTURER ? (
-              <div className={"accordion-item__buttons"}>
-                <EditIcon
-                  className="accordion-item__icons"
-                  onClick={(e: React.SyntheticEvent) => {
-                    e.stopPropagation();
-                    dispatch(
-                      setPopupInfo({
-                        type: EPopupType.CONTENT,
-                        title: EPopupTitle.UPDATE_ARTICLE,
-                        requestType: EPopupRequestType.UPDATE_ARTICLE,
-                        content: EPopupContentType.ARTICLE,
-                      })
-                    );
-                    setIsPopupOpen(true);
-                  }}
-                />
-                <RemoveItemIcon
-                  className="accordion-item__icons"
-                  onClick={(e: React.SyntheticEvent) => {
-                    e.stopPropagation();
-                    console.log("remove");
-                  }}
-                />
-              </div>
-            ) : null}
+            {articles.length > 0 &&
+              articles.map((article: any) => {
+                <>
+                  <Link to="#" className="answer">
+                    {"kkk"}
+                  </Link>
+                  ;
+                  {EUserRole.LECTURER ? (
+                    <div className={"accordion-item__buttons"}>
+                      <EditIcon
+                        className="accordion-item__icons"
+                        onClick={(e: React.SyntheticEvent) => {
+                          e.stopPropagation();
+                          dispatch(
+                            setPopupInfo({
+                              type: EPopupType.CONTENT,
+                              title: EPopupTitle.UPDATE_ARTICLE,
+                              requestType: EPopupRequestType.UPDATE_ARTICLE,
+                              content: EPopupContentType.ARTICLE,
+                            })
+                          );
+                          setIsPopupOpen(true);
+                        }}
+                      />
+                      <RemoveItemIcon
+                        className="accordion-item__icons"
+                        onClick={(e: React.SyntheticEvent) => {
+                          e.stopPropagation();
+                          console.log("remove");
+                        }}
+                      />
+                    </div>
+                  ) : null}
+                </>;
+              })}
           </div>
         </div>
       </button>

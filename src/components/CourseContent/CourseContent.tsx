@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { omit } from "lodash";
+import { useEffect, useState } from "react";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
 import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
+import { appSlice } from "../../store/reducers/AppSlice";
+import { userSlice } from "../../store/reducers/UserSlice";
+import { getCourse } from "../../utils/mainApi";
 import Accordion from "../Accordion/Accordion";
 import EmptyState from "../EmptyState/EmptyState";
 import Popup from "../Popup/Popup";
@@ -10,27 +14,50 @@ import "./CourseContent.scss";
 
 const CourseContent = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isUpdatedChapterArray, setIsUpdatedChapterArray] =
+    useState<boolean>(false);
   const route = window.location.pathname.split("/").reverse()[0];
-  const { courses } = useAppSelector((state) => state.appReducer.app);
-  const { content } = useAppSelector(
-    (state) => state.courseContentReducer.courseContent
+  const { courses, isLoading } = useAppSelector(
+    (state) => state.appReducer.app
   );
-  const currentOpenCourse = courses?.find(
-    (item: ICourseCardProps) => item.route === route
-  );
+  // const { content } = useAppSelector(
+  //   (state) => state.courseContentReducer.courseContent
+  // );
+  const [content, setContent] = useState<any>(null);
+
+  const dispatch = useAppDispatch();
+  const { setIsLoading, setCourses } = appSlice.actions;
+
+  useEffect(() => {
+    const currentOpenCourse = courses?.find(
+      (item: ICourseCardProps) => item.route === route
+    );
+
+    if (currentOpenCourse) {
+      dispatch(setIsLoading(false));
+      getCourse(currentOpenCourse?.id, localStorage.getItem("token"))
+        .then((res: any) => {
+          setContent(res.data.courses[0].chapters);
+        })
+        .catch((err: any) => {
+          console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => dispatch(setIsLoading(false)));
+    }
+  }, [courses, isUpdatedChapterArray]);
 
   return (
     <section className={"course-content"}>
       <div className="course-content__wrapper">
-        {Array.isArray(content) && content?.length > 0 && (
+        {content && Array.isArray(content) && content.length > 0 && (
           <>
             <div className="courses__title-wrapper">
               <p className="course-content__title">Содержание</p>
             </div>
-            <Accordion setIsPopupOpen={setIsPopupOpen} />
+            <Accordion content={content} setIsPopupOpen={setIsPopupOpen} />
           </>
         )}
-        {(content === null || content.length === 0) && (
+        {content?.length === 0 && !isLoading && (
           <EmptyState
             text={"Содержание курса пустое"}
             setIsPopupOpen={setIsPopupOpen}
@@ -42,10 +69,8 @@ const CourseContent = () => {
       <Popup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
-        currentOpenCourse={currentOpenCourse}
-
-        // isUpdatedData={isUpdatedCourseArray}
-        // setIsUpdatedData={setIsUpdatedCourseArray}
+        isUpdatedData={isUpdatedChapterArray}
+        setIsUpdatedData={setIsUpdatedChapterArray}
       />
     </section>
   );

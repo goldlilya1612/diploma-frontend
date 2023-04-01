@@ -10,7 +10,6 @@ import RemoveItemIcon from "../../images/remove-item-icon";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
 import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
-import { courseContentSlice } from "../../store/reducers/CourseContentSlice";
 import { deleteCourse } from "../../utils/mainApi";
 import "./CourseСard.scss";
 
@@ -36,7 +35,7 @@ const CourseCard = ({
       <Link className="course-card-link" to={course.route}>
         <img
           className="course-card__image"
-          src={course.imageURL}
+          src={course?.image.url}
           alt={"course-picture"}
         />
         <div className="course-card__info">
@@ -53,6 +52,7 @@ const CourseCard = ({
                         title: EPopupTitle.UPDATE_COURSE,
                         requestType: EPopupRequestType.UPDATE_COURSE,
                         content: EPopupContentType.COURSE,
+                        info: course,
                       })
                     );
                     setCurrentOpenCourse(course);

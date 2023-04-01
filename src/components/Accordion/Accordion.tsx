@@ -1,4 +1,4 @@
-import { Dispatch } from "react";
+import { Dispatch, useEffect } from "react";
 import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
@@ -11,14 +11,16 @@ import "./Accordion.scss";
 
 const Accordion = ({
   setIsPopupOpen,
+  content,
 }: {
   setIsPopupOpen: Dispatch<boolean>;
+  content: any;
 }) => {
   const dispatch = useAppDispatch();
   const { setPopupInfo } = appSlice.actions;
-  const { content } = useAppSelector(
-    (state) => state.courseContentReducer.courseContent
-  );
+  // const { content } = useAppSelector(
+  //   (state) => state.courseContentReducer.courseContent
+  // );
   return (
     <div className="accordion__wrapper">
       {EUserRole.LECTURER ? (
@@ -31,6 +33,7 @@ const Accordion = ({
                 title: EPopupTitle.CREATE_CHAPTER,
                 requestType: EPopupRequestType.CREATE_CHAPTER,
                 content: EPopupContentType.CHAPTER,
+                info: null,
               })
             );
             setIsPopupOpen(true);
@@ -40,13 +43,14 @@ const Accordion = ({
         </button>
       ) : null}
       <ul className="accordion">
-        {content.map((accordionItem: any, index: any) => (
-          <AccordionItem
-            key={index}
-            accordionItem={accordionItem}
-            setIsPopupOpen={setIsPopupOpen}
-          />
-        ))}
+        {content &&
+          content.map((accordionItem: any, index: any) => (
+            <AccordionItem
+              key={index}
+              accordionItem={accordionItem}
+              setIsPopupOpen={setIsPopupOpen}
+            />
+          ))}
       </ul>
     </div>
   );

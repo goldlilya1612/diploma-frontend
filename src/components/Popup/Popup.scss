@@ -104,13 +104,13 @@ input[type="file"] {
   }
 
   &__container {
+    min-height: 250px;
     background-color: #fff;
     position: relative;
     width: 250px;
     //max-height: 400px;
     box-sizing: border-box;
     padding: 40px 30px;
-    //min-height: 468px;
 
     &_error {
       display: flex;

@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import { EErrorCode } from "../../enums/error-code.enum";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
@@ -13,11 +12,18 @@ import AccordionIcon from "../../images/accordion-icon";
 import CrossPopupIcon from "../../images/cross-popup-icon";
 import { ICreateChapterData } from "../../interfaces/formInfo/create-chapter-data.interface";
 import { ICreateCourseData } from "../../interfaces/formInfo/create-course-data.interface";
+import { IPopupInfo } from "../../interfaces/popup-info.interface";
 import { IPopupProps } from "../../interfaces/props/popup-props.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
 import { courseContentSlice } from "../../store/reducers/CourseContentSlice";
 import { OPTIONS } from "../../utils/constants";
-import { createCourse } from "../../utils/mainApi";
+import {
+  createArticle,
+  createChapter,
+  createCourse,
+  updateChapter,
+  updateCourse,
+} from "../../utils/mainApi";
 import "./Popup.scss";
 
 const Popup: React.FunctionComponent<IPopupProps> = ({
@@ -29,80 +35,191 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
   popupInfoData,
   currentOpenCourse,
 }) => {
+  const { courses } = useAppSelector((state) => state.appReducer.app);
   const { popupInfo } = useAppSelector((state) => state.appReducer.app);
-  const navigate = useNavigate();
-  const [data, setData] = useState<ICreateCourseData>({} as ICreateCourseData);
-  const [chapterData, setChapterData] = useState<ICreateChapterData>(
-    {} as ICreateChapterData
-  );
-  const [artcileData, setArticleData] = useState<{ name: string }>(
-    {} as { name: string }
-  );
-  const isCourseFormCompleted = !!(
-    data.name &&
-    data.category &&
-    data.description &&
-    data.image
-  );
-  const isChapterFormCompleted = !!chapterData.name;
-
   const dispatch = useAppDispatch();
-  const { setIsLoading } = appSlice.actions;
+  const { setIsLoading, setPopupInfo } = appSlice.actions;
+  const navigate = useNavigate();
+  const [data, setData] = useState<any>(popupInfoData || null);
+  const [chapterData, setChapterData] = useState<any>(null);
+  const [artcileData, setArticleData] = useState<any>(null);
+
+  const isCourseFormCompleted = !!(
+    data?.name &&
+    data?.category &&
+    data?.description &&
+    data?.image
+  );
+  const isChapterFormCompleted = !!chapterData?.name;
+  const isArticleFormCompleted = !!artcileData?.name;
   const { addChapter } = courseContentSlice.actions;
   const formData = new FormData();
+  const route = window.location.pathname.split("/").reverse()[0];
+  const currentCourse = courses?.find((course) => course.route === route);
 
+  useEffect(() => {
+    const info = popupInfo.info;
+    switch (popupInfo.content) {
+      case EPopupContentType.COURSE:
+        setData(
+          info
+            ? {
+                name: info.name,
+                category: info.category,
+                description: info.description,
+                image: info.image,
+                id: info.id,
+              }
+            : null
+        );
+        break;
+      case EPopupContentType.CHAPTER:
+        setChapterData(
+          info
+            ? {
+                name: info.name,
+                id: info.id,
+              }
+            : null
+        );
+        break;
+
+      case EPopupContentType.ARTICLE:
+        setArticleData(
+          info
+            ? {
+                chapterID: info.id,
+              }
+            : null
+        );
+        break;
+    }
+    console.log("info ", info);
+  }, [popupInfo.info]);
+
+  console.log("artcileData ", artcileData);
   const handleCourseFormSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    formData.append("description", data.description);
-    formData.append("category", data.category);
-    formData.append("name", data.name);
-    formData.append("image", data.image);
 
-    createCourse(formData, localStorage.getItem("token"))
-      .then((res) => {
-        navigate(`/courses/${res.data.createdCourse.route}`);
-        dispatch(setIsLoading(true));
-        onClose();
-        setData({
-          name: "",
-          category: "",
-          description: "",
-        } as ICreateCourseData);
-        setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
-      })
-      .catch((err: any) => {
-        console.log(`Ошибка: ${err}`);
-      })
-      .finally(() => {
-        dispatch(setIsLoading(false));
-      });
+    formData.append("description", data?.description);
+    formData.append("category", data?.category);
+    formData.append("name", data?.name);
+    if (data?.image instanceof File) {
+      formData.append("image", data?.image);
+    }
+    if (data?.id) {
+      formData.append("id", data?.id);
+    }
+
+    if (popupInfo?.requestType?.includes("create")) {
+      dispatch(setIsLoading(true));
+      createCourse(formData, localStorage.getItem("token"))
+        .then((res) => {
+          navigate(`/courses/${res.data.createdCourse.route}`);
+          onClose();
+          setData(null);
+          dispatch(setPopupInfo({} as IPopupInfo));
+          setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
+        })
+        .catch((err: any) => {
+          console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
+    } else {
+      dispatch(setIsLoading(true));
+      updateCourse(formData, localStorage.getItem("token"))
+        .then((res) => {
+          onClose();
+          setData(null);
+          dispatch(setPopupInfo({} as IPopupInfo));
+          setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
+        })
+        .catch((err: any) => {
+          console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
+    }
   };
-
   const handleChapterFormSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    dispatch(addChapter({ ...chapterData, id: uuidv4() })); // setChapterData({ name: "" });\
-    // createChapter(formData, localStorage.getItem("token"))
-    //     .then((res) => {
-    //       dispatch(setIsLoading(true));
-    //       onClose();
-    //       setData({
-    //         name: "",
-    //         category: "",
-    //         description: "",
-    //       } as ICreateCourseData);
-    //       setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
-    //     })
-    //     .catch((err: any) => {
-    //       console.log(`Ошибка: ${err}`);
-    //     })
-    //     .finally(() => {
-    //       dispatch(setIsLoading(false));
-    //     });
-    onClose();
-    setChapterData({ name: "" });
+    const data = { ...chapterData, courseID: currentCourse?.id };
+
+    if (popupInfo?.requestType?.includes("create")) {
+      dispatch(setIsLoading(true));
+      createChapter(data, localStorage.getItem("token"))
+        .then(() => {
+          onClose();
+          setChapterData(null);
+          dispatch(setPopupInfo({} as IPopupInfo));
+          setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
+        })
+        .catch((err: any) => {
+          console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
+    } else {
+      dispatch(setIsLoading(true));
+      updateChapter(chapterData, localStorage.getItem("token"))
+        .then(() => {
+          onClose();
+          setChapterData(null);
+          dispatch(setPopupInfo({} as IPopupInfo));
+          setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
+        })
+        .catch((err: any) => {
+          console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
+    }
   };
 
-  console.log(chapterData);
+  const handleArticleFormSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    console.log(artcileData);
+
+    if (popupInfo?.requestType?.includes("create")) {
+      dispatch(setIsLoading(true));
+      createArticle(artcileData, localStorage.getItem("token"))
+        .then((res) => {
+          console.log(res);
+          onClose();
+          setArticleData(null);
+          dispatch(setPopupInfo({} as IPopupInfo));
+          setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
+        })
+        .catch((err: any) => {
+          console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
+    }
+    // else {
+    //     dispatch(setIsLoading(true));
+    //     updateChapter(chapterData, localStorage.getItem("token"))
+    //         .then(() => {
+    //             onClose();
+    //             setChapterData(null);
+    //             dispatch(setPopupInfo({} as IPopupInfo));
+    //             setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
+    //         })
+    //         .catch((err: any) => {
+    //             console.log(`Ошибка: ${err}`);
+    //         })
+    //         .finally(() => {
+    //             dispatch(setIsLoading(false));
+    //         });
+    // }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const { name, value } = target;
@@ -133,9 +250,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Название курса",
           "name",
-          popupInfo.requestType?.includes("create")
-            ? data.name
-            : popupInfoData?.name,
+          data?.name,
           [],
           handleChange
         )}
@@ -154,11 +269,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
               onChange={(option) => {
                 setData({ ...data, category: option.value });
               }}
-              value={
-                popupInfo.requestType?.includes("create")
-                  ? data.category
-                  : popupInfoData?.category
-              }
+              value={data?.category}
               options={OPTIONS}
             />
             <AccordionIcon className="popup__dropdown-arrow" />
@@ -169,9 +280,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Описание",
           "description",
-          popupInfo.requestType?.includes("create")
-            ? data.description
-            : popupInfoData?.description,
+          data?.description,
           [],
           handleChange
         )}
@@ -190,12 +299,8 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
               </label>
             </div>
             <p className="popup__button_file-text">
-              {data.image
-                ? `Файл: ${
-                    popupInfo.requestType?.includes("create")
-                      ? data.image.name
-                      : popupInfoData?.image
-                  }`
+              {data?.image?.name || data?.image?.Name
+                ? `Файл: ${data?.image?.name || data?.image?.Name}`
                 : "Файл не выбран"}
             </p>
           </div>
@@ -213,7 +318,6 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
     );
   };
   const renderChapterContent = () => {
-    console.log("chapterData ", popupInfo.requestType, chapterData);
     return (
       <form id="createChapterForm" onSubmit={handleChapterFormSubmit}>
         {renderFormInput(
@@ -221,10 +325,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Название раздела",
           "name",
-          popupInfo.requestType?.includes("create")
-            ? chapterData?.name
-            : //TODO: popupInfoData.name
-              "",
+          chapterData?.name,
           [],
           handleChange
         )}
@@ -249,19 +350,16 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           false,
           "Название статьи",
           "name",
-          popupInfo.requestType?.includes("create")
-            ? chapterData.name
-            : //TODO: popupInfoData.name
-              "",
+          artcileData?.name,
           [],
           handleChange
         )}
         <button
-          disabled={!isChapterFormCompleted}
+          disabled={!isArticleFormCompleted}
           className={`popup__button ${
-            isChapterFormCompleted ? "" : "popup__button_disabled"
+            isArticleFormCompleted ? "" : "popup__button_disabled"
           }`}
-          onClick={handleChapterFormSubmit}
+          onClick={handleArticleFormSubmit}
         >
           Создать
         </button>
@@ -304,7 +402,6 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
         );
     }
   };
-
   return (
     <div className={`popup ${isOpen ? "popup_opened" : ""}`}>
       <div
@@ -318,13 +415,11 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           type="button"
           className={`popup__close-button`}
           onClick={() => {
+            setData(null);
+            setChapterData(null);
+            setArticleData(null);
+            dispatch(setPopupInfo({} as IPopupInfo));
             onClose();
-            setData({
-              name: "",
-              category: "",
-              description: "",
-            } as ICreateCourseData);
-            setChapterData({ name: "" });
           }}
         >
           <CrossPopupIcon />

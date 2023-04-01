@@ -1,8 +1,10 @@
+import { omit } from "lodash";
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.scss";
 import * as auth from "../../utils/auth";
-import { getUserInfo } from "../../utils/mainApi";
+import { getCourses, getUserInfo } from "../../utils/mainApi";
+import ArticlePage from "../ArticlePage/ArticlePage";
 import CourseContent from "../CourseContent/CourseContent";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -14,7 +16,6 @@ import { IDataRegister, IErrorsRegister } from "../../interfaces";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Courses from "../Courses/Courses";
-import { EPopupType } from "../../enums/popup-type.enum";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { userSlice } from "../../store/reducers/UserSlice";
 import { appSlice } from "../../store/reducers/AppSlice";
@@ -30,11 +31,28 @@ const App = () => {
   });
   const dispatch = useAppDispatch();
   const { getUser } = userSlice.actions;
-  const { setIsLoading } = appSlice.actions;
+  const { setIsLoading, setCourses } = appSlice.actions;
   const { isLoading } = useAppSelector((state) => state.appReducer.app);
 
   useEffect(() => {
     tokenCheck();
+  }, []);
+
+  useEffect(() => {
+    dispatch(setIsLoading(true));
+    getCourses(localStorage.getItem("token"))
+      .then((res: any) => {
+        if (Array.isArray(res.data.courses)) {
+          const newCoursesArray = res.data.courses.map((course: any) =>
+            omit(course, ["creatorID", "createdAt"])
+          );
+          dispatch(setCourses(newCoursesArray));
+        } else dispatch(setCourses(res.data.courses));
+      })
+      .catch((err: any) => {
+        console.log(`Ошибка: ${err}`);
+      })
+      .finally(() => dispatch(setIsLoading(false)));
   }, []);
 
   const handleRegister = (
@@ -225,6 +243,16 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/courses/create-article"
+          element={
+            <ProtectedRoute>
+              <Header />
+              <ArticlePage />
+              <Footer />
+            </ProtectedRoute>
+          }
+        ></Route>
         <Route path="*" element={<ErrorPage />}></Route>
       </Routes>
       <Popup

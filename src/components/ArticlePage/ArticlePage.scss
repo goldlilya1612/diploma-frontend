@@ -1,0 +1,22 @@
+.article-page {
+  min-height: 74px;
+  padding: 0 14px;
+}
+
+@media screen and (min-width: 400px) {
+  .article-page {
+    padding: 0 6.5%;
+  }
+}
+
+@media screen and (width: 768px) {
+  .article-page {
+    padding: 0 30px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .article-page {
+    padding: 0 70px;
+  }
+}

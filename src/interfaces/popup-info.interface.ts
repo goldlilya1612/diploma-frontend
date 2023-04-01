@@ -16,6 +16,8 @@ export interface IPopupInfo {
   title?: EPopupTitle;
   requestType?: EPopupRequestType;
   content?: EPopupContentType;
+  info?: any | null;
+
   errorMessage?: {
     code: number;
     name: string;

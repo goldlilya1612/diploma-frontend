@@ -5,11 +5,12 @@
   max-height: calc(100vh - (74px + 151px + 30px + 30px));
   max-width: 300px;
   row-gap: 30px;
-  margin: 0 auto;
+  margin: auto;
 
   &__icon {
     width: 100%;
   }
+
   &__text {
     text-align: center;
     font-size: 14px;
@@ -17,6 +18,7 @@
     color: #8b8b8b;
     margin: 0;
   }
+
   &__link {
     color: #4a61dd;
     cursor: pointer;
