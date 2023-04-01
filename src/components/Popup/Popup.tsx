@@ -94,7 +94,6 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
         );
         break;
     }
-    console.log("info ", info);
   }, [popupInfo.info]);
 
   console.log("artcileData ", artcileData);
@@ -183,13 +182,11 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
 
   const handleArticleFormSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(artcileData);
 
     if (popupInfo?.requestType?.includes("create")) {
       dispatch(setIsLoading(true));
       createArticle(artcileData, localStorage.getItem("token"))
         .then((res) => {
-          console.log(res);
           onClose();
           setArticleData(null);
           dispatch(setPopupInfo({} as IPopupInfo));

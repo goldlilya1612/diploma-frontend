@@ -9,6 +9,7 @@ import CourseContent from "../CourseContent/CourseContent";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
+import Profile from "../Profile/Profile";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Popup from "../Popup/Popup";
@@ -228,7 +229,8 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Header />
-              <button onClick={handleLogout}>Выйти</button>
+              <Profile handleLogout={handleLogout} />
+              {/*<button onClick={handleLogout}>Выйти</button>*/}
               <Footer />
             </ProtectedRoute>
           }

@@ -5,7 +5,7 @@ export const renderFormInput = (
   inputNameEng: string,
   value: any,
   errors: any = [],
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 ) => {
   return (
     <label
@@ -21,7 +21,9 @@ export const renderFormInput = (
         type={type}
         name={inputNameEng}
         id={`${inputNameEng}-register`}
-        className="section-with-form__input"
+        className={`section-with-form__input ${
+          isDisabled ? "section-with-form__input_disabled" : ""
+        }`}
         minLength={type === "text" ? 2 : type === "password" ? 8 : undefined}
         maxLength={type === "text" ? 30 : undefined}
       />

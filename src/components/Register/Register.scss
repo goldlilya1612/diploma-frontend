@@ -64,6 +64,16 @@
     &_error {
       color: #ee3465;
     }
+
+    &_disabled {
+      border: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        background-color: unset;
+        color: black;
+      }
+    }
   }
 
   &__error {
