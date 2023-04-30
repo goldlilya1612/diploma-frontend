@@ -20,9 +20,6 @@ const CourseContent = () => {
   const { courses, isLoading } = useAppSelector(
     (state) => state.appReducer.app
   );
-  // const { content } = useAppSelector(
-  //   (state) => state.courseContentReducer.courseContent
-  // );
   const [content, setContent] = useState<any>(null);
 
   const dispatch = useAppDispatch();
@@ -54,10 +51,15 @@ const CourseContent = () => {
             <div className="courses__title-wrapper">
               <p className="course-content__title">Содержание</p>
             </div>
-            <Accordion content={content} setIsPopupOpen={setIsPopupOpen} />
+            <Accordion
+              isUpdatedChapterArray={isUpdatedChapterArray}
+              setIsUpdatedChapterArray={setIsUpdatedChapterArray}
+              content={content}
+              setIsPopupOpen={setIsPopupOpen}
+            />
           </>
         )}
-        {content?.length === 0 && !isLoading && (
+        {(content?.length === 0 || content === null) && !isLoading && (
           <EmptyState
             text={"Содержание курса пустое"}
             setIsPopupOpen={setIsPopupOpen}

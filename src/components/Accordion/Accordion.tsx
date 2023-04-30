@@ -5,22 +5,26 @@ import { EPopupType } from "../../enums/popup-type.enum";
 import { EUserRole } from "../../enums/user-role.enum";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
+import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
+import { getCourse } from "../../utils/mainApi";
 import AccordionItem from "../AccordionItem/AccordionItem";
 import "./Accordion.scss";
 
 const Accordion = ({
   setIsPopupOpen,
   content,
+  isUpdatedChapterArray,
+  setIsUpdatedChapterArray,
 }: {
   setIsPopupOpen: Dispatch<boolean>;
   content: any;
+  isUpdatedChapterArray: boolean;
+  setIsUpdatedChapterArray: Dispatch<boolean>;
 }) => {
   const dispatch = useAppDispatch();
   const { setPopupInfo } = appSlice.actions;
-  // const { content } = useAppSelector(
-  //   (state) => state.courseContentReducer.courseContent
-  // );
+
   return (
     <div className="accordion__wrapper">
       {EUserRole.LECTURER ? (
@@ -48,6 +52,8 @@ const Accordion = ({
             <AccordionItem
               key={index}
               accordionItem={accordionItem}
+              isUpdatedChapterArray={isUpdatedChapterArray}
+              setIsUpdatedChapterArray={setIsUpdatedChapterArray}
               setIsPopupOpen={setIsPopupOpen}
             />
           ))}

@@ -35,7 +35,7 @@ const CourseCard = ({
       <Link className="course-card-link" to={course.route}>
         <img
           className="course-card__image"
-          src={course?.image.url}
+          src={`http://${course?.image.url}`}
           alt={"course-picture"}
         />
         <div className="course-card__info">

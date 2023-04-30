@@ -1,5 +1,6 @@
 import React, { Dispatch, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { info } from "sass";
 import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
@@ -10,22 +11,29 @@ import EditIcon from "../../images/edit-icon";
 import RemoveItemIcon from "../../images/remove-item-icon";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
-import { courseContentSlice } from "../../store/reducers/CourseContentSlice";
 import "./AccordionItem.scss";
+import {
+  deleteArticle,
+  deleteChapter,
+  deleteCourse,
+} from "../../utils/mainApi";
 
 const AccordionItem = ({
   accordionItem,
   setIsPopupOpen,
+  isUpdatedChapterArray,
+  setIsUpdatedChapterArray,
 }: {
   accordionItem: any;
+  isUpdatedChapterArray: boolean;
+  setIsUpdatedChapterArray: Dispatch<boolean>;
   setIsPopupOpen: Dispatch<boolean>;
 }) => {
   const [clicked, setClicked] = useState(false);
   const contentEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const dispatch = useAppDispatch();
-  const { setPopupInfo } = appSlice.actions;
-  const { removeChapter } = courseContentSlice.actions;
-  const articles = accordionItem.articles;
+  const { setPopupInfo, setIsLoading } = appSlice.actions;
+  const articles = accordionItem.Articles;
 
   const handleToggle = () => {
     setClicked((prev) => !prev);
@@ -61,7 +69,21 @@ const AccordionItem = ({
                   className="accordion-item__icons"
                   onClick={(e: React.SyntheticEvent) => {
                     e.stopPropagation();
-                    dispatch(removeChapter(accordionItem.id));
+                    dispatch(setIsLoading(true));
+                    deleteChapter(
+                      accordionItem.id,
+                      localStorage.getItem("token")
+                    )
+                      .then(() => {
+                        setIsUpdatedChapterArray &&
+                          setIsUpdatedChapterArray(!isUpdatedChapterArray);
+                      })
+                      .catch((err: any) => {
+                        console.log(`Ошибка: ${err}`);
+                      })
+                      .finally(() => {
+                        dispatch(setIsLoading(false));
+                      });
                   }}
                 />
               </div>
@@ -94,7 +116,7 @@ const AccordionItem = ({
                     type: EPopupType.CONTENT,
                     title: EPopupTitle.CREATE_ARTICLE,
                     content: EPopupContentType.ARTICLE,
-                    info: accordionItem,
+                    info: { chapterID: accordionItem.id },
                     requestType: EPopupRequestType.CREATE_ARTICLE,
                   })
                 );
@@ -104,14 +126,13 @@ const AccordionItem = ({
               Добавить статью
             </button>
           ) : null}
-          <div>
+          <div className={"links-wrapper"}>
             {articles.length > 0 &&
-              articles.map((article: any) => {
-                <>
+              articles.map((article: any) => (
+                <div key={Math.random()}>
                   <Link to="#" className="answer">
-                    {"kkk"}
+                    {article.name}
                   </Link>
-                  ;
                   {EUserRole.LECTURER ? (
                     <div className={"accordion-item__buttons"}>
                       <EditIcon
@@ -124,6 +145,7 @@ const AccordionItem = ({
                               title: EPopupTitle.UPDATE_ARTICLE,
                               requestType: EPopupRequestType.UPDATE_ARTICLE,
                               content: EPopupContentType.ARTICLE,
+                              info: article,
                             })
                           );
                           setIsPopupOpen(true);
@@ -133,18 +155,34 @@ const AccordionItem = ({
                         className="accordion-item__icons"
                         onClick={(e: React.SyntheticEvent) => {
                           e.stopPropagation();
-                          console.log("remove");
+                          e.preventDefault();
+                          dispatch(setIsLoading(true));
+                          deleteArticle(
+                            article.id,
+                            localStorage.getItem("token")
+                          )
+                            .then(() => {
+                              setIsUpdatedChapterArray &&
+                                setIsUpdatedChapterArray(
+                                  !isUpdatedChapterArray
+                                );
+                            })
+                            .catch((err: any) => {
+                              console.log(`Ошибка: ${err}`);
+                            })
+                            .finally(() => {
+                              dispatch(setIsLoading(false));
+                            });
                         }}
                       />
                     </div>
                   ) : null}
-                </>;
-              })}
+                </div>
+              ))}
           </div>
         </div>
       </button>
     </li>
   );
 };
-
 export default AccordionItem;

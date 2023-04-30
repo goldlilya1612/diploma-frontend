@@ -73,6 +73,16 @@ export const createChapter = (
   }).then((res) => checkResponse(res));
 };
 
+export const deleteChapter = (id: number, jwt: string | null) => {
+  return fetch(`${BASE_URL}/api/course/chapter/delete?id=${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  }).then((res) => checkResponse(res));
+};
+
 export const updateChapter = (
   data: { id: number; name: string },
   jwt: string | null
@@ -96,6 +106,29 @@ export const createArticle = (
       Authorization: `Bearer ${jwt}`,
     },
     body: JSON.stringify(data),
+  }).then((res) => checkResponse(res));
+};
+
+export const updateArticle = (
+  data: { id: number; name: string },
+  jwt: string | null
+) => {
+  return fetch(`${BASE_URL}/api/course/chapter/article/update`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+    body: JSON.stringify(data),
+  }).then((res) => checkResponse(res));
+};
+
+export const deleteArticle = (id: number, jwt: string | null) => {
+  return fetch(`${BASE_URL}/api/course/chapter/article/delete?id=${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
   }).then((res) => checkResponse(res));
 };
 

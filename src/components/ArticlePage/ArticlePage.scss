@@ -1,5 +1,5 @@
 .article-page {
-  min-height: 74px;
+  min-height: calc(100vh - 74px - 102px);
   padding: 0 14px;
 }
 

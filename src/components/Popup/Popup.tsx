@@ -15,12 +15,12 @@ import { ICreateCourseData } from "../../interfaces/formInfo/create-course-data.
 import { IPopupInfo } from "../../interfaces/popup-info.interface";
 import { IPopupProps } from "../../interfaces/props/popup-props.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
-import { courseContentSlice } from "../../store/reducers/CourseContentSlice";
 import { OPTIONS } from "../../utils/constants";
 import {
   createArticle,
   createChapter,
   createCourse,
+  updateArticle,
   updateChapter,
   updateCourse,
 } from "../../utils/mainApi";
@@ -52,7 +52,6 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
   );
   const isChapterFormCompleted = !!chapterData?.name;
   const isArticleFormCompleted = !!artcileData?.name;
-  const { addChapter } = courseContentSlice.actions;
   const formData = new FormData();
   const route = window.location.pathname.split("/").reverse()[0];
   const currentCourse = courses?.find((course) => course.route === route);
@@ -88,15 +87,15 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
         setArticleData(
           info
             ? {
-                chapterID: info.id,
+                chapterID: info.chapterID,
+                name: info.name,
+                id: info.id,
               }
             : null
         );
         break;
     }
   }, [popupInfo.info]);
-
-  console.log("artcileData ", artcileData);
   const handleCourseFormSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
@@ -182,11 +181,26 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
 
   const handleArticleFormSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-
     if (popupInfo?.requestType?.includes("create")) {
       dispatch(setIsLoading(true));
       createArticle(artcileData, localStorage.getItem("token"))
         .then((res) => {
+          onClose();
+          setArticleData(null);
+          dispatch(setPopupInfo({} as IPopupInfo));
+          setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
+          navigate("/courses/create-article");
+        })
+        .catch((err: any) => {
+          console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
+    } else {
+      dispatch(setIsLoading(true));
+      updateArticle(artcileData, localStorage.getItem("token"))
+        .then(() => {
           onClose();
           setArticleData(null);
           dispatch(setPopupInfo({} as IPopupInfo));
@@ -199,22 +213,6 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           dispatch(setIsLoading(false));
         });
     }
-    // else {
-    //     dispatch(setIsLoading(true));
-    //     updateChapter(chapterData, localStorage.getItem("token"))
-    //         .then(() => {
-    //             onClose();
-    //             setChapterData(null);
-    //             dispatch(setPopupInfo({} as IPopupInfo));
-    //             setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
-    //         })
-    //         .catch((err: any) => {
-    //             console.log(`Ошибка: ${err}`);
-    //         })
-    //         .finally(() => {
-    //             dispatch(setIsLoading(false));
-    //         });
-    // }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
