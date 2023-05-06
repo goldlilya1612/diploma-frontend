@@ -132,6 +132,27 @@ export const deleteArticle = (id: number, jwt: string | null) => {
   }).then((res) => checkResponse(res));
 };
 
+export const getArticleContent = (id: number, jwt: string | null) => {
+  return fetch(`${BASE_URL}/api/course/chapter/article/get-content?id=${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  }).then((res) => checkResponse(res));
+};
+export const updateArticleContent = (
+  data: { id: number; content: string },
+  jwt: string | null
+) => {
+  return fetch(`${BASE_URL}/api/course/chapter/article/update-content`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+    body: JSON.stringify(data),
+  }).then((res) => checkResponse(res));
+};
+
 const checkResponse = (res: any) => {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };

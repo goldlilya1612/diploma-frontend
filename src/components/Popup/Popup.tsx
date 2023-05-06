@@ -1,3 +1,4 @@
+import { type } from "os";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ import CrossPopupIcon from "../../images/cross-popup-icon";
 import { ICreateChapterData } from "../../interfaces/formInfo/create-chapter-data.interface";
 import { ICreateCourseData } from "../../interfaces/formInfo/create-course-data.interface";
 import { IPopupInfo } from "../../interfaces/popup-info.interface";
+import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 import { IPopupProps } from "../../interfaces/props/popup-props.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
 import { OPTIONS } from "../../utils/constants";
@@ -38,7 +40,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
   const { courses } = useAppSelector((state) => state.appReducer.app);
   const { popupInfo } = useAppSelector((state) => state.appReducer.app);
   const dispatch = useAppDispatch();
-  const { setIsLoading, setPopupInfo } = appSlice.actions;
+  const { setIsLoading, setPopupInfo, setCourses } = appSlice.actions;
   const navigate = useNavigate();
   const [data, setData] = useState<any>(popupInfoData || null);
   const [chapterData, setChapterData] = useState<any>(null);
@@ -108,12 +110,17 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
     if (data?.id) {
       formData.append("id", data?.id);
     }
-
     if (popupInfo?.requestType?.includes("create")) {
       dispatch(setIsLoading(true));
       createCourse(formData, localStorage.getItem("token"))
-        .then((res) => {
-          navigate(`/courses/${res.data.createdCourse.route}`);
+        .then(({ data }) => {
+          dispatch(
+            setCourses([
+              ...(courses as Array<ICourseCardProps>),
+              data.createdCourse,
+            ])
+          );
+          navigate(`/courses/${data.createdCourse.route}`);
           onClose();
           setData(null);
           dispatch(setPopupInfo({} as IPopupInfo));
@@ -184,12 +191,12 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
     if (popupInfo?.requestType?.includes("create")) {
       dispatch(setIsLoading(true));
       createArticle(artcileData, localStorage.getItem("token"))
-        .then((res) => {
+        .then(({ data }) => {
           onClose();
           setArticleData(null);
           dispatch(setPopupInfo({} as IPopupInfo));
           setIsUpdatedData && setIsUpdatedData(!isUpdatedData);
-          navigate("/courses/create-article");
+          navigate(`/courses/create-article/${data.createdArticle.id}`);
         })
         .catch((err: any) => {
           console.log(`Ошибка: ${err}`);
@@ -304,7 +311,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
             className={`popup__button ${
               isCourseFormCompleted ? "" : "popup__button_disabled"
             }`}
-            onClick={handleCourseFormSubmit}
+            type={"submit"}
           >
             Создать
           </button>
@@ -329,7 +336,7 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
           className={`popup__button ${
             isChapterFormCompleted ? "" : "popup__button_disabled"
           }`}
-          onClick={handleChapterFormSubmit}
+          type="submit"
         >
           Создать
         </button>

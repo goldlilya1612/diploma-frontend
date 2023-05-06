@@ -9,6 +9,7 @@ export interface ICourseCardProps {
     Path: string;
     url: string;
   };
+  chapters: any;
   name: string;
   route: string;
   updatedAt: string;

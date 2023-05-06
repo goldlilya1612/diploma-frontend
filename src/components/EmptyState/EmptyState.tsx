@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
@@ -19,18 +20,20 @@ const EmptyState: React.FunctionComponent<IEmptyStateProps> = ({
   const isLector = user.role === EUserRole.LECTURER;
   const dispatch = useAppDispatch();
   const { setPopupInfo } = appSlice.actions;
+  const articleId = Number(window.location.pathname.split("/").reverse()[0]);
+  const navigate = useNavigate();
 
   return (
     <div className="empty-state">
       <EmptyStateIcon className="empty-state__icon" />
-      {setIsPopupOpen && (
-        <div className="empty-state__wrapper">
-          <p className="empty-state__text">{text}</p>
-          {isLector ? (
-            <p className="empty-state__text">
-              Для редактирования нажмите
-              <button
-                onClick={() => {
+      <div className="empty-state__wrapper">
+        <p className="empty-state__text">{text}</p>
+        {isLector ? (
+          <p className="empty-state__text">
+            Для редактирования нажмите
+            <button
+              onClick={() => {
+                if (setIsPopupOpen) {
                   dispatch(
                     setPopupInfo({
                       type: EPopupType.CONTENT,
@@ -40,17 +43,19 @@ const EmptyState: React.FunctionComponent<IEmptyStateProps> = ({
                     })
                   );
                   setIsPopupOpen(true);
-                }}
-                className="empty-button empty-state__link"
-              >
-                здесь
-              </button>
-            </p>
-          ) : (
-            ""
-          )}
-        </div>
-      )}
+                } else {
+                  navigate(`/courses/create-article/${articleId}`);
+                }
+              }}
+              className="empty-button empty-state__link"
+            >
+              здесь
+            </button>
+          </p>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 };

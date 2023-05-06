@@ -7,7 +7,6 @@ import { EUserRole } from "../../enums/user-role.enum";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import AddIcon from "../../images/add-icon";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
-import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
 import { EMPTY_STATE } from "../../utils/constants";
 import { getCourses } from "../../utils/mainApi";
@@ -27,20 +26,25 @@ const Courses = () => {
   const { courses } = useAppSelector((state) => state.appReducer.app);
 
   useEffect(() => {
-    dispatch(setIsLoading(true));
-    getCourses(localStorage.getItem("token"))
-      .then((res: any) => {
-        if (Array.isArray(res.data.courses)) {
-          const newCoursesArray = res.data.courses.map((course: any) =>
-            omit(course, ["creatorID", "createdAt"])
-          );
-          dispatch(setCourses(newCoursesArray));
-        } else dispatch(setCourses(res.data.courses));
-      })
-      .catch((err: any) => {
-        console.log(`Ошибка: ${err}`);
-      })
-      .finally(() => dispatch(setIsLoading(false)));
+    if (isUpdatedCourseArray) {
+      dispatch(setIsLoading(true));
+      getCourses(localStorage.getItem("token"))
+        .then((res: any) => {
+          if (Array.isArray(res.data.courses)) {
+            const newCoursesArray = res.data.courses.map((course: any) =>
+              omit(course, ["creatorID", "createdAt"])
+            );
+            dispatch(setCourses(newCoursesArray));
+          } else dispatch(setCourses(res.data.courses));
+        })
+        .catch((err: any) => {
+          console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => {
+          setIsUpdatedCourseArray(false);
+          dispatch(setIsLoading(false));
+        });
+    }
   }, [isUpdatedCourseArray]);
 
   return (

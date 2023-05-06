@@ -4,6 +4,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.scss";
 import * as auth from "../../utils/auth";
 import { getCourses, getUserInfo } from "../../utils/mainApi";
+import ArticleContent from "../ArticleContent/ArticleContent";
 import ArticlePage from "../ArticlePage/ArticlePage";
 import CourseContent from "../CourseContent/CourseContent";
 import Header from "../Header/Header";
@@ -230,7 +231,6 @@ const App = () => {
             <ProtectedRoute>
               <Header />
               <Profile handleLogout={handleLogout} />
-              {/*<button onClick={handleLogout}>Выйти</button>*/}
               <Footer />
             </ProtectedRoute>
           }
@@ -246,7 +246,17 @@ const App = () => {
           }
         />
         <Route
-          path="/courses/create-article"
+          path="/courses/:courseRoute/:articleId"
+          element={
+            <ProtectedRoute>
+              <Header />
+              <ArticleContent />
+              <Footer />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/courses/create-article/:articleId"
           element={
             <ProtectedRoute>
               <Header />

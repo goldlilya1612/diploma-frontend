@@ -25,7 +25,7 @@ export const renderFormInput = (
           isDisabled ? "section-with-form__input_disabled" : ""
         }`}
         minLength={type === "text" ? 2 : type === "password" ? 8 : undefined}
-        maxLength={type === "text" ? 30 : undefined}
+        // maxLength={type === "text" ? 30 : undefined}
       />
       <span className="section-with-form__error">{errors}</span>
     </label>

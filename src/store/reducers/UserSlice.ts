@@ -1,5 +1,4 @@
 import { EUserRole } from "../../enums/user-role.enum";
-import { IGroupRegister } from "../../interfaces";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface IUserState {

@@ -1,11 +1,10 @@
 import React, { Dispatch, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { info } from "sass";
 import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
 import { EUserRole } from "../../enums/user-role.enum";
-import { useAppDispatch } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import AccordionButtonIcon from "../../images/accordion-button-icon";
 import EditIcon from "../../images/edit-icon";
 import RemoveItemIcon from "../../images/remove-item-icon";
@@ -33,7 +32,10 @@ const AccordionItem = ({
   const contentEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const dispatch = useAppDispatch();
   const { setPopupInfo, setIsLoading } = appSlice.actions;
-  const articles = accordionItem.Articles;
+  const { courses } = useAppSelector((state) => state.appReducer.app);
+  const { role } = useAppSelector((state) => state.userReducer.user);
+  const { courseID, articles } = accordionItem;
+  const currentOpenCourse = courses?.find((item) => item.id === courseID);
 
   const handleToggle = () => {
     setClicked((prev) => !prev);
@@ -48,7 +50,7 @@ const AccordionItem = ({
         <div className="accordion-item__title-wrapper">
           <div className="accordion-item__title-buttons-wrapper">
             <p className="accordion-item__title">{accordionItem.name}</p>
-            {EUserRole.LECTURER ? (
+            {role === EUserRole.LECTURER ? (
               <div className={"accordion-item__buttons"}>
                 <EditIcon
                   className="accordion-item__icons"
@@ -106,7 +108,7 @@ const AccordionItem = ({
               : { height: "0px" }
           }
         >
-          {EUserRole.LECTURER ? (
+          {role === EUserRole.LECTURER ? (
             <button
               className="accordion-item__add-button"
               onClick={(e: React.SyntheticEvent) => {
@@ -130,10 +132,13 @@ const AccordionItem = ({
             {articles.length > 0 &&
               articles.map((article: any) => (
                 <div key={Math.random()}>
-                  <Link to="#" className="answer">
+                  <Link
+                    to={`/courses/${currentOpenCourse?.route}/${article.id}`}
+                    className="answer"
+                  >
                     {article.name}
                   </Link>
-                  {EUserRole.LECTURER ? (
+                  {role === EUserRole.LECTURER ? (
                     <div className={"accordion-item__buttons"}>
                       <EditIcon
                         className="accordion-item__icons"

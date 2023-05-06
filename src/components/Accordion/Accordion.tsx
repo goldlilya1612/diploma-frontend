@@ -1,13 +1,11 @@
-import { Dispatch, useEffect } from "react";
+import { Dispatch } from "react";
 import { EPopupRequestType } from "../../enums/popup-content-request-type.enum";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { EPopupType } from "../../enums/popup-type.enum";
 import { EUserRole } from "../../enums/user-role.enum";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch } from "../../hooks/hooks";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
-import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
-import { getCourse } from "../../utils/mainApi";
 import AccordionItem from "../AccordionItem/AccordionItem";
 import "./Accordion.scss";
 

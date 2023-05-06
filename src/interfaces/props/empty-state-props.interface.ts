@@ -5,7 +5,7 @@ import { EPopupTitle } from "../popup-info.interface";
 
 export interface IEmptyStateProps {
   text: string;
-  setIsPopupOpen: (value: boolean) => void;
-  content: EPopupContentType;
-  title: EPopupTitle;
+  setIsPopupOpen?: (value: boolean) => void;
+  content?: EPopupContentType;
+  title?: EPopupTitle;
 }

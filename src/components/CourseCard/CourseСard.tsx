@@ -68,7 +68,7 @@ const CourseCard = ({
                     deleteCourse(course.id, localStorage.getItem("token"))
                       .then(() => {
                         setIsUpdatedCourseArray &&
-                          setIsUpdatedCourseArray(!isUpdatedCourseArray);
+                          setIsUpdatedCourseArray(true);
                       })
                       .catch((err: any) => {
                         console.log(`Ошибка: ${err}`);
