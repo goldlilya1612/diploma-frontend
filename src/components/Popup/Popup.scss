@@ -172,7 +172,7 @@ input[type="file"] {
   }
 
   &__file-wrapper {
-    max-width: 50%;
+    max-width: 100%;
   }
 
   &__button {
@@ -276,6 +276,10 @@ input[type="file"] {
         margin-top: 0;
         width: 500px;
       }
+    }
+
+    &__file-wrapper {
+      max-width: 50%;
     }
   }
 }

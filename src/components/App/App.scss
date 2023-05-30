@@ -3,6 +3,10 @@
 root {
   font-family: "Roboto";
   background: white;
+
+  div {
+    white-space: unset !important;
+  }
 }
 
 input:focus,

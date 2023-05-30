@@ -19,9 +19,9 @@ function Profile({ handleLogout }: { handleLogout: any }) {
         {renderFormInput("email", true, "email", "email", user.email, [])}
 
         <div className="profile__buttons">
-          <button type="submit" className="profile__button">
-            Редактировать
-          </button>
+          {/*<button type="submit" className="profile__button">*/}
+          {/*  Редактировать*/}
+          {/*</button>*/}
           <button
             onClick={handleLogout}
             type="button"

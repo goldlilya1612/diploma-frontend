@@ -7,10 +7,10 @@ import AboutMe from "../AboutMe/AboutMe";
 function Main() {
   return (
     <>
-      <Promo />
-      <AboutProject />
+      {/*<Promo />*/}
+      {/*<AboutProject />*/}
       <Techs />
-      <AboutMe />
+      {/*<AboutMe />*/}
     </>
   );
 }

@@ -1,14 +1,14 @@
 import "./Techs.scss";
+import { Link } from "react-router-dom";
 
 function Techs() {
   return (
     <section className="techs">
-      <h2 className="section__title">Технологии</h2>
+      {/*<h2 className="section__title">Технологии</h2>*/}
       <div className="techs__wrapper">
         <p className="techs__title">7 технологий</p>
         <p className="techs__text">
-          На курсе веб-разработки мы освоили технологии, которые применили в
-          дипломном проекте.
+          Технологии, которые были применены дипломном проекте.
         </p>
       </div>
       <ul className="tech__links">
@@ -35,6 +35,16 @@ function Techs() {
         <li className="tech__link-item">
           <a
             className="tech__link"
+            href="https://sass-lang.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SASS
+          </a>
+        </li>
+        <li className="tech__link-item">
+          <a
+            className="tech__link"
             href="https://www.javascript.com/"
             target="_blank"
             rel="noopener noreferrer"
@@ -55,34 +65,67 @@ function Techs() {
         <li className="tech__link-item">
           <a
             className="tech__link"
-            href="https://git-scm.com/"
+            href="https://www.typescriptlang.org/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Git
+            TypeScript
           </a>
         </li>
         <li className="tech__link-item">
           <a
             className="tech__link"
-            href="https://expressjs.com/"
+            href="https://redux-toolkit.js.org/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Express.js
+            Redux Toolkit
           </a>
         </li>
         <li className="tech__link-item">
           <a
             className="tech__link"
-            href="https://www.mongodb.com/"
+            href="https://go.dev/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            mongoDB
+            Go
+          </a>
+        </li>
+        <li className="tech__link-item">
+          <a
+            className="tech__link"
+            href="https://www.postgresql.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            PostgreSQL
+          </a>
+        </li>
+        <li className="tech__link-item">
+          <a
+            className="tech__link"
+            href="https://gorm.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GORM
+          </a>
+        </li>
+        <li className="tech__link-item">
+          <a
+            className="tech__link"
+            href="https://gin-gonic.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Gin
           </a>
         </li>
       </ul>
+      <Link className="tech__telegram-link" to={"https://t.me/is_diploma_bot"}>
+        Ссылка на telegram
+      </Link>
     </section>
   );
 }

@@ -2,6 +2,7 @@ import { omit } from "lodash";
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.scss";
+import { EPopupType } from "../../enums/popup-type.enum";
 import * as auth from "../../utils/auth";
 import { getCourses, getUserInfo } from "../../utils/mainApi";
 import ArticleContent from "../ArticleContent/ArticleContent";
@@ -33,29 +34,32 @@ const App = () => {
   });
   const dispatch = useAppDispatch();
   const { getUser } = userSlice.actions;
-  const { setIsLoading, setCourses } = appSlice.actions;
-  const { isLoading } = useAppSelector((state) => state.appReducer.app);
-
+  const { setIsLoading, setCourses, setPopupInfo } = appSlice.actions;
+  const { isLoading, courses } = useAppSelector(
+    (state) => state.appReducer.app
+  );
   useEffect(() => {
     tokenCheck();
   }, []);
 
   useEffect(() => {
-    dispatch(setIsLoading(true));
-    getCourses(localStorage.getItem("token"))
-      .then((res: any) => {
-        if (Array.isArray(res.data.courses)) {
-          const newCoursesArray = res.data.courses.map((course: any) =>
-            omit(course, ["creatorID", "createdAt"])
-          );
-          dispatch(setCourses(newCoursesArray));
-        } else dispatch(setCourses(res.data.courses));
-      })
-      .catch((err: any) => {
-        console.log(`Ошибка: ${err}`);
-      })
-      .finally(() => dispatch(setIsLoading(false)));
-  }, []);
+    if (localStorage.getItem("token")) {
+      dispatch(setIsLoading(true));
+      getCourses(localStorage.getItem("token"))
+        .then((res: any) => {
+          if (Array.isArray(res.data.courses)) {
+            const newCoursesArray = res.data.courses.map((course: any) =>
+              omit(course, ["creatorID", "createdAt"])
+            );
+            dispatch(setCourses(newCoursesArray));
+          } else dispatch(setCourses(res.data.courses));
+        })
+        .catch((err: any) => {
+          console.log(`Ошибка: ${err}`);
+        })
+        .finally(() => dispatch(setIsLoading(false)));
+    }
+  }, [localStorage.getItem("token")]);
 
   const handleRegister = (
     data: IDataRegister,
@@ -100,6 +104,11 @@ const App = () => {
           setErrorMessagePopup({ name: "Ошибка валидации", code: 400 });
           setIsPopupOpen(true);
         }
+        dispatch(
+          setPopupInfo({
+            type: EPopupType.ERROR,
+          })
+        );
       });
   };
 
@@ -170,6 +179,12 @@ const App = () => {
           });
           setIsPopupOpen(true);
         }
+
+        dispatch(
+          setPopupInfo({
+            type: EPopupType.ERROR,
+          })
+        );
       })
       .finally(() => {
         resetForm();
@@ -186,7 +201,6 @@ const App = () => {
   return (
     <div className="page">
       <Routes>
-        {" "}
         <Route
           path="/"
           element={

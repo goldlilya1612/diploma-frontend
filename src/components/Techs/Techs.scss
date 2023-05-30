@@ -1,12 +1,16 @@
 .techs {
-  min-height: 651px;
   background-color: #f5f6fe;
+  padding-bottom: 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   &__wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   &__title {
     font-weight: normal;
     font-size: 30px;
@@ -14,8 +18,9 @@
     text-align: center;
     letter-spacing: -0.04em;
     color: black;
-    margin: 0 18px 24px 18px;
+    margin: 30px 18px 24px 18px;
   }
+
   &__text {
     font-weight: normal;
     font-size: 11px;
@@ -23,7 +28,7 @@
     text-align: center;
     letter-spacing: -0.04em;
     color: black;
-    margin: 0 18px 50px 18px;
+    margin: 0 18px 30px 18px;
   }
 }
 
@@ -37,6 +42,7 @@
     margin: 0 auto 70px auto;
     padding: 0;
   }
+
   &__link-item {
     width: 84px;
     height: 57px;
@@ -52,6 +58,7 @@
       cursor: pointer;
     }
   }
+
   &__link {
     text-decoration: none;
     color: #ffffff;
@@ -61,32 +68,44 @@
     text-align: center;
     letter-spacing: -0.04em;
   }
+
+  &__telegram-link {
+    color: black;
+    text-decoration: none;
+    margin-bottom: 30px;
+    cursor: pointer;
+    transition: color .2s ease-out;
+
+    &:hover {
+      color: #4a3aff;
+    }
+  }
 }
 
 @media screen and (min-width: 400px) {
   .techs {
     &__title {
-      margin: 0 6.5% 24px 6.5%;
+      margin: 30px 6.5% 24px 6.5%;
     }
+
     &__text {
-      margin: 0 6.5% 50px 6.5%;
+      margin: 0 6.5% 30px 6.5%;
     }
   }
 }
 
 @media screen and (min-width: 768px) {
   .techs {
-    min-height: 567px;
-
     &__title {
       font-size: 50px;
       line-height: 58px;
-      margin: 0 50px 22px 50px;
+      margin: 70px 50px 22px 50px;
     }
+
     &__text {
       font-size: 12px;
       line-height: 18px;
-      margin: 0 50px 83px 50px;
+      margin: 0 50px 53px 50px;
       width: 60%;
     }
   }
@@ -101,25 +120,25 @@
 @media screen and (min-width: 1000px) {
   .techs {
     &__title {
-      margin: 0 80px 22px 80px;
+      margin: 70px 80px 22px 80px;
     }
+
     &__text {
-      margin: 0 80px 83px 80px;
+      margin: 0 80px 53px 80px;
     }
   }
 }
 
 @media screen and (min-width: 1280px) {
   .techs {
-    min-height: 625px;
-
     &__title {
-      margin: 0 70px 26px 70px;
+      margin: 70px 70px 26px 70px;
     }
+
     &__text {
       font-size: 14px;
       line-height: 20px;
-      margin: 0 70px 100px 70px;
+      margin: 0 70px 60px 70px;
       max-width: 460px;
     }
   }

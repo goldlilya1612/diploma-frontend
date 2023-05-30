@@ -1,4 +1,3 @@
-import { type } from "os";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +10,6 @@ import IncorrectErrorIcon from "../../images/401-error-icon";
 import ConflictErrorIcon from "../../images/409-error-icon";
 import AccordionIcon from "../../images/accordion-icon";
 import CrossPopupIcon from "../../images/cross-popup-icon";
-import { ICreateChapterData } from "../../interfaces/formInfo/create-chapter-data.interface";
-import { ICreateCourseData } from "../../interfaces/formInfo/create-course-data.interface";
 import { IPopupInfo } from "../../interfaces/popup-info.interface";
 import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 import { IPopupProps } from "../../interfaces/props/popup-props.interface";
@@ -114,12 +111,14 @@ const Popup: React.FunctionComponent<IPopupProps> = ({
       dispatch(setIsLoading(true));
       createCourse(formData, localStorage.getItem("token"))
         .then(({ data }) => {
-          dispatch(
-            setCourses([
-              ...(courses as Array<ICourseCardProps>),
-              data.createdCourse,
-            ])
-          );
+          courses
+            ? dispatch(
+                setCourses([
+                  ...(courses as Array<ICourseCardProps>),
+                  data.createdCourse,
+                ])
+              )
+            : dispatch(setCourses([data.createdCourse]));
           navigate(`/courses/${data.createdCourse.route}`);
           onClose();
           setData(null);

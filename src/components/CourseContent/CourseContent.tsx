@@ -1,11 +1,9 @@
-import { omit } from "lodash";
 import { useEffect, useState } from "react";
 import { EPopupContentType } from "../../enums/popup-content-type.enum";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { EPopupTitle } from "../../interfaces/popup-info.interface";
 import { ICourseCardProps } from "../../interfaces/props/course-card.interface";
 import { appSlice } from "../../store/reducers/AppSlice";
-import { userSlice } from "../../store/reducers/UserSlice";
 import { getCourse } from "../../utils/mainApi";
 import Accordion from "../Accordion/Accordion";
 import EmptyState from "../EmptyState/EmptyState";
@@ -23,7 +21,7 @@ const CourseContent = () => {
   const [content, setContent] = useState<any>(null);
 
   const dispatch = useAppDispatch();
-  const { setIsLoading, setCourses } = appSlice.actions;
+  const { setIsLoading } = appSlice.actions;
 
   useEffect(() => {
     const currentOpenCourse = courses?.find(
@@ -31,7 +29,7 @@ const CourseContent = () => {
     );
 
     if (currentOpenCourse) {
-      dispatch(setIsLoading(false));
+      dispatch(setIsLoading(true));
       getCourse(currentOpenCourse?.id, localStorage.getItem("token"))
         .then((res: any) => {
           setContent(res.data.courses[0].chapters);
@@ -59,7 +57,7 @@ const CourseContent = () => {
             />
           </>
         )}
-        {(content?.length === 0 || content === null) && !isLoading && (
+        {content?.length === 0 && !isLoading && (
           <EmptyState
             text={"Содержание курса пустое"}
             setIsPopupOpen={setIsPopupOpen}

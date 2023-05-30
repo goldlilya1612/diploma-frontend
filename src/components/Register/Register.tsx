@@ -74,7 +74,9 @@ function Register({
     if (name === "role") {
       handleRolesToggle(name, value as EUserRole);
     } else if (name === "groups") {
-      setData({ ...data, [name]: [{ name: value, key: uuidv4() }] });
+      value === ""
+        ? setData({ ...data, [name]: null })
+        : setData({ ...data, [name]: [{ name: value, key: uuidv4() }] });
     } else {
       setData({ ...data, [name]: value });
       if (name === "passwordConfirm" && data.password !== value) {

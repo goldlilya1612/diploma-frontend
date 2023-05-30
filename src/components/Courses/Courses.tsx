@@ -23,7 +23,9 @@ const Courses = () => {
   const [isUpdatedCourseArray, setIsUpdatedCourseArray] =
     useState<boolean>(false);
   const user = useAppSelector((state) => state.userReducer.user);
-  const { courses } = useAppSelector((state) => state.appReducer.app);
+  const { courses, isLoading } = useAppSelector(
+    (state) => state.appReducer.app
+  );
 
   useEffect(() => {
     if (isUpdatedCourseArray) {
@@ -91,7 +93,15 @@ const Courses = () => {
               />
             ))}
 
-          {(courses === null || !courses.length) && (
+          {courses !== null && !courses.length && (
+            <EmptyState
+              text={EMPTY_STATE.courses}
+              setIsPopupOpen={setIsPopupOpen}
+              content={EPopupContentType.COURSE}
+              title={EPopupTitle.CREATE_COURSE}
+            />
+          )}
+          {courses === null && !isLoading && (
             <EmptyState
               text={EMPTY_STATE.courses}
               setIsPopupOpen={setIsPopupOpen}

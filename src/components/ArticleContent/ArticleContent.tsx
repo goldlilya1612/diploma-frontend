@@ -17,7 +17,7 @@ const ArticleContent = () => {
   const isLector = user.role === EUserRole.LECTURER;
 
   useEffect(() => {
-    setIsLoading(true);
+    dispatch(setIsLoading(true));
     getArticleContent(articleId, localStorage.getItem("token"))
       .then(({ data }) => {
         setArticleContent(data?.content);
@@ -30,7 +30,7 @@ const ArticleContent = () => {
       });
   }, []);
 
-  if (articleContent === "") {
+  if (articleContent === null) {
     return (
       <section className={"article-content"}>
         <EmptyState text={"Содержание статьи пустое"} />
@@ -49,7 +49,7 @@ const ArticleContent = () => {
         ) : null}
         <MDEditor.Markdown
           source={articleContent}
-          style={{ whiteSpace: "pre-wrap", marginTop: "30px" }}
+          style={{ marginTop: "30px" }}
         />
       </section>
     );
